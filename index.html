@@ -1,0 +1,4368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d14">
+<meta name="description" content="NEXLEX by Grupo RAF — Sistema de Gestión Jurídica multiusuario. Mapa de procedimientos, jurisprudencia, audiencias y consulta legal online.">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="dark">
+
+<!-- Open Graph / redes sociales -->
+<meta property="og:type"        content="website">
+<meta property="og:title"       content="NEXLEX — by Grupo RAF">
+<meta property="og:description" content="Sistema de Gestión Jurídica profesional. Jurisprudencia, audiencias y consulta legal.">
+<meta property="og:locale"      content="es_DO">
+
+<!-- Preconexiones para CDNs -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+<!-- Fuentes con display=swap para no bloquear render -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+<title>NEXLEX — by Grupo RAF</title>
+<style>
+/* ══════════════════════════════════════════
+   NEXLEX — Design System
+══════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Core palette */
+  --bg:          #0b0d14;
+  --surface:     #111420;
+  --card:        #181c2e;
+  --card-hover:  #1e2338;
+  --border:      #232843;
+  --border-hi:   #2e3557;
+
+  /* Brand */
+  --brand:       #4f7cff;
+  --brand-d:     #3260e0;
+  --brand-glow:  rgba(79,124,255,.18);
+  --brand-line:  rgba(79,124,255,.35);
+
+  /* Status */
+  --green:       #34d399;
+  --amber:       #fbbf24;
+  --orange:      #fb923c;
+  --red:         #f87171;
+  --yellow:      #fde68a;
+
+  /* Typography */
+  --fg:          #e8ecf6;
+  --fg2:         #8892b0;
+  --fg3:         #4a5280;
+
+  /* Geometry */
+  --radius-sm:   6px;
+  --radius:      10px;
+  --radius-lg:   16px;
+  --radius-xl:   22px;
+
+  /* Font */
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 4px; }
+
+/* ══════════════════════════════════════════
+   AUTH SCREEN
+══════════════════════════════════════════ */
+#auth-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79,124,255,.13) 0%, transparent 70%),
+    var(--bg);
+}
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-xl);
+  padding: 40px 44px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 32px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.03);
+}
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-logo-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  margin-bottom: 6px;
+}
+
+.auth-logo-main {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 36px;
+  letter-spacing: -.5px;
+  color: var(--fg);
+  line-height: 1;
+}
+
+.auth-logo-main span {
+  color: var(--brand);
+}
+
+.auth-logo-sub {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--fg3);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+.auth-logo-divider {
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand), transparent);
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.auth-tabs {
+  display: flex;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 3px;
+  margin-bottom: 26px;
+  gap: 3px;
+  border: 1px solid var(--border);
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  color: var(--fg2);
+  transition: all .18s;
+}
+
+.auth-tab.active {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(79,124,255,.35);
+}
+
+.auth-form { display: none; }
+.auth-form.active { display: block; }
+
+.auth-field { margin-bottom: 14px; }
+
+.auth-field label {
+  display: block;
+  font-size: 10.5px;
+  color: var(--fg3);
+  margin-bottom: 5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.auth-field input,
+.auth-field select {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 10px 13px;
+  color: var(--fg);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.auth-field input:focus,
+.auth-field select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+
+.auth-field select option { background: var(--card); }
+
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s, transform .1s, box-shadow .15s;
+  margin-top: 6px;
+  box-shadow: 0 4px 20px rgba(79,124,255,.3);
+  letter-spacing: .02em;
+}
+
+.auth-btn:hover {
+  background: var(--brand-d);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(79,124,255,.4);
+}
+
+.auth-btn:active { transform: translateY(0); }
+
+.auth-err {
+  background: rgba(248,113,113,.1);
+  border: 1px solid rgba(248,113,113,.3);
+  border-radius: var(--radius);
+  padding: 10px 13px;
+  font-size: 12px;
+  color: var(--red);
+  margin-bottom: 14px;
+  display: none;
+}
+.auth-err.show { display: block; }
+
+.demo-hint {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 15px;
+  margin-top: 18px;
+  font-size: 11.5px;
+  color: var(--fg3);
+  line-height: 1.8;
+}
+.demo-hint strong { color: var(--fg2); }
+
+/* ══════════════════════════════════════════
+   TOP NAV
+══════════════════════════════════════════ */
+.app { display: none; flex-direction: column; height: 100vh; min-height: 600px; }
+.app.visible { display: flex; }
+
+.topnav {
+  display: flex;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  align-items: stretch;
+  flex-shrink: 0;
+  height: 52px;
+}
+
+/* Wordmark in topnav */
+.topnav-brand {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-right: 1px solid var(--border);
+  gap: 8px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.topnav-brand-word {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 19px;
+  color: var(--fg);
+  letter-spacing: -.3px;
+  line-height: 1;
+}
+
+.topnav-brand-word span { color: var(--brand); }
+
+.topnav-brand-byline {
+  font-size: 8.5px;
+  font-weight: 600;
+  color: var(--fg3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border-left: 1px solid var(--border-hi);
+  padding-left: 10px;
+  line-height: 1.3;
+}
+
+.nav {
+  display: flex;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg2);
+  border-bottom: 2px solid transparent;
+  transition: color .15s, background .15s, border-color .15s;
+  white-space: nowrap;
+  position: relative;
+  gap: 6px;
+  letter-spacing: .01em;
+}
+
+.nav-tab:hover { color: var(--fg); background: var(--card-hover); }
+.nav-tab.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+.nav-tab .nbadge {
+  background: var(--red);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 10px;
+  min-width: 16px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.nav-tab.hidden-tab { display: none; }
+
+/* User pill */
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border-left: 1px solid var(--border);
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-pill:hover { background: var(--card-hover); }
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.user-info { font-size: 11.5px; line-height: 1.4; }
+.user-name { font-weight: 700; color: var(--fg); }
+
+.user-role-badge {
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 700;
+  display: inline-block;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.role-admin     { background: rgba(79,124,255,.15); color: var(--brand); border: 1px solid var(--brand-line); }
+.role-abogado   { background: rgba(52,211,153,.12); color: var(--green); border: 1px solid rgba(52,211,153,.3); }
+.role-paralegal { background: rgba(251,191,36,.12);  color: var(--amber); border: 1px solid rgba(251,191,36,.3); }
+.role-superadmin{ background: linear-gradient(90deg,#fb923c,#f87171); color: #fff; border: none; }
+
+/* SA bar */
+.sa-bar {
+  background: linear-gradient(90deg, #1a0820, var(--bg));
+  border-bottom: 1px solid rgba(248,113,113,.2);
+  padding: 7px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  font-size: 11.5px;
+}
+.sa-bar.hidden { display: none; }
+.sa-label { color: #fca5a5; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+
+.sa-empresa-btn {
+  padding: 4px 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(248,113,113,.25);
+  background: rgba(248,113,113,.08);
+  color: #fca5a5;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background .12s;
+}
+.sa-empresa-btn.active  { background: rgba(248,113,113,.22); border-color: rgba(248,113,113,.5); }
+.sa-empresa-btn:hover   { background: rgba(248,113,113,.16); }
+
+/* User menu */
+.user-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: 6px;
+  min-width: 190px;
+  z-index: 300;
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+}
+
+.user-menu-item {
+  padding: 9px 14px;
+  font-size: 12.5px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  transition: background .12s;
+}
+.user-menu-item:hover { background: var(--card-hover); }
+.user-menu-item.danger { color: var(--red); }
+
+.user-menu-sep { height: 1px; background: var(--border); margin: 5px 0; }
+.empresa-badge { font-size: 10px; color: var(--fg3); padding: 8px 14px 4px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+
+/* ══════════════════════════════════════════
+   PAGES
+══════════════════════════════════════════ */
+.page { display: none; flex: 1; overflow: auto; flex-direction: column; }
+.page.active { display: flex; }
+
+.hbar {
+  background: var(--surface);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hbar-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: -.01em;
+}
+
+.hbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* ══════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════ */
+.btn {
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+
+.btn-accent {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(79,124,255,.25);
+}
+.btn-accent:hover {
+  background: var(--brand-d);
+  box-shadow: 0 4px 20px rgba(79,124,255,.35);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: var(--card);
+  color: var(--fg2);
+  border: 1px solid var(--border-hi);
+}
+.btn-ghost:hover { background: var(--card-hover); color: var(--fg); }
+
+.btn-warn   { background: rgba(251,146,60,.12); color: var(--orange); border: 1px solid rgba(251,146,60,.3); }
+.btn-warn:hover   { background: rgba(251,146,60,.2); }
+.btn-danger { background: rgba(248,113,113,.1);  color: var(--red);    border: 1px solid rgba(248,113,113,.25); }
+.btn-danger:hover { background: rgba(248,113,113,.2); }
+.btn-green  { background: rgba(52,211,153,.1);   color: var(--green);  border: 1px solid rgba(52,211,153,.25); }
+.btn-green:hover  { background: rgba(52,211,153,.2); }
+
+.btn-sm { padding: 6px 12px; font-size: 11px; }
+.btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
+
+.locked-msg {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: center;
+  margin: 24px;
+  color: var(--fg2);
+}
+.locked-msg .lock-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+
+/* ══════════════════════════════════════════
+   MAPA
+══════════════════════════════════════════ */
+.proc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+  padding: 24px;
+}
+
+.proc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  transition: background .15s, border-color .15s, transform .15s, box-shadow .15s;
+}
+.proc-card:hover {
+  background: var(--card-hover);
+  border-color: var(--border-hi);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.proc-card .bar { width: 4px; flex-shrink: 0; }
+.proc-card .cc { padding: 16px; flex: 1; }
+.proc-card .cc .name { font-size: 12.5px; font-weight: 700; line-height: 1.4; color: var(--fg); }
+.proc-card .cc .sub  { font-size: 10.5px; color: var(--fg3); margin-top: 5px; }
+
+/* ══════════════════════════════════════════
+   CALENDARIO
+══════════════════════════════════════════ */
+.cal-wrap { display: flex; flex: 1; overflow: hidden; }
+.cal-main { flex: 1; padding: 20px; overflow: auto; }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.cal-dow {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fg3);
+  padding: 6px 0;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.cal-day {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-height: 72px;
+  padding: 8px;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.cal-day:hover { background: var(--card-hover); border-color: var(--border-hi); }
+.cal-day.today { background: rgba(79,124,255,.1); border-color: rgba(79,124,255,.4); }
+.cal-day .dn { font-size: 11px; font-weight: 700; color: var(--fg2); }
+.cal-day.today .dn { color: var(--brand); }
+.cal-day .dot-bar { height: 3px; border-radius: 2px; margin: 3px 0; }
+
+.cal-sidebar {
+  width: 210px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; }
+.stat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════
+   JURISPRUDENCIA
+══════════════════════════════════════════ */
+.juris-wrap { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+.juris-alert-bar {
+  background: rgba(251,146,60,.08);
+  border-bottom: 1px solid rgba(251,146,60,.2);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--orange);
+  flex-shrink: 0;
+}
+.juris-alert-bar.hidden { display: none; }
+
+.jtabs {
+  display: flex;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  gap: 2px;
+}
+
+.jtab {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg3);
+  border-bottom: 2px solid transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background: none;
+  font-family: inherit;
+  transition: color .15s, border-color .15s;
+  white-space: nowrap;
+  letter-spacing: .01em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.jtab:hover { color: var(--fg2); }
+.jtab.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+.jtab .jbadge {
+  background: var(--red);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 8px;
+  min-width: 15px;
+  text-align: center;
+  line-height: 1.4;
+}
+.jtab .jbadge.amber  { background: var(--amber); color: #000; }
+.jtab .jbadge.blue   { background: var(--brand); color: #fff; }
+
+.jtab-body { display: none; flex: 1; overflow-y: auto; padding: 20px 24px; }
+.jtab-body.active { display: block; }
+
+.jcard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 10px;
+  border-left: 3px solid transparent;
+  transition: border-color .15s, box-shadow .15s;
+}
+.jcard:hover { box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+
+.jcard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 12px; }
+.jcard-title { font-size: 13px; font-weight: 700; line-height: 1.4; color: var(--fg); flex: 1; }
+.jcard-meta { font-size: 11px; color: var(--fg3); margin-top: 3px; }
+.jcard-actions { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+
+.fav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--fg3);
+  padding: 3px 5px;
+  transition: color .15s, transform .15s;
+  line-height: 1;
+}
+.fav-btn:hover { color: var(--amber); transform: scale(1.2); }
+.fav-btn.on    { color: var(--amber); }
+
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+.badge-new  { background: rgba(52,211,153,.12);  color: var(--green); border: 1px solid rgba(52,211,153,.25); }
+.badge-imp  { background: rgba(251,191,36,.12);  color: var(--amber); border: 1px solid rgba(251,191,36,.25); }
+.badge-area { background: rgba(79,124,255,.12);  color: var(--brand); border: 1px solid var(--brand-line); }
+
+.nota-chip {
+  background: rgba(251,146,60,.1);
+  color: var(--orange);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  border: 1px solid rgba(251,146,60,.25);
+}
+
+.filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-row input {
+  flex: 1;
+  min-width: 200px;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 8px 13px;
+  color: var(--fg);
+  font-size: 12.5px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s;
+}
+.filter-row input:focus { border-color: var(--brand); }
+
+.filter-row select {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+  color: var(--fg);
+  font-size: 11.5px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+}
+.filter-row select option { background: var(--card); }
+
+.alert-item {
+  display: flex;
+  gap: 13px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.alert-item:last-child { border-bottom: none; }
+.alert-item.leida { opacity: .45; }
+.alert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+/* AI loader */
+.ai-loader { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 12px; }
+.lbar { height: 3px; background: var(--border-hi); border-radius: 2px; overflow: hidden; margin: 10px 0; }
+.lbar-inner { height: 100%; background: linear-gradient(90deg, var(--brand), #818cf8); width: 0%; transition: width .3s ease; border-radius: 2px; }
+
+.ai-result-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; }
+.ai-section { margin-bottom: 16px; }
+.ai-section-title { font-size: 10px; font-weight: 700; color: var(--fg2); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+.ai-point { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.6; }
+.ai-point:last-child { border-bottom: none; }
+.ai-point-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--brand); flex-shrink: 0; margin-top: 7px; }
+.ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.ai-cell { background: var(--card-hover); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px; }
+.ai-cell-title { font-size: 10px; font-weight: 700; color: var(--fg2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+
+.vchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius);
+  background: rgba(79,124,255,.1);
+  border: 1px solid var(--brand-line);
+  color: var(--brand);
+  font-size: 11px;
+  margin: 2px;
+}
+
+.vsug-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 15px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+.vscore { font-size: 22px; font-weight: 700; color: var(--green); text-align: center; font-family: 'DM Serif Display', serif; }
+
+/* ══════════════════════════════════════════
+   ESTADÍSTICAS
+══════════════════════════════════════════ */
+.stat-cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; padding: 0 24px 16px; }
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+}
+.stat-card .top-bar { height: 3px; border-radius: 2px; margin-bottom: 14px; }
+.stat-card .lbl { font-size: 11px; color: var(--fg2); margin-bottom: 5px; font-weight: 500; }
+.stat-card .val { font-size: 30px; font-weight: 700; font-family: 'DM Serif Display', serif; letter-spacing: -.5px; }
+
+/* ══════════════════════════════════════════
+   ADMIN / CONFIG
+══════════════════════════════════════════ */
+.config-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin: 16px 24px 0;
+}
+
+.config-section h4 {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fg3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 14px;
+}
+
+.config-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.config-row:last-child { border-bottom: none; }
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+.user-row:last-child { border-bottom: none; }
+
+.user-row-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.user-row-info { flex: 1; }
+.user-row-name { font-size: 13px; font-weight: 600; color: var(--fg); }
+.user-row-sub  { font-size: 11px; color: var(--fg3); margin-top: 1px; }
+
+/* SA panel cards */
+.sa-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; }
+
+.sa-empresa-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.sa-empresa-row:last-child { border-bottom: none; }
+
+.plan-badge { font-size: 9.5px; padding: 2px 8px; border-radius: 20px; font-weight: 700; }
+.plan-basico      { background: rgba(251,191,36,.12); color: var(--amber); border: 1px solid rgba(251,191,36,.25); }
+.plan-profesional { background: rgba(79,124,255,.12); color: var(--brand); border: 1px solid var(--brand-line); }
+.plan-enterprise  { background: rgba(52,211,153,.12); color: var(--green); border: 1px solid rgba(52,211,153,.25); }
+
+/* ══════════════════════════════════════════
+   MODALES
+══════════════════════════════════════════ */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-xl);
+  width: 480px;
+  max-width: 96vw;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,.6);
+}
+.modal-wide { width: 700px; }
+
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-header h3 { font-size: 14px; font-weight: 700; flex: 1; letter-spacing: -.01em; }
+
+.modal-body { padding: 20px 24px; }
+
+.modal-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--fg2);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color .12s;
+}
+.close-btn:hover { color: var(--fg); }
+
+.form-group { margin-bottom: 14px; }
+
+.form-group label {
+  display: block;
+  font-size: 10.5px;
+  color: var(--fg3);
+  margin-bottom: 5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  color: var(--fg);
+  font-size: 12.5px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+.form-group select option { background: var(--card); }
+.form-group textarea { resize: vertical; line-height: 1.6; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+
+/* ── EDITOR ── */
+.editor-modal { width: 820px; max-width: 97vw; }
+
+.editor-wrap {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.editor-tb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 12px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.tb-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border-hi);
+  margin: 0 5px;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.tb-btn {
+  min-width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background: transparent;
+  color: var(--fg2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0 7px;
+  font-family: inherit;
+  transition: background .12s, color .12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tb-btn:hover   { background: var(--card-hover); color: var(--fg); }
+.tb-btn.on      { background: var(--brand-d); color: #fff; }
+.tb-btn.bold-btn   { font-weight: 900; font-size: 15px; }
+.tb-btn.italic-btn { font-style: italic; font-size: 15px; }
+.tb-btn.under-btn  { text-decoration: underline; font-size: 14px; }
+
+.tb-select {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: 5px;
+  color: var(--fg2);
+  font-size: 11.5px;
+  font-family: inherit;
+  padding: 3px 5px;
+  height: 28px;
+  cursor: pointer;
+  outline: none;
+}
+.tb-select option { background: var(--card); color: var(--fg); }
+
+.editor-scroll {
+  flex: 1;
+  overflow-y: auto;
+  background: #f8f9fd;
+  display: flex;
+  justify-content: center;
+  padding: 32px 24px;
+  min-height: 320px;
+  max-height: 420px;
+}
+
+.editor-area {
+  width: 100%;
+  max-width: 680px;
+  min-height: 300px;
+  outline: none;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #1a1c2e;
+  caret-color: var(--brand);
+  word-wrap: break-word;
+}
+.editor-area:empty::before { content: attr(data-placeholder); color: #aaa; pointer-events: none; font-style: italic; }
+.editor-area p  { margin: 3px 0; min-height: 1.5em; }
+.editor-area ul,
+.editor-area ol { padding-left: 24px; margin: 6px 0; }
+.editor-area li { margin: 2px 0; }
+
+.editor-foot {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10.5px;
+  color: var(--fg3);
+  flex-shrink: 0;
+}
+.editor-foot .fmt-active { color: var(--brand); }
+
+/* ── Context menu ── */
+#ctx-menu {
+  display: none;
+  position: fixed;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: 5px;
+  z-index: 400;
+  min-width: 170px;
+  box-shadow: 0 10px 32px rgba(0,0,0,.4);
+}
+.ctx-item { padding: 9px 14px; font-size: 12.5px; cursor: pointer; border-radius: var(--radius); color: var(--fg); transition: background .12s; }
+.ctx-item:hover { background: var(--card-hover); }
+.ctx-item.danger { color: var(--red); }
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: 13px 18px;
+  font-size: 12.5px;
+  z-index: 500;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all .3s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+  max-width: 300px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.3);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.ok  { border-left: 3px solid var(--green); }
+.toast.err { border-left: 3px solid var(--red); }
+
+/* ── Footer ── */
+.app-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  font-size: 10.5px;
+  color: var(--fg3);
+}
+
+.footer-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 12px;
+  color: var(--fg2);
+  letter-spacing: -.2px;
+}
+
+.footer-brand span { color: var(--brand); }
+
+/* ══════════════════════════════════════════
+   NEXLEX CONNECT — Marketplace Legal
+══════════════════════════════════════════ */
+
+/* Hero banner */
+.connect-hero {
+  background:
+    radial-gradient(ellipse 70% 80% at 10% 50%, rgba(79,124,255,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 90% 20%, rgba(52,211,153,.08) 0%, transparent 55%),
+    var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 32px 36px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.connect-hero-text { max-width: 560px; }
+
+.connect-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(79,124,255,.12);
+  border: 1px solid var(--brand-line);
+  color: var(--brand);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.connect-hero-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand);
+  display: inline-block;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .5; transform: scale(.7); }
+}
+
+.connect-hero h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--fg);
+  line-height: 1.25;
+  margin-bottom: 12px;
+  letter-spacing: -.3px;
+}
+
+.connect-hero h1 span { color: var(--brand); }
+
+.connect-hero p {
+  font-size: 13.5px;
+  color: var(--fg2);
+  line-height: 1.7;
+  max-width: 480px;
+}
+
+/* Trust pills */
+.connect-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-size: 11px;
+  color: var(--fg2);
+  font-weight: 500;
+}
+
+.trust-pill .tp-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+/* Stats strip in hero */
+.connect-hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 180px;
+}
+
+.chs-card {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  text-align: center;
+  min-width: 150px;
+}
+
+.chs-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: var(--brand);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.chs-lbl {
+  font-size: 10.5px;
+  color: var(--fg3);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* Main layout */
+.connect-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.connect-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 24px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.connect-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px;
+}
+
+/* Sidebar info cards */
+.cs-info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+}
+
+.cs-info-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fg3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 14px;
+}
+
+.cs-step {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+
+.cs-step:last-child { margin-bottom: 0; }
+
+.cs-step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(79,124,255,.15);
+  border: 1px solid var(--brand-line);
+  color: var(--brand);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cs-step-text {
+  font-size: 12px;
+  color: var(--fg2);
+  line-height: 1.55;
+  padding-top: 2px;
+}
+
+.cs-step-text strong { color: var(--fg); font-weight: 600; }
+
+/* Guarantee badges */
+.cs-guarantee {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--fg2);
+}
+.cs-guarantee:last-child { border-bottom: none; }
+
+.cs-g-icon {
+  font-size: 16px;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Recent consultations feed */
+.cs-feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+}
+.cs-feed-item:last-child { border-bottom: none; }
+
+.cs-feed-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.cs-feed-text { color: var(--fg2); line-height: 1.5; }
+.cs-feed-time { font-size: 10px; color: var(--fg3); margin-top: 2px; }
+
+/* Form card */
+.connect-form-card {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  max-width: 680px;
+  margin: 0 auto;
+  box-shadow: 0 4px 32px rgba(0,0,0,.2);
+}
+
+.connect-form-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--fg);
+  margin-bottom: 6px;
+  letter-spacing: -.2px;
+}
+
+.connect-form-sub {
+  font-size: 12.5px;
+  color: var(--fg2);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* Case type grid */
+.case-type-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.case-type-btn {
+  background: var(--card-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+  color: var(--fg2);
+}
+
+.case-type-btn:hover {
+  border-color: var(--brand-line);
+  color: var(--fg);
+  background: rgba(79,124,255,.06);
+}
+
+.case-type-btn.selected {
+  border-color: var(--brand);
+  background: rgba(79,124,255,.12);
+  color: var(--brand);
+}
+
+.case-type-btn .ct-icon { font-size: 18px; display: block; margin-bottom: 5px; }
+.case-type-btn .ct-label { font-size: 10.5px; font-weight: 600; display: block; }
+
+/* Contact method toggle */
+.contact-toggle {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.ct-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-hi);
+  background: var(--card-hover);
+  color: var(--fg2);
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.ct-toggle-btn.active {
+  background: rgba(79,124,255,.12);
+  border-color: var(--brand-line);
+  color: var(--brand);
+}
+
+/* Anon toggle */
+.anon-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: border-color .15s;
+}
+
+.anon-toggle:hover { border-color: var(--brand-line); }
+.anon-toggle.active { border-color: var(--brand-line); background: rgba(79,124,255,.06); }
+
+.anon-checkbox {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 2px solid var(--border-hi);
+  background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  color: #fff;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+
+.anon-toggle.active .anon-checkbox {
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+.anon-toggle-text { font-size: 12.5px; color: var(--fg2); line-height: 1.4; }
+.anon-toggle-text strong { color: var(--fg); font-weight: 600; }
+
+/* Form section label */
+.form-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fg3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 12px;
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Connect inputs */
+.connect-input {
+  width: 100%;
+  background: var(--card-hover);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 10px 13px;
+  color: var(--fg);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.connect-input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+
+.connect-input::placeholder { color: var(--fg3); }
+.connect-textarea { resize: vertical; min-height: 100px; line-height: 1.65; }
+.connect-select option { background: var(--card); }
+
+/* Char counter */
+.char-counter {
+  font-size: 10.5px;
+  color: var(--fg3);
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* File upload zone */
+.file-drop-zone {
+  border: 2px dashed var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  background: var(--card-hover);
+}
+
+.file-drop-zone:hover,
+.file-drop-zone.dragging {
+  border-color: var(--brand);
+  background: rgba(79,124,255,.05);
+}
+
+.file-drop-zone .fdz-icon { font-size: 24px; margin-bottom: 8px; color: var(--fg3); }
+.file-drop-zone .fdz-text { font-size: 12px; color: var(--fg2); line-height: 1.6; }
+.file-drop-zone .fdz-sub  { font-size: 11px; color: var(--fg3); margin-top: 4px; }
+.file-attached { background: rgba(52,211,153,.08); border-color: rgba(52,211,153,.4); }
+.file-attached .fdz-icon { color: var(--green); }
+
+/* Submit button */
+.connect-submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: all .2s;
+  box-shadow: 0 4px 20px rgba(79,124,255,.3);
+  letter-spacing: .02em;
+  position: relative;
+  overflow: hidden;
+}
+
+.connect-submit-btn:hover {
+  background: var(--brand-d);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(79,124,255,.4);
+}
+
+.connect-submit-btn:active { transform: translateY(0); }
+
+.connect-submit-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.08) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform .5s;
+}
+
+.connect-submit-btn:hover::after { transform: translateX(100%); }
+
+/* Privacy note */
+.privacy-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--fg3);
+  line-height: 1.55;
+}
+
+/* Success state */
+.connect-success {
+  display: none;
+  text-align: center;
+  padding: 48px 32px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.connect-success.visible { display: block; }
+
+.success-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(52,211,153,.12);
+  border: 2px solid rgba(52,211,153,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 20px;
+  animation: pop-in .4s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes pop-in {
+  from { transform: scale(.5); opacity: 0; }
+  to   { transform: scale(1);  opacity: 1; }
+}
+
+.success-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--fg);
+  margin-bottom: 10px;
+  letter-spacing: -.2px;
+}
+
+.success-sub {
+  font-size: 13px;
+  color: var(--fg2);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.success-ref {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 12px 18px;
+  font-size: 12px;
+  color: var(--fg2);
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.success-ref strong { color: var(--brand); font-size: 14px; }
+
+/* Consultations list view */
+.consultations-list { margin-top: 8px; }
+
+.consultation-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.consultation-card:hover {
+  border-color: var(--border-hi);
+  box-shadow: 0 4px 16px rgba(0,0,0,.2);
+}
+
+.cc-left { flex-shrink: 0; }
+
+.cc-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: rgba(79,124,255,.1);
+  border: 1px solid var(--brand-line);
+}
+
+.cc-body { flex: 1; min-width: 0; }
+.cc-title { font-size: 13px; font-weight: 700; color: var(--fg); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cc-meta  { font-size: 11px; color: var(--fg3); margin-bottom: 8px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.cc-desc  { font-size: 12px; color: var(--fg2); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.cc-status {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.status-nuevo    { background: rgba(52,211,153,.12); color: var(--green); border: 1px solid rgba(52,211,153,.25); }
+.status-proceso  { background: rgba(79,124,255,.12); color: var(--brand); border: 1px solid var(--brand-line); }
+.status-cerrado  { background: var(--border); color: var(--fg3); }
+
+/* Connect sub-tabs */
+.connect-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+}
+
+.connect-tab {
+  flex: 1;
+  padding: 9px 16px;
+  border: none;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--fg2);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+}
+
+.connect-tab.active {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(79,124,255,.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .connect-hero    { padding: 24px 20px; flex-direction: column; }
+  .connect-hero h1 { font-size: 22px; }
+  .connect-body    { flex-direction: column; overflow: auto; }
+  .connect-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; }
+  .connect-main    { padding: 20px; }
+  .connect-form-card { padding: 20px; }
+  .case-type-grid  { grid-template-columns: repeat(4, 1fr); }
+  .connect-hero-stats { flex-direction: row; flex-wrap: wrap; min-width: 0; }
+}
+
+@media (max-width: 480px) {
+  .case-type-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     PANTALLA DE AUTENTICACIÓN
+══════════════════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-wordmark">
+        <div class="auth-logo-main">NEX<span>LEX</span></div>
+      </div>
+      <div class="auth-logo-sub">by Grupo RAF · Sistema de Gestión Jurídica</div>
+      <div class="auth-logo-divider"></div>
+    </div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="showAuthTab('login')">Iniciar sesión</div>
+      <div class="auth-tab" onclick="showAuthTab('register')">Registrarse</div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="auth-form active" id="form-login">
+      <div class="auth-err" id="login-err"></div>
+      <div class="auth-field">
+        <label>Correo electrónico</label>
+        <input type="email" id="l-email" placeholder="abogado@empresa.com">
+      </div>
+      <div class="auth-field">
+        <label>Contraseña</label>
+        <input type="password" id="l-pass" placeholder="••••••••">
+      </div>
+      <button class="auth-btn" onclick="doLogin()">Entrar al sistema</button>
+    </div>
+
+    <!-- REGISTRO -->
+    <div class="auth-form" id="form-register">
+      <div class="auth-err" id="reg-err"></div>
+      <div class="auth-field">
+        <label>Nombre completo</label>
+        <input type="text" id="r-name" placeholder="Dr. Juan Pérez">
+      </div>
+      <div class="auth-field">
+        <label>Correo electrónico</label>
+        <input type="email" id="r-email" placeholder="juan@mioficina.com">
+      </div>
+      <div class="auth-field">
+        <label>Contraseña</label>
+        <input type="password" id="r-pass" placeholder="Mínimo 6 caracteres">
+      </div>
+      <div class="auth-field">
+        <label>Empresa / Oficina legal</label>
+        <select id="r-empresa">
+          <option value="">— Seleccionar empresa —</option>
+          <option value="e1">Bufete Pérez &amp; Asociados</option>
+          <option value="e2">Firma Legal Rodriguez</option>
+          <option value="e3">Estudio Jurídico Martinez</option>
+          <option value="NEW">+ Registrar nueva empresa</option>
+        </select>
+      </div>
+      <div class="auth-field" id="r-empresa-nueva-wrap" style="display:none">
+        <label>Nombre de la nueva empresa</label>
+        <input type="text" id="r-empresa-nueva" placeholder="Mi Bufete Legal S.R.L.">
+      </div>
+      <div class="auth-field">
+        <label>Rol solicitado</label>
+        <select id="r-rol">
+          <option value="abogado">Abogado</option>
+          <option value="paralegal">Paralegal</option>
+        </select>
+      </div>
+      <button class="auth-btn" onclick="doRegister()">Crear cuenta</button>
+    </div>
+
+    <div class="demo-hint">
+      <strong>Cuentas demo:</strong><br>
+      <span style="color:#fca5a5;font-weight:700">⚡ raf@sistema.com · RAF2025super</span> (Super Admin)<br>
+      admin@raf.com · <strong>admin123</strong> (Admin · Bufete Pérez)<br>
+      abogado@raf.com · <strong>legal123</strong> (Abogado · Bufete Pérez)<br>
+      paralegal@raf.com · <strong>para123</strong> (Paralegal · Bufete Pérez)<br>
+      admin2@firma.com · <strong>firma123</strong> (Admin · Firma Rodriguez)
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     APLICACIÓN PRINCIPAL
+══════════════════════════════════════════ -->
+<div class="app" id="main-app">
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <!-- Brand -->
+    <div class="topnav-brand">
+      <div class="topnav-brand-word">NEX<span>LEX</span></div>
+      <div class="topnav-brand-byline">by Grupo RAF</div>
+    </div>
+
+    <!-- Nav tabs -->
+    <div class="nav" id="main-nav">
+      <div class="nav-tab active" data-page="mapa">🗺 Mapa</div>
+      <div class="nav-tab" data-page="audiencias">📅 Audiencias</div>
+      <div class="nav-tab" data-page="juris">⚖ Jurisprudencia <span class="nbadge" id="badge-jalert" style="display:none">0</span></div>
+      <div class="nav-tab" data-page="stats">📊 Estadísticas</div>
+      <div class="nav-tab hidden-tab" data-page="admin" id="nav-admin">👥 Usuarios</div>
+      <div class="nav-tab hidden-tab" data-page="superadmin" id="nav-superadmin">🛡 Super Panel</div>
+      <div class="nav-tab" data-page="config">⚙ Config</div>
+      <div class="nav-tab" data-page="connect" style="color:var(--green);font-weight:700" id="nav-connect">🔗 Connect</div>
+    </div>
+
+    <!-- User pill -->
+    <div class="user-pill" id="user-pill">
+      <div class="user-avatar" id="user-avatar"></div>
+      <div class="user-info">
+        <div class="user-name" id="user-name-display"></div>
+        <span class="user-role-badge" id="user-role-badge"></span>
+      </div>
+      <div class="user-menu" id="user-menu">
+        <div class="empresa-badge" id="menu-empresa-name"></div>
+        <div class="user-menu-sep"></div>
+        <div class="user-menu-item" onclick="goPage('config')">⚙ Configuración</div>
+        <div class="user-menu-item hidden-admin" onclick="goPage('admin')">👥 Gestión de usuarios</div>
+        <div class="user-menu-sep"></div>
+        <div class="user-menu-item danger" onclick="doLogout()">🚪 Cerrar sesión</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BARRA SUPERADMIN -->
+  <div class="sa-bar hidden" id="sa-bar">
+    <span class="sa-label">⚡ SUPER ADMIN — Viendo empresa:</span>
+    <div id="sa-empresa-btns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    <span style="color:var(--fg3);font-size:10.5px;margin-left:auto">Acceso total al sistema</span>
+  </div>
+
+  <!-- ── MAPA ── -->
+  <div class="page active" id="page-mapa">
+    <div class="hbar">
+      <span class="hbar-title">📚 Mapa Legal de Procedimientos</span>
+      <button class="btn btn-accent btn-sm perm-write" onclick="openModal('modal-add-proc')">＋ Agregar Procedimiento</button>
+    </div>
+    <div class="proc-grid" id="proc-grid"></div>
+  </div>
+
+  <!-- ── AUDIENCIAS ── -->
+  <div class="page" id="page-audiencias">
+    <div class="hbar">
+      <span class="hbar-title" id="cal-title"></span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="changeMonth(-1)">◀ Anterior</button>
+        <button class="btn btn-ghost btn-sm" onclick="changeMonth(1)">Siguiente ▶</button>
+      </div>
+    </div>
+    <div class="cal-wrap">
+      <div class="cal-main"><div class="cal-grid" id="cal-grid"></div></div>
+      <div class="cal-sidebar">
+        <div style="font-size:10px;font-weight:700;color:var(--fg3);margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em">Resumen del mes</div>
+        <div id="cal-summary"></div>
+        <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px">
+          <div style="font-size:11px;color:var(--fg3);margin-bottom:4px">Total</div>
+          <div id="cal-total" style="font-size:28px;font-weight:700;color:var(--brand);font-family:'DM Serif Display',serif">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── JURISPRUDENCIA ── -->
+  <div class="page" id="page-juris">
+    <div class="hbar">
+      <span class="hbar-title">⚖ Portal de Jurisprudencia</span>
+      <div class="hbar-right">
+        <button class="btn btn-warn btn-sm" onclick="switchJTab('alertas')" id="btn-alert-juris" style="display:none">🔔 <span id="cnt-jalert">0</span> alertas</button>
+        <button class="btn btn-ghost btn-sm perm-write" onclick="simImport()">↓ Importar</button>
+        <button class="btn btn-accent btn-sm perm-write" onclick="switchJTab('registrar')">＋ Nueva sentencia</button>
+      </div>
+    </div>
+    <div class="juris-wrap">
+      <div class="juris-alert-bar hidden" id="juris-alert-bar">
+        <span id="juris-alert-msg">🔔 Hay alertas nuevas</span>
+        <button class="btn btn-ghost btn-sm" onclick="switchJTab('alertas')">Ver alertas</button>
+      </div>
+      <div class="jtabs">
+        <button class="jtab active" onclick="switchJTab('catalogo')">📋 Catálogo</button>
+        <button class="jtab" onclick="switchJTab('favoritos')">⭐ Favoritos <span class="jbadge amber" id="jbadge-fav">0</span></button>
+        <button class="jtab" onclick="switchJTab('analisis')">🤖 Análisis IA</button>
+        <button class="jtab" onclick="switchJTab('alertas')">🔔 Alertas <span class="jbadge" id="jbadge-alerts">0</span></button>
+        <button class="jtab" onclick="switchJTab('vinculos')">🔗 Vínculos</button>
+        <button class="jtab" onclick="switchJTab('notas')">📝 Mis notas <span class="jbadge blue" id="jbadge-notas" style="display:none">0</span></button>
+        <button class="jtab perm-write" onclick="switchJTab('registrar')">＋ Registrar</button>
+      </div>
+
+      <div class="jtab-body active" id="jtab-catalogo">
+        <div class="filter-row">
+          <input id="jq" placeholder="🔍 Buscar por título, palabras clave, fuente..." oninput="renderJurisCatalogo()">
+          <select id="jf-fuente" onchange="renderJurisCatalogo()"><option value="">Todas las fuentes</option><option>Suprema Corte</option><option>Tribunal Constitucional</option><option>Corte de Apelación</option></select>
+          <select id="jf-area" onchange="renderJurisCatalogo()"><option value="">Todas las áreas</option><option>Penal</option><option>Civil</option><option>Laboral</option><option>Constitucional</option><option>Administrativo</option></select>
+          <select id="jf-fav" onchange="renderJurisCatalogo()"><option value="">Todas</option><option value="1">Solo favoritas</option></select>
+        </div>
+        <div id="jcount" style="font-size:11px;color:var(--fg3);margin-bottom:12px"></div>
+        <div id="jcatalogo-list"></div>
+      </div>
+
+      <div class="jtab-body" id="jtab-favoritos">
+        <div style="font-size:12px;color:var(--fg2);margin-bottom:16px">Sentencias marcadas con ⭐</div>
+        <div id="jfav-list"></div>
+      </div>
+
+      <div class="jtab-body" id="jtab-analisis">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:16px">
+          <div style="font-size:12px;font-weight:700;margin-bottom:12px">🤖 Análisis inteligente</div>
+          <div style="display:flex;gap:8px">
+            <select id="ai-sel" style="flex:1;background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:8px 11px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none"></select>
+            <button class="btn btn-accent" onclick="analizarIA()" id="btn-analizar">🤖 Analizar con IA</button>
+          </div>
+        </div>
+        <div id="ai-result"></div>
+      </div>
+
+      <div class="jtab-body" id="jtab-alertas">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <span style="font-size:13px;font-weight:700">🔔 Novedades jurídicas</span>
+          <button class="btn btn-ghost btn-sm" onclick="marcarTodasLeidas()">Marcar todas leídas</button>
+        </div>
+        <div id="jalert-list"></div>
+      </div>
+
+      <div class="jtab-body" id="jtab-vinculos">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:18px" id="vinculos-form-wrap">
+          <div style="font-size:12px;font-weight:700;margin-bottom:14px">🔗 Vincular sentencia con procedimiento</div>
+          <div class="g2" style="margin-bottom:12px">
+            <div class="form-group" style="margin-bottom:0"><label>Sentencia</label><select id="vin-j" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:8px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;width:100%"></select></div>
+            <div class="form-group" style="margin-bottom:0"><label>Procedimiento</label><select id="vin-p" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:8px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;width:100%"><option>Medida de coerción</option><option>Recurso de apelación</option><option>Demanda ordinaria</option><option>Acción de amparo</option><option>Ejecución de sentencia</option><option>Habeas corpus</option><option>Recurso de casación</option></select></div>
+          </div>
+          <button class="btn btn-accent btn-sm perm-write" onclick="crearVinculo()">Crear vínculo</button>
+        </div>
+        <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Sugerencias IA</div>
+        <div id="vsug-list" style="margin-bottom:22px"></div>
+        <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Vínculos creados</div>
+        <div id="vlist"></div>
+      </div>
+
+      <div class="jtab-body" id="jtab-notas">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:18px">
+          <div style="font-size:12px;font-weight:700;margin-bottom:14px">📝 Nueva nota</div>
+          <div class="form-group"><label>Sentencia</label><select id="nota-sel" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:8px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;width:100%"></select></div>
+          <div class="form-group"><label>Observación / estrategia</label><textarea id="nota-txt" rows="4" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none;width:100%;resize:vertical;line-height:1.6" placeholder="Aplicación en casos similares, estrategia..."></textarea></div>
+          <button class="btn btn-accent btn-sm" onclick="guardarNota()">💾 Guardar nota</button>
+        </div>
+        <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Notas guardadas</div>
+        <div id="notas-list"></div>
+      </div>
+
+      <div class="jtab-body" id="jtab-registrar">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px">
+          <div style="font-size:14px;font-weight:700;margin-bottom:18px;letter-spacing:-.01em">Nueva sentencia</div>
+          <div class="form-group"><label>Título *</label><input id="rt" style="background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none;width:100%" placeholder="Ej: SCJ-2024-001 — Principio de inmediación"></div>
+          <div class="g2">
+            <div class="form-group"><label>Fuente / Tribunal *</label><select id="rtrib" style="background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none;width:100%"><option>Suprema Corte</option><option>Tribunal Constitucional</option><option>Corte de Apelación</option><option>Tribunal de Primera Instancia</option></select></div>
+            <div class="form-group"><label>Fecha *</label><input id="rfecha" type="date" style="background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none;width:100%"></div>
+          </div>
+          <div class="g2">
+            <div class="form-group"><label>Área del derecho</label><select id="rarea" style="background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none;width:100%"><option>Penal</option><option>Civil</option><option>Laboral</option><option>Constitucional</option><option>Administrativo</option><option>Familia</option></select></div>
+            <div class="form-group"><label>Palabras clave (coma)</label><input id="rkw" style="background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none;width:100%" placeholder="nulidad, debido proceso..."></div>
+          </div>
+          <div class="form-group"><label>Texto completo</label><textarea id="rtexto" rows="5" style="background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none;width:100%;resize:vertical;line-height:1.6" placeholder="Pega el texto completo de la sentencia..."></textarea></div>
+          <div style="display:flex;gap:8px;margin-bottom:14px">
+            <button class="btn btn-accent btn-sm" onclick="genAI('res')" id="btn-gr">🤖 Generar resumen con IA</button>
+            <button class="btn btn-ghost btn-sm" onclick="genAI('kw')" id="btn-gk">💡 Sugerir palabras clave</button>
+          </div>
+          <div id="reg-ai-fb" style="margin-bottom:14px"></div>
+          <div class="form-group"><label>Resumen</label><textarea id="rresumen" rows="3" style="background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12.5px;font-family:inherit;outline:none;width:100%;resize:vertical;line-height:1.6" placeholder="Se generará con IA o escríbelo manualmente..."></textarea></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-ghost" onclick="clearReg()">Limpiar</button>
+            <button class="btn btn-accent" onclick="guardarJuris()">✓ Guardar sentencia</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ESTADÍSTICAS ── -->
+  <div class="page" id="page-stats">
+    <div class="hbar">
+      <span class="hbar-title">📊 Estadísticas de Audiencias</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <select id="stats-month" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:7px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none"></select>
+        <input id="stats-year" type="number" value="2025" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:7px 9px;color:var(--fg);font-size:12px;font-family:inherit;width:74px;outline:none">
+        <button class="btn btn-accent btn-sm" onclick="renderStats()">Aplicar</button>
+      </div>
+    </div>
+    <div class="stat-cards" id="stat-cards" style="margin-top:18px"></div>
+    <div style="padding:0 24px;flex:1"><canvas id="stats-chart" style="max-height:280px"></canvas></div>
+  </div>
+
+  <!-- ── ADMIN ── -->
+  <div class="page" id="page-admin">
+    <div class="hbar">
+      <span class="hbar-title">👥 Gestión de Usuarios</span>
+      <button class="btn btn-accent btn-sm" onclick="openModal('modal-new-user')">＋ Crear usuario</button>
+    </div>
+    <div style="padding:20px;max-width:800px">
+      <div class="config-section">
+        <h4 id="admin-empresa-title">Usuarios de la empresa</h4>
+        <div style="font-size:11px;color:var(--fg3);margin-bottom:14px">Plan actual: <strong style="color:var(--brand)">Profesional</strong> · Límite: 10 usuarios</div>
+        <div style="background:var(--card-hover);border-radius:var(--radius);height:5px;margin-bottom:18px;overflow:hidden">
+          <div id="user-quota-bar" style="height:100%;background:linear-gradient(90deg,var(--brand),#818cf8);border-radius:var(--radius);transition:width .4s"></div>
+        </div>
+        <div id="users-list"></div>
+      </div>
+      <div class="config-section" style="margin-top:16px">
+        <h4>Información de la empresa</h4>
+        <div class="config-row"><span style="font-size:13px">Nombre</span><span id="admin-empresa-name" style="font-size:13px;color:var(--fg2)"></span></div>
+        <div class="config-row"><span style="font-size:13px">Plan</span><span class="badge badge-area">Profesional</span></div>
+        <div class="config-row"><span style="font-size:13px">Usuarios activos</span><span id="admin-user-count" style="font-size:13px;color:var(--brand);font-weight:700"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SUPER PANEL ── -->
+  <div class="page" id="page-superadmin">
+    <div class="hbar">
+      <span class="hbar-title" style="color:var(--orange)">🛡 Super Panel — NEXLEX System Owner</span>
+      <div class="hbar-right">
+        <span style="font-size:11px;color:var(--fg3)">Empresa:</span>
+        <select id="sa-empresa-sel" onchange="saChangeEmpresa(this.value)" style="background:var(--card);border:1px solid rgba(251,146,60,.3);border-radius:var(--radius);padding:6px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none"></select>
+        <button class="btn btn-accent btn-sm" onclick="openModal('modal-new-empresa')">＋ Nueva empresa</button>
+      </div>
+    </div>
+    <div style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1100px">
+      <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:12px" id="sa-metrics"></div>
+      <div class="config-section" style="margin:0">
+        <h4>🏢 Todas las empresas</h4>
+        <div id="sa-empresas-list"></div>
+      </div>
+      <div class="config-section" style="margin:0">
+        <h4>👥 Todos los usuarios del sistema</h4>
+        <div id="sa-users-list" style="max-height:400px;overflow-y:auto"></div>
+      </div>
+      <div class="config-section" style="margin:0;grid-column:1/-1">
+        <h4>🔍 Explorar empresa — <span id="sa-viewing-name" style="color:var(--brand);font-weight:700"></span></h4>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px" id="sa-quick-actions"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONFIG ── -->
+  <div class="page" id="page-config">
+    <div class="hbar"><span class="hbar-title">⚙ Configuración</span></div>
+    <div style="max-width:560px;padding:0 0 32px">
+      <div class="config-section">
+        <h4>Mi cuenta</h4>
+        <div class="config-row"><span style="font-size:13px">Nombre</span><span id="cfg-nombre" style="font-size:13px;color:var(--fg2)"></span></div>
+        <div class="config-row"><span style="font-size:13px">Correo</span><span id="cfg-email" style="font-size:13px;color:var(--fg2)"></span></div>
+        <div class="config-row"><span style="font-size:13px">Rol</span><span id="cfg-rol" style="font-size:13px"></span></div>
+        <div class="config-row"><span style="font-size:13px">Empresa</span><span id="cfg-empresa" style="font-size:13px;color:var(--fg2)"></span></div>
+      </div>
+      <div class="config-section">
+        <h4>Apariencia</h4>
+        <div class="config-row">
+          <span style="font-size:13px">Tamaño de fuente</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-ghost btn-sm" onclick="toast('Fuente pequeña aplicada','ok')">Pequeña</button>
+            <button class="btn btn-accent btn-sm">Mediana</button>
+            <button class="btn btn-ghost btn-sm" onclick="toast('Fuente grande aplicada','ok')">Grande</button>
+          </div>
+        </div>
+      </div>
+      <div class="config-section">
+        <h4>Sesión</h4>
+        <div class="config-row">
+          <span style="font-size:13px">Cerrar sesión en todos los dispositivos</span>
+          <button class="btn btn-danger btn-sm" onclick="doLogout()">Cerrar sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NEXLEX CONNECT ── -->
+  <div class="page" id="page-connect">
+
+    <!-- Hero -->
+    <div class="connect-hero">
+      <div class="connect-hero-text">
+        <div class="connect-hero-tag">NEXLEX Connect · Consulta Legal Online</div>
+        <h1>Tu situación legal merece<br><span>atención profesional</span> rápida.</h1>
+        <p>Describe tu caso de forma rápida y confidencial. Nuestros abogados te contactarán con orientación personalizada en toda la República Dominicana.</p>
+        <div class="connect-trust">
+          <div class="trust-pill"><div class="tp-dot"></div> Consulta 100% confidencial</div>
+          <div class="trust-pill"><div class="tp-dot"></div> Opción anónima disponible</div>
+          <div class="trust-pill"><div class="tp-dot"></div> Cobertura nacional</div>
+          <div class="trust-pill"><div class="tp-dot"></div> Respuesta en 24h</div>
+        </div>
+      </div>
+      <div class="connect-hero-stats">
+        <div class="chs-card">
+          <div class="chs-num" id="chs-total">0</div>
+          <div class="chs-lbl">Consultas recibidas</div>
+        </div>
+        <div class="chs-card">
+          <div class="chs-num">32</div>
+          <div class="chs-lbl">Provincias cubiertas</div>
+        </div>
+        <div class="chs-card">
+          <div class="chs-num" style="color:var(--green)">98%</div>
+          <div class="chs-lbl">Satisfacción</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="connect-body">
+
+      <!-- Sidebar -->
+      <div class="connect-sidebar">
+
+        <!-- Cómo funciona -->
+        <div class="cs-info-card">
+          <div class="cs-info-title">Cómo funciona</div>
+          <div class="cs-step">
+            <div class="cs-step-num">1</div>
+            <div class="cs-step-text"><strong>Describe tu caso</strong> con el mayor detalle posible, de forma anónima si lo prefieres.</div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">2</div>
+            <div class="cs-step-text"><strong>Un abogado especializado</strong> en el área revisará tu situación.</div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">3</div>
+            <div class="cs-step-text"><strong>Recibirás orientación</strong> por tu medio de contacto preferido en menos de 24 horas.</div>
+          </div>
+        </div>
+
+        <!-- Garantías -->
+        <div class="cs-info-card">
+          <div class="cs-info-title">Tus garantías</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">🔒</div> Información completamente confidencial</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">🕵️</div> Puedes consultar de forma anónima</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">🗺️</div> Atención en todo el territorio nacional</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">⚖️</div> Abogados colegiados y verificados</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">📞</div> Eliges el medio de contacto</div>
+        </div>
+
+        <!-- Feed de actividad reciente -->
+        <div class="cs-info-card">
+          <div class="cs-info-title">Actividad reciente</div>
+          <div id="connect-feed"></div>
+        </div>
+
+      </div><!-- /sidebar -->
+
+      <!-- Main -->
+      <div class="connect-main">
+
+        <!-- Sub-tabs -->
+        <div class="connect-tabs">
+          <button class="connect-tab active" id="ctab-form" onclick="switchConnectTab('form')">✍ Nueva consulta</button>
+          <button class="connect-tab" id="ctab-list" onclick="switchConnectTab('list')">📋 Consultas enviadas</button>
+        </div>
+
+        <!-- FORMULARIO -->
+        <div id="connect-form-view">
+          <div class="connect-success" id="connect-success">
+            <div class="success-icon-wrap">✅</div>
+            <div class="success-title">¡Consulta enviada exitosamente!</div>
+            <p class="success-sub">Hemos recibido tu solicitud. Un abogado especializado en <strong id="suc-area"></strong> revisará tu caso y se pondrá en contacto pronto.</p>
+            <div class="success-ref">Código de seguimiento: <strong id="suc-ref"></strong></div>
+            <button class="btn btn-accent" onclick="resetConnectForm()" style="margin-right:8px">＋ Nueva consulta</button>
+            <button class="btn btn-ghost" onclick="switchConnectTab('list')">Ver mis consultas</button>
+          </div>
+
+          <div class="connect-form-card" id="connect-form-wrap">
+            <div class="connect-form-title">Nueva consulta legal</div>
+            <p class="connect-form-sub">Completa el formulario con la información disponible. Todos los campos marcados con * son opcionales.</p>
+
+            <!-- Anónima toggle -->
+            <div class="anon-toggle" id="anon-toggle" onclick="toggleAnon()">
+              <div class="anon-checkbox" id="anon-chk"></div>
+              <div class="anon-toggle-text">
+                <strong>Consulta anónima</strong><br>
+                Tu nombre no será compartido con los abogados.
+              </div>
+            </div>
+
+            <!-- Nombre -->
+            <div class="form-section-label">Datos personales</div>
+            <div class="g2" style="margin-bottom:14px">
+              <div>
+                <label style="display:block;font-size:10.5px;color:var(--fg3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Nombre completo *</label>
+                <input type="text" class="connect-input" id="cn-nombre" placeholder="Opcional si es anónima">
+              </div>
+              <div>
+                <label style="display:block;font-size:10.5px;color:var(--fg3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Provincia</label>
+                <select class="connect-input connect-select" id="cn-provincia">
+                  <option value="">— Seleccionar —</option>
+                  <option>Distrito Nacional</option><option>Santo Domingo</option><option>Santiago</option>
+                  <option>La Vega</option><option>San Cristóbal</option><option>Puerto Plata</option>
+                  <option>San Pedro de Macorís</option><option>La Romana</option><option>Duarte</option>
+                  <option>Espaillat</option><option>Peravia</option><option>Azua</option>
+                  <option>Barahona</option><option>Baoruco</option><option>Dajabón</option>
+                  <option>Elías Piña</option><option>El Seibo</option><option>Hato Mayor</option>
+                  <option>Hermanas Mirabal</option><option>Independencia</option><option>La Altagracia</option>
+                  <option>María Trinidad Sánchez</option><option>Monseñor Nouel</option><option>Monte Cristi</option>
+                  <option>Monte Plata</option><option>Ocoa</option><option>Pedernales</option>
+                  <option>Samaná</option><option>Sánchez Ramírez</option><option>San José de Ocoa</option>
+                  <option>San Juan</option><option>Valverde</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Tipo de caso -->
+            <div class="form-section-label">Tipo de caso</div>
+            <div class="case-type-grid" id="case-type-grid">
+              <button class="case-type-btn" data-type="Penal"       onclick="selectCaseType(this)"><span class="ct-icon">⚖️</span><span class="ct-label">Penal</span></button>
+              <button class="case-type-btn" data-type="Civil"       onclick="selectCaseType(this)"><span class="ct-icon">📜</span><span class="ct-label">Civil</span></button>
+              <button class="case-type-btn" data-type="Laboral"     onclick="selectCaseType(this)"><span class="ct-icon">👷</span><span class="ct-label">Laboral</span></button>
+              <button class="case-type-btn" data-type="Familia"     onclick="selectCaseType(this)"><span class="ct-icon">👨‍👩‍👧</span><span class="ct-label">Familia</span></button>
+              <button class="case-type-btn" data-type="Inmobiliario" onclick="selectCaseType(this)"><span class="ct-icon">🏠</span><span class="ct-label">Inmobiliario</span></button>
+              <button class="case-type-btn" data-type="Tránsito"    onclick="selectCaseType(this)"><span class="ct-icon">🚗</span><span class="ct-label">Tránsito</span></button>
+              <button class="case-type-btn" data-type="Empresarial" onclick="selectCaseType(this)"><span class="ct-icon">🏢</span><span class="ct-label">Empresarial</span></button>
+              <button class="case-type-btn" data-type="Otro"        onclick="selectCaseType(this)"><span class="ct-icon">📋</span><span class="ct-label">Otro</span></button>
+            </div>
+            <div style="font-size:10.5px;color:var(--fg3);margin-bottom:6px;margin-top:4px" id="case-type-hint">Selecciona una categoría</div>
+
+            <!-- Descripción -->
+            <div class="form-section-label">Descripción del caso</div>
+            <textarea class="connect-input connect-textarea" id="cn-desc" maxlength="1500"
+              placeholder="Describe tu situación con el mayor detalle posible. ¿Qué ocurrió? ¿Cuándo? ¿Hay documentos relevantes? Toda la información es confidencial."
+              oninput="updateCharCount()"></textarea>
+            <div class="char-counter"><span id="cn-char-count">0</span>/1500 caracteres</div>
+
+            <!-- Contacto -->
+            <div class="form-section-label">Medio de contacto preferido</div>
+            <div class="contact-toggle" id="contact-toggle">
+              <button class="ct-toggle-btn active" data-ct="tel"      onclick="toggleContact(this)">📞 Teléfono</button>
+              <button class="ct-toggle-btn"        data-ct="whatsapp" onclick="toggleContact(this)">💬 WhatsApp</button>
+              <button class="ct-toggle-btn"        data-ct="email"    onclick="toggleContact(this)">📧 Correo</button>
+            </div>
+
+            <div class="g2" style="margin-bottom:6px">
+              <div id="cn-tel-wrap">
+                <label style="display:block;font-size:10.5px;color:var(--fg3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Teléfono</label>
+                <input type="tel" class="connect-input" id="cn-tel" placeholder="809-000-0000">
+              </div>
+              <div id="cn-wa-wrap" style="display:none">
+                <label style="display:block;font-size:10.5px;color:var(--fg3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">WhatsApp</label>
+                <input type="tel" class="connect-input" id="cn-wa" placeholder="829-000-0000">
+              </div>
+              <div id="cn-email-wrap" style="display:none">
+                <label style="display:block;font-size:10.5px;color:var(--fg3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Correo electrónico</label>
+                <input type="email" class="connect-input" id="cn-email" placeholder="tu@correo.com">
+              </div>
+              <div>
+                <label style="display:block;font-size:10.5px;color:var(--fg3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">Horario de contacto</label>
+                <select class="connect-input connect-select" id="cn-horario">
+                  <option>Cualquier hora</option>
+                  <option>Mañana (8am – 12pm)</option>
+                  <option>Tarde (12pm – 6pm)</option>
+                  <option>Noche (6pm – 9pm)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Adjunto -->
+            <div class="form-section-label">Documentos adjuntos</div>
+            <div class="file-drop-zone" id="cn-dropzone"
+                 onclick="document.getElementById('cn-file').click()"
+                 ondragover="event.preventDefault();this.classList.add('dragging')"
+                 ondragleave="this.classList.remove('dragging')"
+                 ondrop="handleFileDrop(event)">
+              <div class="fdz-icon" id="fdz-icon">📎</div>
+              <div class="fdz-text" id="fdz-text">Haz clic o arrastra un documento aquí</div>
+              <div class="fdz-sub" id="fdz-sub">PDF, DOC, JPG, PNG · Máx. 10MB · Opcional</div>
+            </div>
+            <input type="file" id="cn-file" style="display:none" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="handleFileSelect(this)">
+
+            <!-- Submit -->
+            <button class="connect-submit-btn" id="btn-connect-submit" onclick="submitConsulta()">
+              Enviar consulta →
+            </button>
+
+            <div class="privacy-note">
+              🔒 <span>Tu información es tratada con absoluta confidencialidad conforme a las normas de protección de datos. Solo el equipo legal designado tendrá acceso a tu consulta.</span>
+            </div>
+
+          </div><!-- /form-card -->
+        </div><!-- /form-view -->
+
+        <!-- LISTA DE CONSULTAS -->
+        <div id="connect-list-view" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--fg)">Mis consultas</div>
+              <div style="font-size:11.5px;color:var(--fg3);margin-top:3px">Historial de solicitudes enviadas desde este dispositivo</div>
+            </div>
+            <button class="btn btn-accent btn-sm" onclick="switchConnectTab('form')">＋ Nueva consulta</button>
+          </div>
+          <div class="consultations-list" id="consultations-list">
+            <div style="text-align:center;padding:48px;color:var(--fg3);font-size:13px" id="no-consultations">
+              <div style="font-size:32px;margin-bottom:12px">📋</div>
+              Aún no has enviado ninguna consulta.
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /main -->
+    </div><!-- /body -->
+  </div><!-- /page-connect -->
+
+  <!-- FOOTER -->
+  <div class="app-footer">
+    <div class="footer-brand">NEX<span>LEX</span> by Grupo RAF</div>
+    <div>© 2025 Grupo RAF · Todos los derechos reservados · v2.0</div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- ══════════════════════════════════════════
+     MODALES
+══════════════════════════════════════════ -->
+
+<div class="overlay" id="modal-add-proc">
+  <div class="modal">
+    <div class="modal-header"><h3>Nuevo Procedimiento</h3><button class="close-btn" onclick="closeModal('modal-add-proc')">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Emoji</label><input id="np-emoji" value="📘" maxlength="4"></div>
+      <div class="form-group"><label>Nombre</label><input id="np-nombre" placeholder="Ej: Recurso de Apelación"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-proc')">Cancelar</button>
+      <button class="btn btn-accent" onclick="addProc()">＋ Agregar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-subtipos">
+  <div class="modal" style="width:500px">
+    <div class="modal-header"><h3 id="sub-title">Subtipos</h3><button class="close-btn" onclick="closeModal('modal-subtipos')">×</button></div>
+    <div class="modal-body">
+      <input id="sub-search" placeholder="Buscar subtipos..." oninput="filterSubtipos()" style="width:100%;background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:9px 13px;color:var(--fg);font-size:12.5px;font-family:inherit;margin-bottom:14px;outline:none">
+      <div id="sub-list" style="display:flex;flex-direction:column;gap:7px;max-height:290px;overflow-y:auto"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost perm-write" onclick="addSubtipo()">＋ Agregar Subtipo</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-subtipos')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-editor">
+  <div class="modal editor-modal">
+    <div class="modal-header">
+      <h3 id="editor-title">Editor Legal</h3>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="copyContent()">📋 Copiar</button>
+        <button class="close-btn" onclick="closeModal('modal-editor')">×</button>
+      </div>
+    </div>
+    <div class="modal-body" style="padding:14px">
+      <div class="editor-wrap">
+        <div class="editor-tb">
+          <select class="tb-select" id="sel-size" onchange="doCmd('fontSize',this.value)" style="width:58px"><option value="1">10</option><option value="2">12</option><option value="3" selected>14</option><option value="4">16</option><option value="5">20</option><option value="6">24</option><option value="7">32</option></select>
+          <select class="tb-select" id="sel-font" onchange="doCmd('fontName',this.value)" style="width:110px"><option value="Georgia" selected>Georgia</option><option value="Times New Roman">Times New Roman</option><option value="Arial">Arial</option><option value="Courier New">Courier New</option><option value="Verdana">Verdana</option></select>
+          <div class="tb-sep"></div>
+          <button class="tb-btn bold-btn" id="btn-B" onclick="toggleFmt('bold','btn-B')">B</button>
+          <button class="tb-btn italic-btn" id="btn-I" onclick="toggleFmt('italic','btn-I')">I</button>
+          <button class="tb-btn under-btn" id="btn-U" onclick="toggleFmt('underline','btn-U')">U</button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" id="btn-UL" onclick="toggleFmt('insertUnorderedList','btn-UL')" style="font-size:16px;letter-spacing:-1px">≡•</button>
+          <button class="tb-btn" id="btn-OL" onclick="toggleFmt('insertOrderedList','btn-OL')" style="font-size:11px">1.≡</button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" id="btn-AL" onclick="doAlign('Left','btn-AL')" style="font-size:11px">⬅</button>
+          <button class="tb-btn" id="btn-AC" onclick="doAlign('Center','btn-AC')" style="font-size:13px">⬛</button>
+          <button class="tb-btn" id="btn-AR" onclick="doAlign('Right','btn-AR')" style="font-size:11px">➡</button>
+          <button class="tb-btn" id="btn-AJ" onclick="doAlign('Full','btn-AJ')" style="font-size:11px">☰</button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" onclick="doCmd('outdent')" style="font-size:13px">⇤</button>
+          <button class="tb-btn" onclick="doCmd('indent')" style="font-size:13px">⇥</button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" onclick="doCmd('undo')" style="font-size:14px">↩</button>
+          <button class="tb-btn" onclick="doCmd('redo')" style="font-size:14px">↪</button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" onclick="doCmd('removeFormat')" style="font-size:11px;padding:0 8px;color:var(--orange)">✕fmt</button>
+        </div>
+        <div class="editor-scroll">
+          <div class="editor-area" id="editor-area" contenteditable="true"
+               data-placeholder="Escribe los pasos del procedimiento aquí..."
+               onmouseup="syncTb()" onkeyup="syncTb();updateWC()"
+               oninput="updateWC()" onkeydown="editorKey(event)"></div>
+        </div>
+        <div class="editor-foot">
+          <span id="wc">0 palabras · 0 caracteres</span>
+          <span class="fmt-active" id="fmt-hint"></span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="toast('Adjuntado (simulado)','ok')">📎 Adjuntar</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-editor')">Cerrar</button>
+      <button class="btn btn-accent" onclick="saveEditor()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-add-aud">
+  <div class="modal">
+    <div class="modal-header"><h3 id="aud-title">Nueva Audiencia</h3><button class="close-btn" onclick="closeModal('modal-add-aud')">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Cliente</label><input id="aud-cliente" placeholder="Nombre del cliente"></div>
+      <div class="g2">
+        <div class="form-group"><label>Hora</label><input id="aud-hora" placeholder="09:00"></div>
+        <div class="form-group"><label>Estado</label><select id="aud-estado"><option>Pendiente</option><option>Celebrada</option><option>Aplazada</option><option>Concluida</option></select></div>
+      </div>
+      <div class="form-group"><label>Tipo</label><input id="aud-tipo" placeholder="Ej: Audiencia preliminar"></div>
+      <div class="form-group"><label>Nota</label><textarea id="aud-nota" rows="3" placeholder="Notas..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-aud')">Cancelar</button>
+      <button class="btn btn-accent" onclick="saveAud()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-ver-aud">
+  <div class="modal" style="width:520px">
+    <div class="modal-header"><h3 id="ver-aud-title">Audiencias</h3><button class="close-btn" onclick="closeModal('modal-ver-aud')">×</button></div>
+    <div class="modal-body" id="ver-aud-body" style="max-height:430px;overflow-y:auto"></div>
+    <div class="modal-footer">
+      <button class="btn btn-accent btn-sm perm-write" id="ver-aud-add-btn">＋ Agregar</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-ver-aud')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-juris-det">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3 id="jd-titulo">Detalle</h3>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="fav-btn" id="jd-fav-btn" onclick="toggleFavFromModal()">⭐</button>
+        <button class="close-btn" onclick="closeModal('modal-juris-det')">×</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--fg2);margin-bottom:12px" id="jd-meta"></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px" id="jd-kwtags"></div>
+      <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Descripción</div>
+      <div id="jd-desc" style="font-size:13px;line-height:1.7;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:16px"></div>
+      <div id="jd-notas-section"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="usarSentenciaById(window._detailId)">📄 Usar sentencia</button>
+      <button class="btn btn-ghost btn-sm" onclick="abrirNotaRapida(window._detailId);closeModal('modal-juris-det')">📝 Nota</button>
+      <button class="btn btn-accent btn-sm" onclick="closeModal('modal-juris-det');switchJTab('analisis');setTimeout(()=>{document.getElementById('ai-sel').value=window._detailId;analizarIA();},80)">🤖 Analizar</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-juris-det')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-usar">
+  <div class="modal modal-wide">
+    <div class="modal-header"><h3 id="usar-title">Generar documento legal</h3><button class="close-btn" onclick="closeModal('modal-usar')">×</button></div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;text-align:center;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--brand)'" onmouseout="this.style.borderColor='var(--border)'" onclick="generarDoc('argumento')">
+          <div style="font-size:24px;margin-bottom:10px">✍</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:5px">Argumento legal</div>
+          <div style="font-size:11px;color:var(--fg3)">Redacción de argumento basado en la sentencia</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;text-align:center;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--brand)'" onmouseout="this.style.borderColor='var(--border)'" onclick="generarDoc('escrito')">
+          <div style="font-size:24px;margin-bottom:10px">📄</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:5px">Escrito jurídico</div>
+          <div style="font-size:11px;color:var(--fg3)">Escrito formal para someter al tribunal</div>
+        </div>
+      </div>
+      <div id="doc-output"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-usar')">Cerrar</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-nota-rapida">
+  <div class="modal">
+    <div class="modal-header"><h3 id="nota-rapida-title">📝 Nota rápida</h3><button class="close-btn" onclick="closeModal('modal-nota-rapida')">×</button></div>
+    <div class="modal-body">
+      <div style="font-size:11.5px;color:var(--fg2);margin-bottom:13px" id="nota-rapida-meta"></div>
+      <div id="nota-rapida-existentes" style="margin-bottom:13px"></div>
+      <div class="form-group"><label>Nueva nota</label><textarea id="nota-rapida-txt" rows="4" placeholder="Observaciones, estrategia..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-nota-rapida')">Cerrar</button>
+      <button class="btn btn-accent" onclick="guardarNotaRapida()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-new-user">
+  <div class="modal">
+    <div class="modal-header"><h3>Crear nuevo usuario</h3><button class="close-btn" onclick="closeModal('modal-new-user')">×</button></div>
+    <div class="modal-body">
+      <div class="auth-err" id="newuser-err"></div>
+      <div class="form-group"><label>Nombre completo</label><input id="nu-name" placeholder="Dr. María García"></div>
+      <div class="form-group"><label>Correo electrónico</label><input type="email" id="nu-email" placeholder="maria@empresa.com"></div>
+      <div class="form-group"><label>Contraseña temporal</label><input type="password" id="nu-pass" placeholder="Mínimo 6 caracteres"></div>
+      <div class="form-group"><label>Rol</label>
+        <select id="nu-rol"><option value="abogado">Abogado</option><option value="paralegal">Paralegal</option><option value="admin">Admin</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-new-user')">Cancelar</button>
+      <button class="btn btn-accent" onclick="crearUsuario()">Crear usuario</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-new-empresa">
+  <div class="modal">
+    <div class="modal-header"><h3>🏢 Nueva empresa</h3><button class="close-btn" onclick="closeModal('modal-new-empresa')">×</button></div>
+    <div class="modal-body">
+      <div class="auth-err" id="newempresa-err"></div>
+      <div class="form-group"><label>Nombre de la empresa</label><input id="ne-nombre" placeholder="Bufete Legal S.R.L."></div>
+      <div class="form-group"><label>Plan</label>
+        <select id="ne-plan"><option value="basico">Básico (5 usuarios)</option><option value="profesional" selected>Profesional (10 usuarios)</option><option value="enterprise">Enterprise (50 usuarios)</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-new-empresa')">Cancelar</button>
+      <button class="btn btn-accent" onclick="saCrearEmpresa()">Crear empresa</button>
+    </div>
+  </div>
+</div>
+
+<!-- Context menu + Toast -->
+<div id="ctx-menu">
+  <div class="ctx-item" id="ctx-rename" onclick="ctxRename()">✏ Renombrar</div>
+  <div class="ctx-item danger" id="ctx-delete" onclick="ctxDelete()">🗑 Eliminar</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- Chart.js CDN — defer evita bloqueo del parser HTML -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
+        crossorigin="anonymous"
+        defer></script>
+
+<script>
+/* ══════════════════════════════════════════
+   NEXLEX — by Grupo RAF
+   PRODUCCIÓN: Global error guard
+   Captura crashes silenciosos y los muestra
+   en el toast sin romper la app completa.
+══════════════════════════════════════════ */
+window.onerror = function(msg, src, line, col, err) {
+  console.error('[NEXLEX]', msg, { src, line, col, err });
+  // Mostrar aviso no intrusivo solo si el toast ya existe en el DOM
+  const t = document.getElementById('toast');
+  if (t) {
+    t.textContent = '⚠ Error interno. Recarga si algo no funciona.';
+    t.className   = 'toast err show';
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.classList.remove('show'), 4000);
+  }
+  return false; // no suprimir en consola
+};
+
+window.onunhandledrejection = function(e) {
+  console.error('[NEXLEX] Promise rechazada:', e.reason);
+};
+
+/* ══════════════════════════════════════════
+   NEXLEX — by Grupo RAF
+   BASE DE DATOS SIMULADA — MULTI-TENANT
+══════════════════════════════════════════ */
+
+const DB_EMPRESAS = {
+  e1: { id:'e1', nombre:'Bufete Pérez & Asociados', plan:'profesional', maxUsers:10 },
+  e2: { id:'e2', nombre:'Firma Legal Rodriguez',    plan:'profesional', maxUsers:10 },
+  e3: { id:'e3', nombre:'Estudio Jurídico Martinez',plan:'basico',      maxUsers:5  },
+};
+
+const DB_USUARIOS = [
+  { id:'u0', nombre:'RAF — System Owner', email:'raf@sistema.com',   pass:'RAF2025super', rol:'superadmin', empresaId:null,  activo:true, avatar:'⚡' },
+  { id:'u1', nombre:'Rafael Pérez',       email:'admin@raf.com',     pass:'admin123',     rol:'admin',      empresaId:'e1', activo:true, avatar:'RP' },
+  { id:'u2', nombre:'Ana Gómez',          email:'abogado@raf.com',   pass:'legal123',     rol:'abogado',    empresaId:'e1', activo:true, avatar:'AG' },
+  { id:'u3', nombre:'Carlos Mena',        email:'paralegal@raf.com', pass:'para123',      rol:'paralegal',  empresaId:'e1', activo:true, avatar:'CM' },
+  { id:'u4', nombre:'Laura Rodriguez',    email:'admin2@firma.com',  pass:'firma123',     rol:'admin',      empresaId:'e2', activo:true, avatar:'LR' },
+  { id:'u5', nombre:'Pedro Martínez',     email:'pedro@firma.com',   pass:'pedro123',     rol:'abogado',    empresaId:'e2', activo:true, avatar:'PM' },
+];
+
+let DB_JURIS = {
+  e1: [
+    { id:1, t:'STC-TC-0420-24 — Derecho a la defensa y prueba ilícita', f:'2024-10-15', fu:'Tribunal Constitucional', area:'Penal', kw:['prueba ilícita','debido proceso','defensa','nulidad'], d:'El TC establece que toda prueba obtenida en violación de derechos fundamentales es nula de pleno derecho.', texto:'La presente sentencia establece que conforme al artículo 69 de la Constitución, nadie puede ser juzgado con pruebas obtenidas mediante violación a derechos fundamentales.', fav:true,  nuevo:true,  importante:true,  analisis:null, empresaId:'e1' },
+    { id:2, t:'SCJ-PS-2024-0312 — Nulidad por defecto de notificación',  f:'2024-09-03', fu:'Suprema Corte',           area:'Civil', kw:['nulidad','notificación','acto de alguacil'],              d:'La SCJ reitera que la omisión de notificación válida genera nulidad absoluta del procedimiento.',          texto:'La Suprema Corte considera que la notificación es un acto esencial que garantiza el derecho de defensa.',                                                                              fav:false, nuevo:true,  importante:false, analisis:null, empresaId:'e1' },
+    { id:3, t:'TC-0055-23 — Proporcionalidad de medidas de coerción',    f:'2023-11-10', fu:'Tribunal Constitucional', area:'Penal', kw:['medida de coerción','proporcionalidad','prisión preventiva'], d:'El TC exige el test de proporcionalidad: idoneidad, necesidad y proporcionalidad en sentido estricto.', texto:'El artículo 40 de la Constitución garantiza la libertad personal. La prisión preventiva es la última ratio.', fav:true, nuevo:false, importante:true, analisis:{ resumen:'Establece estándar constitucional de proporcionalidad obligatorio para medidas de coerción.', puntos:['Test tripartito obligatorio','Prisión preventiva como última opción','Motivación reforzada obligatoria','Derecho a revisión periódica'], aplicacion:'Citar en toda audiencia de medida de coerción al impugnar la proporcionalidad.', importancia:'Alta. Cambia el estándar penal preventivo. Vinculante para todos los tribunales.' }, empresaId:'e1' },
+  ],
+  e2: [
+    { id:10, t:'CCA-2024-001 — Responsabilidad del Estado por error judicial', f:'2024-08-20', fu:'Corte de Apelación', area:'Administrativo', kw:['responsabilidad','estado','error judicial'], d:'El Estado responde patrimonialmente por los errores judiciales cometidos en el ejercicio de la función jurisdiccional.', texto:'La corte establece que el artículo 148 de la Constitución consagra la responsabilidad del Estado.', fav:true, nuevo:true, importante:true, analisis:null, empresaId:'e2' },
+  ],
+};
+
+let DB_AUDIENCIAS = { e1:{}, e2:{}, e3:{} };
+let DB_NOTAS      = { e1:{}, e2:{}, e3:{} };
+let DB_VINCULOS   = { e1:[], e2:[], e3:[] };
+let DB_PROCS = {
+  e1: [
+    { e:'📕', n:'Recursos de Apelación',     s:['Apelación Civil','Apelación Penal'] },
+    { e:'📘', n:'Procedimientos Civiles',     s:['Demanda Ordinaria','Medida Cautelar'] },
+    { e:'⚖',  n:'Derecho Penal',             s:['Instrucción','Juicio Oral','Medida de Coerción'] },
+    { e:'🏛',  n:'Derecho Administrativo',    s:['Recurso de Nulidad'] },
+    { e:'👨‍👩‍👧', n:'Derecho de Familia',      s:['Divorcio','Pensión Alimenticia'] },
+    { e:'🔒', n:'Amparo',                     s:['Amparo de Libertad','Amparo Constitucional'] },
+  ],
+  e2: [
+    { e:'📋', n:'Contratos Comerciales', s:['Compraventa','Arrendamiento'] },
+    { e:'🏢', n:'Derecho Laboral',       s:['Despido','Prestaciones Laborales'] },
+  ],
+  e3: [],
+};
+
+const JALERTS_GLOBAL = [
+  { id:1, tipo:'nuevo',      titulo:'Nueva sentencia TC sobre privacidad digital',    desc:'El TC emitió criterio sobre interceptación de comunicaciones electrónicas sin orden judicial.', fecha:'Hoy',        leida:false },
+  { id:2, tipo:'importante', titulo:'SCJ modifica criterio sobre daños morales',       desc:'Nuevo estándar de cuantificación de daños morales en materia civil.',                          fecha:'Ayer',       leida:false },
+  { id:3, tipo:'nuevo',      titulo:'Criterio sobre desahucio durante proceso penal',  desc:'La Corte de Apelación establece que el proceso penal suspende el desahucio del imputado.',    fecha:'Hace 2 días', leida:false },
+  { id:4, tipo:'importante', titulo:'TC amplía protección del habeas corpus',          desc:'La acción procede incluso cuando existe recurso ordinario disponible.',                         fecha:'Hace 3 días', leida:false },
+];
+
+/* ── Permisos por rol ── */
+const PERMISOS = {
+  superadmin: { write:true,  delete:true,  manageUsers:true,  viewAll:true,  superadmin:true,  manageEmpresas:true  },
+  admin:      { write:true,  delete:true,  manageUsers:true,  viewAll:true,  superadmin:false, manageEmpresas:false },
+  abogado:    { write:true,  delete:false, manageUsers:false, viewAll:false, superadmin:false, manageEmpresas:false },
+  paralegal:  { write:false, delete:false, manageUsers:false, viewAll:false, superadmin:false, manageEmpresas:false },
+};
+
+/* ── Color palette ── */
+const CC  = ['#4f7cff','#34d399','#fbbf24','#f87171','#a78bfa','#38bdf8','#fb923c','#4ade80','#f472b6','#facc15','#60a5fa','#e879f9'];
+const SC  = { Pendiente:'#fbbf24', Aplazada:'#fb923c', Celebrada:'#34d399', Concluida:'#4f7cff' };
+const MN  = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+/* ── State ── */
+let SESSION    = null;
+let jNextId    = 100;
+let uNextId    = 10;
+let eNextId    = 10;
+let calDate    = new Date();
+let audDate    = null;
+let curProc    = null;
+let allSub     = [];
+let ctxIdx     = null;
+let curJTab    = 'catalogo';
+let savedDocs  = {};
+
+window._detailId     = null;
+window._usarId       = null;
+window._notaRapidaId = null;
+window._saViewEmpresa= null;
+
+/* ── localStorage con feature-detect seguro ──
+   Safari en modo privado lanza SecurityError al acceder a localStorage.
+   Esta envoltura evita que la app se rompa completamente.           ── */
+const _storage = (() => {
+  try {
+    const t = '__nexlex_test__';
+    localStorage.setItem(t, '1');
+    localStorage.removeItem(t);
+    return localStorage;
+  } catch {
+    // Fallback en memoria cuando localStorage no está disponible
+    const _mem = {};
+    return {
+      getItem:    k     => _mem[k] ?? null,
+      setItem:    (k,v) => { _mem[k] = String(v); },
+      removeItem: k     => { delete _mem[k]; },
+    };
+  }
+})();
+
+/* ══════════════════════════════════════════
+   HELPERS DE SESIÓN
+══════════════════════════════════════════ */
+function getSession()      { return SESSION; }
+function isSuperAdmin()    { return SESSION?.rol === 'superadmin'; }
+function getEmpresaId()    { return isSuperAdmin() ? (window._saViewEmpresa || 'e1') : SESSION?.empresaId; }
+function getRol()          { return SESSION?.rol; }
+function can(a)            { return PERMISOS[getRol()]?.[a] || false; }
+function getJuris()        { return DB_JURIS[getEmpresaId()]  || []; }
+function getAuds()         { return DB_AUDIENCIAS[getEmpresaId()] || {}; }
+function getProcs()        { return DB_PROCS[getEmpresaId()]  || []; }
+function getNotas()        { return DB_NOTAS[getEmpresaId()]  || {}; }
+function getVinculos()     { return DB_VINCULOS[getEmpresaId()] || []; }
+function getEmpresa()      { return DB_EMPRESAS[getEmpresaId()]; }
+function getUsersEmpresa() {
+  if (isSuperAdmin() && !window._saViewEmpresa) return DB_USUARIOS.filter(u => u.rol !== 'superadmin');
+  return DB_USUARIOS.filter(u => u.empresaId === getEmpresaId());
+}
+
+/* ══════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════ */
+function showAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (tab==='login' ? i===0 : i===1)));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  document.getElementById('form-' + tab).classList.add('active');
+}
+
+document.getElementById('r-empresa').addEventListener('change', function () {
+  document.getElementById('r-empresa-nueva-wrap').style.display = this.value === 'NEW' ? 'block' : 'none';
+});
+
+function doLogin() {
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('l-pass').value;
+  const err   = document.getElementById('login-err');
+  const user  = DB_USUARIOS.find(u => u.email.toLowerCase() === email && u.pass === pass && u.activo);
+  if (!user) { err.textContent = 'Correo o contraseña incorrectos.'; err.classList.add('show'); return; }
+  err.classList.remove('show');
+  iniciarSesion(user);
+}
+
+function doRegister() {
+  const nombre     = document.getElementById('r-name').value.trim();
+  const email      = document.getElementById('r-email').value.trim().toLowerCase();
+  const pass       = document.getElementById('r-pass').value;
+  const empresaSel = document.getElementById('r-empresa').value;
+  const rol        = document.getElementById('r-rol').value;
+  const err        = document.getElementById('reg-err');
+
+  if (!nombre || !email || !pass || !empresaSel) { err.textContent = 'Completa todos los campos.'; err.classList.add('show'); return; }
+  if (pass.length < 6)                           { err.textContent = 'La contraseña debe tener al menos 6 caracteres.'; err.classList.add('show'); return; }
+  if (DB_USUARIOS.find(u => u.email.toLowerCase() === email)) { err.textContent = 'Este correo ya está registrado.'; err.classList.add('show'); return; }
+
+  let empresaId = empresaSel;
+  if (empresaSel === 'NEW') {
+    const nuevaNombre = document.getElementById('r-empresa-nueva').value.trim();
+    if (!nuevaNombre) { err.textContent = 'Escribe el nombre de la empresa.'; err.classList.add('show'); return; }
+    empresaId = 'e' + eNextId++;
+    DB_EMPRESAS[empresaId]  = { id:empresaId, nombre:nuevaNombre, plan:'basico', maxUsers:5 };
+    DB_JURIS[empresaId]     = [];
+    DB_AUDIENCIAS[empresaId]= {};
+    DB_NOTAS[empresaId]     = {};
+    DB_VINCULOS[empresaId]  = [];
+    DB_PROCS[empresaId]     = [];
+  }
+
+  const empresa    = DB_EMPRESAS[empresaId];
+  const usersCount = DB_USUARIOS.filter(u => u.empresaId === empresaId).length;
+  if (usersCount >= empresa.maxUsers) { err.textContent = `Límite de usuarios alcanzado (${empresa.maxUsers}).`; err.classList.add('show'); return; }
+
+  const initials = nombre.split(' ').map(x => x[0] || '').join('').toUpperCase().slice(0, 2);
+  const newUser  = { id:'u' + uNextId++, nombre, email, pass, rol, empresaId, activo:true, avatar:initials };
+  DB_USUARIOS.push(newUser);
+  err.classList.remove('show');
+  iniciarSesion(newUser);
+}
+
+function iniciarSesion(user) {
+  SESSION = { ...user };
+  initStatsMonthSelect();                           // safe: DOM ya está listo
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('main-app').classList.add('visible');
+  document.getElementById('stats-month').value = new Date().getMonth();
+  applyRoleUI();
+  buildNav();
+  renderUserPill();
+  updateConfigPage();
+  if (isSuperAdmin()) {
+    window._saViewEmpresa = 'e1';
+    goPage('superadmin');
+    toast('⚡ Bienvenido, System Owner. Acceso total activo.', 'ok');
+  } else {
+    renderMapa(); buildCal(); renderStats(); initJuris();
+    toast(`Bienvenido, ${user.nombre.split(' ')[0]} 👋`, 'ok');
+  }
+}
+
+function doLogout() {
+  SESSION = null;
+  window._saViewEmpresa = null;
+  clearAllIntervals(); // cancela cualquier loader activo al cerrar sesión
+  document.getElementById('main-app').classList.remove('visible');
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('sa-bar').classList.add('hidden');
+  document.getElementById('l-email').value = '';
+  document.getElementById('l-pass').value  = '';
+  document.getElementById('login-err').classList.remove('show');
+  if (window.sChart) { window.sChart.destroy(); window.sChart = null; }
+}
+
+/* ══════════════════════════════════════════
+   ROLE UI
+══════════════════════════════════════════ */
+function applyRoleUI() {
+  document.querySelectorAll('.perm-write').forEach(el => el.style.display = can('write')       ? '' : 'none');
+  document.querySelectorAll('.hidden-admin').forEach(el => el.style.display = can('manageUsers') ? '' : 'none');
+  document.getElementById('nav-admin').classList.toggle('hidden-tab', !can('manageUsers'));
+  const saTab = document.getElementById('nav-superadmin');
+  saTab.classList.toggle('hidden-tab', !isSuperAdmin());
+  if (isSuperAdmin()) { window._saViewEmpresa = 'e1'; }
+}
+
+function renderUserPill() {
+  const u = SESSION;
+  const colors = { admin:'#4f7cff', abogado:'#34d399', paralegal:'#fbbf24', superadmin:'#fb923c' };
+  const clr    = colors[u.rol] || '#8892b0';
+  const av     = document.getElementById('user-avatar');
+  av.textContent        = u.avatar;
+  av.style.background   = clr + '28';
+  av.style.color        = clr;
+  document.getElementById('user-name-display').textContent = isSuperAdmin() ? 'System Owner' : u.nombre.split(' ')[0];
+  const rb = document.getElementById('user-role-badge');
+  rb.textContent = isSuperAdmin() ? '⚡ SUPERADMIN' : (u.rol.charAt(0).toUpperCase() + u.rol.slice(1));
+  rb.className   = 'user-role-badge role-' + u.rol;
+  document.getElementById('menu-empresa-name').textContent = isSuperAdmin() ? 'Acceso total al sistema' : (getEmpresa()?.nombre || '');
+  const saBar = document.getElementById('sa-bar');
+  if (isSuperAdmin()) { saBar.classList.remove('hidden'); renderSABar(); }
+  else saBar.classList.add('hidden');
+}
+
+function updateConfigPage() {
+  const u = SESSION; const e = getEmpresa();
+  document.getElementById('cfg-nombre').textContent  = u.nombre;
+  document.getElementById('cfg-email').textContent   = u.email;
+  document.getElementById('cfg-rol').innerHTML       = `<span class="user-role-badge role-${u.rol}">${u.rol}</span>`;
+  document.getElementById('cfg-empresa').textContent = e?.nombre || '';
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+function buildNav() {
+  document.querySelectorAll('.nav-tab[data-page]').forEach(el => {
+    el.onclick = () => goPage(el.dataset.page);
+  });
+}
+
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id)?.classList.add('active');
+  document.querySelector(`.nav-tab[data-page="${id}"]`)?.classList.add('active');
+  document.getElementById('user-menu').style.display = 'none';
+  if (id === 'stats')      renderStats();
+  if (id === 'juris')      initJuris();
+  if (id === 'admin')      renderAdminPage();
+  if (id === 'config')     updateConfigPage();
+  if (id === 'superadmin') renderSuperAdminPage();
+  if (id === 'connect')    initConnect();
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+function toast(msg, type = 'ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'toast ' + type + ' show';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ══════════════════════════════════════════
+   MODALES
+══════════════════════════════════════════ */
+function openModal(id)  { document.getElementById(id).classList.add('open');    }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#ctx-menu')) document.getElementById('ctx-menu').style.display = 'none';
+  if (e.target.classList.contains('overlay')) document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open'));
+  if (!e.target.closest('.user-pill'))        document.getElementById('user-menu').style.display = 'none';
+});
+
+document.getElementById('user-pill').addEventListener('click', e => {
+  e.stopPropagation();
+  const m = document.getElementById('user-menu');
+  m.style.display = m.style.display === 'block' ? 'none' : 'block';
+});
+
+/* ══════════════════════════════════════════
+   EDITOR
+══════════════════════════════════════════ */
+const EA = () => document.getElementById('editor-area');
+
+function doCmd(cmd, val = null) { EA().focus(); document.execCommand(cmd, false, val); syncTb(); updateWC(); }
+function toggleFmt(cmd)         { doCmd(cmd); syncTb(); }
+function doAlign(dir, btnId)    {
+  doCmd('justify' + dir);
+  ['btn-AL','btn-AC','btn-AR','btn-AJ'].forEach(id => document.getElementById(id)?.classList.remove('on'));
+  document.getElementById(btnId)?.classList.add('on');
+}
+function syncTb() {
+  const map = { bold:'btn-B', italic:'btn-I', underline:'btn-U', insertUnorderedList:'btn-UL', insertOrderedList:'btn-OL' };
+  Object.entries(map).forEach(([cmd, id]) => document.getElementById(id)?.classList.toggle('on', document.queryCommandState(cmd)));
+  const am = { justifyLeft:'btn-AL', justifyCenter:'btn-AC', justifyRight:'btn-AR', justifyFull:'btn-AJ' };
+  Object.entries(am).forEach(([cmd, id]) => document.getElementById(id)?.classList.toggle('on', document.queryCommandState(cmd)));
+  const hints = [];
+  if (document.queryCommandState('bold'))      hints.push('Negrita');
+  if (document.queryCommandState('italic'))    hints.push('Cursiva');
+  if (document.queryCommandState('underline')) hints.push('Subrayado');
+  document.getElementById('fmt-hint').textContent = hints.join(' · ');
+}
+function updateWC() {
+  const txt = (EA().innerText || '').trim();
+  const w   = txt ? txt.split(/\s+/).filter(x => x).length : 0;
+  document.getElementById('wc').textContent = `${w} palabra${w !== 1 ? 's' : ''} · ${txt.length} caracteres`;
+}
+function editorKey(e) {
+  if (e.ctrlKey || e.metaKey) {
+    const m = { b:'bold', i:'italic', u:'underline', z:'undo', y:'redo' };
+    if (m[e.key.toLowerCase()]) { e.preventDefault(); doCmd(m[e.key.toLowerCase()]); }
+  }
+}
+function saveEditor() {
+  const k = document.getElementById('editor-title').textContent;
+  savedDocs[k] = EA().innerHTML;
+  toast('Guardado correctamente', 'ok');
+  closeModal('modal-editor');
+}
+function copyContent() {
+  const txt = EA().innerText || '';
+  if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => toast('Copiado', 'ok')).catch(() => toast('Usa Ctrl+A, Ctrl+C', 'ok'));
+  else toast('Usa Ctrl+A, Ctrl+C', 'ok');
+}
+function openEditor(nombre) {
+  if (!can('write')) { toast('Sin permiso para editar', 'err'); return; }
+  document.getElementById('editor-title').textContent = nombre;
+  const ea = EA();
+  ea.innerHTML = savedDocs[nombre] || '<p>1. Presentar escrito ante el tribunal competente.</p><p>2. Adjuntar documentos requeridos según el Art. 69 CPC.</p><p>3. Pagar los aranceles judiciales correspondientes.</p><p>4. Esperar notificación del despacho saneador.</p><p>5. Comparecer a la audiencia preliminar.</p>';
+  updateWC(); syncTb(); openModal('modal-editor');
+  setTimeout(() => ea.focus(), 150);
+}
+
+/* ══════════════════════════════════════════
+   MAPA DE PROCEDIMIENTOS
+══════════════════════════════════════════ */
+function renderMapa() {
+  const procs = getProcs();
+  const g     = document.getElementById('proc-grid');
+  g.innerHTML = '';
+  if (!procs.length) {
+    g.innerHTML = '<div style="padding:40px;color:var(--fg3);text-align:center;font-size:13px;grid-column:1/-1">No hay procedimientos registrados.</div>';
+    return;
+  }
+  procs.forEach((p, i) => {
+    const c = document.createElement('div');
+    c.className = 'proc-card';
+    c.innerHTML = `
+      <div class="bar" style="background:${CC[i % CC.length]}"></div>
+      <div class="cc">
+        <div class="name">${p.e} ${p.n}</div>
+        <div class="sub">${p.s.length} subtipo${p.s.length !== 1 ? 's' : ''}</div>
+      </div>`;
+    c.addEventListener('click', () => openSubtipos(i));
+    c.addEventListener('contextmenu', e => { if (!can('write')) return; e.preventDefault(); showCtx(e, i); });
+    g.appendChild(c);
+  });
+}
+
+function addProc() {
+  if (!can('write')) { toast('Sin permiso', 'err'); return; }
+  const emoji  = document.getElementById('np-emoji').value || '📘';
+  const nombre = document.getElementById('np-nombre').value.trim();
+  if (!nombre) { toast('Escribe un nombre', 'err'); return; }
+  getProcs().push({ e:emoji, n:nombre, s:[] });
+  document.getElementById('np-nombre').value = '';
+  renderMapa(); closeModal('modal-add-proc'); toast('Procedimiento agregado', 'ok');
+}
+
+function showCtx(e, idx) {
+  ctxIdx = idx;
+  const m = document.getElementById('ctx-menu');
+  m.style.display = 'block';
+  m.style.left    = e.clientX + 'px';
+  m.style.top     = e.clientY + 'px';
+  e.stopPropagation();
+}
+function ctxRename() {
+  if (!can('write') || ctxIdx === null) return;
+  const nv = prompt('Nuevo nombre:', getProcs()[ctxIdx].n);
+  if (nv && nv.trim()) { getProcs()[ctxIdx].n = nv.trim(); renderMapa(); }
+  document.getElementById('ctx-menu').style.display = 'none';
+}
+function ctxDelete() {
+  if (!can('write') || ctxIdx === null) { toast('Sin permiso', 'err'); return; }
+  const procs = getProcs();
+  if (confirm(`¿Eliminar "${procs[ctxIdx].e} ${procs[ctxIdx].n}"?`)) {
+    procs.splice(ctxIdx, 1); renderMapa(); toast('Eliminado', 'ok');
+  }
+  document.getElementById('ctx-menu').style.display = 'none';
+}
+
+function openSubtipos(idx) {
+  const procs = getProcs(); curProc = idx; const p = procs[idx];
+  document.getElementById('sub-title').textContent = `${p.e} ${p.n}`;
+  allSub = [...p.s];
+  document.getElementById('sub-search').value = '';
+  renderSubList(allSub); openModal('modal-subtipos');
+}
+function filterSubtipos() {
+  const q = document.getElementById('sub-search').value.toLowerCase();
+  renderSubList(allSub.filter(s => s.toLowerCase().includes(q)));
+}
+function renderSubList(list) {
+  const el = document.getElementById('sub-list');
+  el.innerHTML = '';
+  if (!list.length) { el.innerHTML = '<div style="color:var(--fg3);font-size:12px;padding:10px">Sin subtipos</div>'; return; }
+  list.forEach(s => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:11px 14px';
+    row.innerHTML = `<span style="font-size:12.5px">${s}</span><button class="btn btn-accent btn-sm">Abrir editor</button>`;
+    row.querySelector('button').addEventListener('click', () => openEditor(s));
+    el.appendChild(row);
+  });
+}
+function addSubtipo() {
+  if (!can('write')) { toast('Sin permiso', 'err'); return; }
+  const n = prompt('Nombre del nuevo subtipo:');
+  if (n && n.trim()) {
+    getProcs()[curProc].s.push(n.trim());
+    allSub = [...getProcs()[curProc].s];
+    renderSubList(allSub); renderMapa(); toast('Subtipo agregado', 'ok');
+  }
+}
+
+/* ══════════════════════════════════════════
+   CALENDARIO
+══════════════════════════════════════════ */
+function buildCal() {
+  const auds = getAuds();
+  const y = calDate.getFullYear(), m = calDate.getMonth();
+  document.getElementById('cal-title').textContent = `📅 Audiencias — ${MN[m]} ${y}`;
+  const g  = document.getElementById('cal-grid');
+  g.innerHTML = '';
+  ['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'].forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-dow';
+    el.textContent = d;
+    g.appendChild(el);
+  });
+  const fd  = (new Date(y, m, 1).getDay() + 6) % 7;
+  const dim = new Date(y, m + 1, 0).getDate();
+  const td  = new Date();
+  for (let i = 0; i < fd; i++) g.appendChild(document.createElement('div'));
+  for (let d = 1; d <= dim; d++) {
+    const ds  = `${y}-${String(m + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const av  = auds[ds] || [];
+    const isT = d === td.getDate() && m === td.getMonth() && y === td.getFullYear();
+    const cell = document.createElement('div');
+    cell.className = 'cal-day' + (isT ? ' today' : '');
+    let html = `<div class="dn">${d}</div>`;
+    av.slice(0, 2).forEach(a => { html += `<div class="dot-bar" style="background:${SC[a.estado] || '#8892b0'}"></div>`; });
+    if (av.length > 2) html += `<div style="font-size:9px;color:var(--fg3);text-align:right">+${av.length - 2}</div>`;
+    cell.innerHTML = html;
+    cell.addEventListener('contextmenu', e => { if (!can('write')) return; e.preventDefault(); showDayMenu(e, ds); });
+    cell.addEventListener('click', () => verAuds(ds));
+    g.appendChild(cell);
+  }
+  buildCalSum(y, m);
+}
+
+function showDayMenu(e, ds) {
+  const m2 = document.getElementById('ctx-menu');
+  m2.innerHTML = `<div class="ctx-item" onclick="abrirAddAud('${ds}')">＋ Agregar audiencia</div><div class="ctx-item" onclick="verAuds('${ds}')">👁 Ver audiencias</div>`;
+  m2.style.display = 'block'; m2.style.left = e.clientX + 'px'; m2.style.top = e.clientY + 'px';
+  e.stopPropagation();
+}
+function buildCalSum(y, m) {
+  const auds = getAuds();
+  const t = { Pendiente:0, Aplazada:0, Celebrada:0, Concluida:0 };
+  Object.entries(auds).forEach(([k, v]) => {
+    const [ky, km] = k.split('-');
+    if (parseInt(ky) === y && parseInt(km) - 1 === m) v.forEach(a => { if (t[a.estado] !== undefined) t[a.estado]++; });
+  });
+  const el    = document.getElementById('cal-summary');
+  let   total = 0;
+  el.innerHTML = '';
+  Object.entries(t).forEach(([s, c]) => {
+    total += c;
+    el.innerHTML += `<div class="stat-row"><div style="display:flex;align-items:center;gap:8px"><div class="stat-dot" style="background:${SC[s]}"></div><span style="font-size:12px">${s}</span></div><span style="font-size:12px;font-weight:700">${c}</span></div>`;
+  });
+  document.getElementById('cal-total').textContent = total;
+}
+function changeMonth(d) { calDate.setMonth(calDate.getMonth() + d); buildCal(); }
+
+function abrirAddAud(fecha) {
+  if (!can('write')) { toast('Sin permiso para agregar audiencias', 'err'); return; }
+  audDate = fecha;
+  document.getElementById('aud-title').textContent = `Nueva Audiencia — ${fecha}`;
+  ['aud-cliente','aud-hora','aud-tipo','aud-nota'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('aud-estado').value = 'Pendiente';
+  closeModal('modal-ver-aud'); openModal('modal-add-aud');
+  document.getElementById('ctx-menu').style.display = 'none';
+}
+function saveAud() {
+  if (!audDate) { toast('Haz click en un día', 'err'); return; }
+  const auds   = getAuds();
+  const cli    = document.getElementById('aud-cliente').value.trim() || 'Sin nombre';
+  const hora   = document.getElementById('aud-hora').value || '--:--';
+  const tipo   = document.getElementById('aud-tipo').value.trim() || 'General';
+  const estado = document.getElementById('aud-estado').value;
+  const nota   = document.getElementById('aud-nota').value.trim();
+  if (!auds[audDate]) auds[audDate] = [];
+  auds[audDate].push({ cliente:cli, hora, tipo, estado, nota, usuarioId:SESSION.id });
+  closeModal('modal-add-aud'); buildCal(); toast(`Audiencia guardada para ${audDate}`, 'ok');
+}
+function verAuds(fecha) {
+  const auds = getAuds(); const av = auds[fecha] || [];
+  document.getElementById('ver-aud-title').textContent = `📅 ${fecha}`;
+  const body = document.getElementById('ver-aud-body');
+  body.innerHTML = !av.length
+    ? '<div style="color:var(--fg3);font-size:13px;padding:10px">Sin audiencias para este día.</div>'
+    : av.map((a, i) => `
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;margin-bottom:10px;border-left:4px solid ${SC[a.estado] || '#8892b0'}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+            <span style="font-size:13px;font-weight:700">${a.cliente}</span>
+            <span class="badge" style="background:${SC[a.estado]}22;color:${SC[a.estado]}">${a.estado}</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--fg2)">🕐 ${a.hora} · ${a.tipo}</div>
+          ${a.nota ? `<div style="font-size:11.5px;color:var(--fg3);margin-top:7px">📝 ${a.nota}</div>` : ''}
+          <div style="margin-top:12px">${can('write') ? `<button class="btn btn-ghost btn-sm" onclick="delAud('${fecha}',${i})">🗑 Eliminar</button>` : ''}</div>
+        </div>`).join('');
+  document.getElementById('ver-aud-add-btn').onclick = () => abrirAddAud(fecha);
+  openModal('modal-ver-aud');
+}
+function delAud(fecha, idx) {
+  if (confirm('¿Eliminar?')) {
+    const auds = getAuds();
+    auds[fecha].splice(idx, 1);
+    if (!auds[fecha].length) delete auds[fecha];
+    closeModal('modal-ver-aud'); buildCal(); toast('Eliminada', 'ok');
+  }
+}
+
+/* ══════════════════════════════════════════
+   JURISPRUDENCIA
+══════════════════════════════════════════ */
+function initJuris() {
+  if (!DB_JURIS[getEmpresaId()])     DB_JURIS[getEmpresaId()]     = [];
+  if (!DB_NOTAS[getEmpresaId()])     DB_NOTAS[getEmpresaId()]     = {};
+  if (!DB_VINCULOS[getEmpresaId()])  DB_VINCULOS[getEmpresaId()]  = [];
+  updateJBadges(); renderJurisAlertBar(); populateAISel(); populateVinSel(); populateNotasSel();
+  if      (curJTab === 'catalogo')  renderJurisCatalogo();
+  else if (curJTab === 'favoritos') renderJurisFav();
+  else if (curJTab === 'alertas')   renderJAlerts();
+  else if (curJTab === 'vinculos')  { renderVinculos(); renderVSug(); }
+  else if (curJTab === 'notas')     { populateNotasSel(); renderNotas(); }
+}
+
+function updateJBadges() {
+  const juris   = getJuris(); const notasDB = getNotas();
+  const favCount   = juris.filter(j => j.fav).length;
+  const alertCount = JALERTS_GLOBAL.filter(a => !a.leida).length;
+  const notaCount  = Object.values(notasDB).reduce((s, n) => s + n.length, 0);
+  document.getElementById('jbadge-fav').textContent    = favCount;
+  document.getElementById('jbadge-alerts').textContent = alertCount;
+  const jbn = document.getElementById('jbadge-notas');
+  if (notaCount > 0) { jbn.textContent = notaCount; jbn.style.display = ''; } else jbn.style.display = 'none';
+  const navBadge = document.getElementById('badge-jalert');
+  if (alertCount > 0) { navBadge.textContent = alertCount; navBadge.style.display = ''; } else navBadge.style.display = 'none';
+  const btnAlert = document.getElementById('btn-alert-juris');
+  if (alertCount > 0) { document.getElementById('cnt-jalert').textContent = alertCount; btnAlert.style.display = ''; } else btnAlert.style.display = 'none';
+}
+
+function renderJurisAlertBar() {
+  const bar    = document.getElementById('juris-alert-bar');
+  const unread = JALERTS_GLOBAL.filter(a => !a.leida);
+  if (unread.length > 0) {
+    document.getElementById('juris-alert-msg').textContent = `🔔 ${unread.length} alerta${unread.length > 1 ? 's' : ''} nueva${unread.length > 1 ? 's' : ''} — ${unread[0].titulo}${unread.length > 1 ? ` y ${unread.length - 1} más` : ''}`;
+    bar.classList.remove('hidden');
+  } else bar.classList.add('hidden');
+}
+
+function switchJTab(tab) {
+  curJTab = tab;
+  document.querySelectorAll('.jtab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.jtab-body').forEach(c => c.classList.remove('active'));
+  const tabs = ['catalogo','favoritos','analisis','alertas','vinculos','notas','registrar'];
+  const idx  = tabs.indexOf(tab);
+  document.querySelectorAll('.jtab')[idx]?.classList.add('active');
+  document.getElementById('jtab-' + tab)?.classList.add('active');
+  ({ catalogo:renderJurisCatalogo, favoritos:renderJurisFav, analisis:populateAISel, alertas:renderJAlerts, vinculos:() => { renderVinculos(); renderVSug(); }, notas:() => { populateNotasSel(); renderNotas(); } })[tab]?.();
+}
+
+function jCard(j) {
+  const notasDB = getNotas(); const nc = (notasDB[j.id] || []).length;
+  const kwtags  = j.kw ? j.kw.slice(0,3).map(k => `<span class="badge badge-area" style="margin-right:4px">${k}</span>`).join('') : '';
+  return `<div class="jcard" style="border-left-color:${j.fav ? 'var(--amber)' : 'var(--border-hi)'}">
+    <div class="jcard-header">
+      <div style="flex:1">
+        <div class="jcard-title">${j.t}</div>
+        <div class="jcard-meta">${j.fu} · ${j.f} · ${j.area || 'General'}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+        ${j.nuevo      ? `<span class="badge badge-new">Nuevo</span>`       : ''}
+        ${j.importante ? `<span class="badge badge-imp">Importante</span>` : ''}
+        ${nc > 0       ? `<span class="nota-chip">📝${nc}</span>`           : ''}
+        <button class="fav-btn${j.fav ? ' on' : ''}" onclick="toggleFav(${j.id},this)" title="${j.fav ? 'Quitar favorito' : 'Agregar favorito'}">⭐</button>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--fg2);line-height:1.65;margin-bottom:10px">${j.d}</p>
+    ${kwtags ? `<div style="margin-bottom:10px">${kwtags}</div>` : ''}
+    <div class="jcard-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openJurisDet(${j.id})">📋 Ver detalle</button>
+      <button class="btn btn-accent btn-sm" onclick="usarSentenciaById(${j.id})">📄 Usar sentencia</button>
+      <button class="btn btn-ghost btn-sm" onclick="switchJTab('analisis');setTimeout(()=>{document.getElementById('ai-sel').value=${j.id};analizarIA();},80)">🤖 Analizar</button>
+      <button class="btn btn-ghost btn-sm" onclick="abrirNotaRapida(${j.id})">📝 Nota${nc > 0 ? ' (' + nc + ')' : ''}</button>
+    </div>
+  </div>`;
+}
+
+function renderJurisCatalogo() {
+  const juris   = getJuris();
+  const q       = (document.getElementById('jq').value || '').toLowerCase();
+  const fu      = document.getElementById('jf-fuente').value;
+  const area    = document.getElementById('jf-area').value;
+  const favOnly = document.getElementById('jf-fav').value === '1';
+  const res     = juris.filter(j => {
+    if (favOnly && !j.fav)           return false;
+    if (fu   && j.fu   !== fu)       return false;
+    if (area && j.area !== area)     return false;
+    if (q && ![j.t, j.d, j.fu, ...(j.kw || [])].join(' ').toLowerCase().includes(q)) return false;
+    return true;
+  });
+  document.getElementById('jcount').textContent = `${res.length} sentencia${res.length !== 1 ? 's' : ''} encontrada${res.length !== 1 ? 's' : ''}`;
+  document.getElementById('jcatalogo-list').innerHTML = res.length ? res.map(jCard).join('') : '<div style="color:var(--fg3);font-size:13px;text-align:center;padding:40px">No se encontraron sentencias.</div>';
+}
+
+function renderJurisFav() {
+  const juris = getJuris(); const favs = juris.filter(j => j.fav);
+  document.getElementById('jfav-list').innerHTML = favs.length ? favs.map(jCard).join('') : '<div style="color:var(--fg3);font-size:13px;text-align:center;padding:40px">No tienes favoritas aún. Haz clic en ⭐ en cualquier sentencia.</div>';
+}
+
+function toggleFav(id, btn) {
+  const juris = getJuris(); const j = juris.find(x => x.id === id); if (!j) return;
+  j.fav = !j.fav; if (btn) btn.classList.toggle('on', j.fav);
+  updateJBadges(); toast(j.fav ? '⭐ Agregada a favoritas' : 'Removida de favoritas', 'ok');
+  if (curJTab === 'favoritos') renderJurisFav();
+}
+
+function toggleFavFromModal() {
+  const juris = getJuris(); const j = juris.find(x => x.id === window._detailId); if (!j) return;
+  j.fav = !j.fav;
+  document.getElementById('jd-fav-btn').classList.toggle('on', j.fav);
+  updateJBadges(); toast(j.fav ? '⭐ Favorita' : 'Removida de favoritas', 'ok');
+  if (curJTab === 'catalogo')  renderJurisCatalogo();
+  if (curJTab === 'favoritos') renderJurisFav();
+}
+
+function openJurisDet(id) {
+  const juris   = getJuris(); const notasDB = getNotas();
+  const j = juris.find(x => x.id === id); if (!j) return;
+  window._detailId = id;
+  document.getElementById('jd-titulo').textContent = j.t;
+  document.getElementById('jd-meta').textContent   = `${j.fu} · ${j.f} · ${j.area || 'General'}`;
+  document.getElementById('jd-fav-btn').classList.toggle('on', j.fav);
+  document.getElementById('jd-kwtags').innerHTML   = (j.kw || []).map(k => `<span class="badge badge-area">${k}</span>`).join('');
+  document.getElementById('jd-desc').textContent   = j.d;
+  const nc = (notasDB[id] || []).length;
+  const notasSec = document.getElementById('jd-notas-section');
+  if (nc > 0) {
+    notasSec.innerHTML = `<div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:9px;margin-top:10px">Mis notas (${nc})</div>${(notasDB[id] || []).map(n => `<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;margin-bottom:7px"><div style="font-size:12px;line-height:1.6;color:var(--fg)">${n.txt}</div><div style="font-size:10px;color:var(--fg3);margin-top:5px">${n.fecha} · ${n.usuario}</div></div>`).join('')}`;
+  } else notasSec.innerHTML = '';
+  openModal('modal-juris-det');
+}
+
+function populateAISel() {
+  const sel = document.getElementById('ai-sel'); if (!sel) return;
+  sel.innerHTML = '<option value="">-- Seleccionar sentencia --</option>' + getJuris().map(j => `<option value="${j.id}">${j.t}</option>`).join('');
+}
+
+function analizarIA() {
+  const juris = getJuris();
+  const id    = parseInt(document.getElementById('ai-sel').value);
+  if (!id) { toast('Selecciona una sentencia primero', 'err'); return; }
+  const j   = juris.find(x => x.id === id);
+  const btn = document.getElementById('btn-analizar'); const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Analizando...';
+  const el  = document.getElementById('ai-result');
+  el.innerHTML = `<div class="ai-loader"><div style="font-size:12px;color:var(--fg2);margin-bottom:5px">Analizando: <em>${j.t}</em></div><div class="lbar"><div class="lbar-inner" id="ai-bar"></div></div><div style="font-size:11px;color:var(--fg3)" id="ai-st">Iniciando...</div></div>`;
+  const msgs = ['Leyendo texto completo...','Identificando criterios jurídicos...','Extrayendo puntos clave...','Evaluando aplicación práctica...','Generando análisis...'];
+  let p = 0, mi = 0;
+  const iv = safeInterval(() => {
+    p += 20;
+    document.getElementById('ai-bar')?.style.setProperty('width', p + '%');
+    const st = document.getElementById('ai-st'); if (st && mi < msgs.length) st.textContent = msgs[mi++];
+    if (p >= 100) {
+      safeClearInterval(iv); btn.disabled = false; btn.textContent = orig;
+      const a = j.analisis || {
+        resumen: `La sentencia establece un precedente relevante en materia de ${j.area || 'derecho'}. El ${j.fu} aplica los principios constitucionales dominicanos y los estándares del sistema interamericano.`,
+        puntos:  [`Reafirma el principio de ${(j.kw && j.kw[0]) || 'legalidad'} como garantía constitucional`, `Fallo con carácter vinculante para tribunales de menor jerarquía`, `Establece un test de análisis replicable en casos similares`, `Obliga al juzgador a motivar reforzadamente sus decisiones`],
+        aplicacion:  `Aplicar directamente en casos que involucren ${(j.kw || []).slice(0,2).join(' y ') || 'este tema'}.`,
+        importancia: `Alta relevancia práctica. Modifica el estándar procesal en ${j.area || 'derecho'}.`,
+      };
+      if (!j.analisis) j.analisis = a;
+      el.innerHTML = `<div class="ai-result-box">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+          <div><div style="font-size:13px;font-weight:700;color:var(--fg)">${j.t}</div><div style="font-size:11px;color:var(--fg3);margin-top:4px">${j.fu} · ${j.f}</div></div>
+          <button class="fav-btn${j.fav ? ' on' : ''}" onclick="toggleFav(${j.id},this)">⭐</button>
+        </div>
+        <div class="ai-section" style="background:var(--card-hover);border-radius:var(--radius);padding:14px">
+          <div class="ai-section-title">📋 Resumen en lenguaje claro</div>
+          <div style="font-size:12px;line-height:1.7;color:var(--fg)">${a.resumen}</div>
+        </div>
+        <div class="ai-section" style="margin-top:14px">
+          <div class="ai-section-title">🔑 Puntos clave</div>
+          ${a.puntos.map(pt => `<div class="ai-point"><div class="ai-point-dot"></div><span>${pt}</span></div>`).join('')}
+        </div>
+        <div class="ai-grid">
+          <div class="ai-cell"><div class="ai-cell-title" style="color:var(--green)">✅ Aplicación práctica</div><div style="font-size:12px;line-height:1.6;color:var(--fg)">${a.aplicacion}</div></div>
+          <div class="ai-cell"><div class="ai-cell-title" style="color:var(--amber)">⚠ Importancia procesal</div><div style="font-size:12px;line-height:1.6;color:var(--fg)">${a.importancia}</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-accent btn-sm" onclick="usarSentenciaById(${j.id})">📄 Usar</button>
+          <button class="btn btn-ghost btn-sm" onclick="abrirNotaRapida(${j.id})">📝 Nota</button>
+          <button class="btn btn-ghost btn-sm" onclick="switchJTab('vinculos');setTimeout(()=>document.getElementById('vin-j').value=${j.id},80)">🔗 Vincular</button>
+        </div>
+      </div>`;
+    }
+  }, 380);
+}
+
+function renderJAlerts() {
+  const el = document.getElementById('jalert-list');
+  el.innerHTML = JALERTS_GLOBAL.map(a => `
+    <div class="alert-item${a.leida ? ' leida' : ''}">
+      <div class="alert-dot" style="background:${a.tipo === 'nuevo' ? 'var(--green)' : 'var(--amber)'}"></div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap">
+          <span style="font-size:12.5px;font-weight:700;color:var(--fg)">${a.titulo}</span>
+          <span class="badge" style="background:${a.tipo === 'nuevo' ? 'rgba(52,211,153,.12)' : 'rgba(251,191,36,.12)'};color:${a.tipo === 'nuevo' ? 'var(--green)' : 'var(--amber)'}">${a.tipo === 'nuevo' ? 'Nuevo' : 'Importante'}</span>
+          ${a.leida ? `<span class="badge" style="background:var(--border);color:var(--fg3)">Leída</span>` : ''}
+        </div>
+        <div style="font-size:12px;color:var(--fg2);line-height:1.55">${a.desc}</div>
+        <div style="font-size:11px;color:var(--fg3);margin-top:6px;display:flex;gap:12px;align-items:center">
+          <span>${a.fecha}</span>
+          ${!a.leida ? `<button class="btn btn-ghost btn-sm" style="padding:2px 8px;font-size:10px" onclick="marcarLeida(${a.id})">Marcar leída</button>` : ''}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function marcarLeida(id)     { const a = JALERTS_GLOBAL.find(x => x.id === id); if (a) { a.leida = true; renderJAlerts(); updateJBadges(); renderJurisAlertBar(); } }
+function marcarTodasLeidas() { JALERTS_GLOBAL.forEach(a => a.leida = true); renderJAlerts(); updateJBadges(); renderJurisAlertBar(); toast('Todas las alertas marcadas como leídas', 'ok'); }
+
+function populateVinSel() {
+  const sel = document.getElementById('vin-j'); if (!sel) return;
+  sel.innerHTML = getJuris().map(j => `<option value="${j.id}">${j.t}</option>`).join('');
+}
+
+function crearVinculo() {
+  if (!can('write')) { toast('Sin permiso', 'err'); return; }
+  const vinculos = getVinculos(); const juris = getJuris();
+  const jid  = parseInt(document.getElementById('vin-j').value);
+  const proc = document.getElementById('vin-p').value;
+  const j    = juris.find(x => x.id === jid);
+  if (vinculos.find(v => v.jid === jid && v.proc === proc)) { toast('Este vínculo ya existe', 'err'); return; }
+  vinculos.push({ jid, proc, titulo:j?.t, fecha:new Date().toLocaleDateString('es-DO'), usuarioId:SESSION.id });
+  renderVinculos(); toast('🔗 Vínculo creado', 'ok');
+}
+
+function renderVinculos() {
+  const vinculos = getVinculos(); const el = document.getElementById('vlist'); if (!el) return;
+  el.innerHTML = vinculos.length
+    ? vinculos.map((v, i) => `
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:15px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:14px">
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:var(--fg);margin-bottom:7px;line-height:1.4">${v.titulo}</div>
+            <span class="vchip">🔗 ${v.proc}</span>
+            <span style="font-size:10px;color:var(--fg3);margin-left:9px">${v.fecha}</span>
+          </div>
+          ${can('write') ? `<button class="btn btn-ghost btn-sm" onclick="vinculos_del(${i})">✕</button>` : ''}
+        </div>`).join('')
+    : '<div style="color:var(--fg3);font-size:13px;padding:18px 0">No hay vínculos creados aún.</div>';
+}
+
+function vinculos_del(i) { getVinculos().splice(i, 1); renderVinculos(); toast('Vínculo eliminado', 'ok'); }
+
+function renderVSug() {
+  const juris = getJuris(); const el = document.getElementById('vsug-list'); if (!el) return;
+  const sug   = juris.slice(0, 3).map((j, i) => ({
+    jid:j.id, jt:j.t, proc:['Medida de coerción','Recurso de apelación','Demanda ordinaria'][i] || 'Procedimiento', score:97 - i * 8,
+  }));
+  el.innerHTML = sug.map(s => `
+    <div class="vsug-card">
+      <div style="flex:1">
+        <div style="font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Sugerencia IA</div>
+        <div style="font-size:12px;font-weight:700;color:var(--fg);margin-bottom:7px;line-height:1.4">${s.jt}</div>
+        <span class="vchip">🔗 ${s.proc}</span>
+      </div>
+      <div style="text-align:center;flex-shrink:0">
+        <div class="vscore">${s.score}%</div>
+        <div style="font-size:10px;color:var(--fg3);margin-bottom:7px">match</div>
+        <button class="btn btn-green btn-sm perm-write" onclick="aplicarSug(${s.jid},'${s.proc}',this)">Aplicar</button>
+      </div>
+    </div>`).join('');
+}
+
+function aplicarSug(jid, proc, btn) {
+  if (!can('write')) { toast('Sin permiso', 'err'); return; }
+  const juris = getJuris(); const vinculos = getVinculos();
+  const j = juris.find(x => x.id === jid);
+  if (vinculos.find(v => v.jid === jid && v.proc === proc)) { toast('Ya existe', 'err'); return; }
+  vinculos.push({ jid, proc, titulo:j?.t, fecha:new Date().toLocaleDateString('es-DO'), usuarioId:SESSION.id });
+  btn.textContent = 'Aplicado ✓'; btn.disabled = true;
+  renderVinculos(); toast('🔗 Vínculo aplicado', 'ok');
+}
+
+function populateNotasSel() {
+  const sel = document.getElementById('nota-sel'); if (!sel) return;
+  sel.innerHTML = getJuris().map(j => `<option value="${j.id}">${j.t}</option>`).join('');
+}
+
+function guardarNota() {
+  const id  = parseInt(document.getElementById('nota-sel').value);
+  const txt = document.getElementById('nota-txt').value.trim();
+  if (!txt) { toast('Escribe una nota primero', 'err'); return; }
+  const notasDB = getNotas();
+  if (!notasDB[id]) notasDB[id] = [];
+  notasDB[id].push({ txt, fecha:new Date().toLocaleDateString('es-DO', { day:'2-digit', month:'short', year:'numeric' }), usuario:SESSION.nombre.split(' ')[0] });
+  document.getElementById('nota-txt').value = '';
+  updateJBadges(); renderNotas(); toast('📝 Nota guardada', 'ok');
+}
+
+function renderNotas() {
+  const notasDB = getNotas(); const juris = getJuris(); const all = [];
+  Object.entries(notasDB).forEach(([id, ns]) => {
+    const j = juris.find(x => x.id == id);
+    ns.forEach((n, i) => all.push({ ...n, jid:Number(id), titulo:j?.t || 'Sentencia', idx:i }));
+  });
+  all.reverse();
+  const el = document.getElementById('notas-list'); if (!el) return;
+  el.innerHTML = all.length
+    ? all.map(n => `
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:15px;margin-bottom:9px">
+          <div style="font-size:11px;font-weight:700;color:var(--fg2);margin-bottom:7px;line-height:1.3">${n.titulo}</div>
+          <p style="font-size:12.5px;line-height:1.65;color:var(--fg)">${n.txt}</p>
+          <div style="font-size:10px;color:var(--fg3);margin-top:9px;display:flex;justify-content:space-between;align-items:center">
+            <span>${n.fecha} · ${n.usuario}</span>
+            <button class="btn btn-ghost btn-sm" style="padding:2px 8px;font-size:10px" onclick="elimNota(${n.jid},${n.idx})">Eliminar</button>
+          </div>
+        </div>`).join('')
+    : '<div style="color:var(--fg3);font-size:13px;padding:18px 0">No hay notas guardadas aún.</div>';
+}
+
+function elimNota(id, idx) {
+  const notasDB = getNotas();
+  if (notasDB[id]) { notasDB[id].splice(idx, 1); updateJBadges(); renderNotas(); toast('Nota eliminada', 'ok'); }
+}
+
+function abrirNotaRapida(id) {
+  window._notaRapidaId = id;
+  const juris   = getJuris(); const notasDB = getNotas();
+  const j = juris.find(x => x.id === id);
+  document.getElementById('nota-rapida-meta').textContent = j?.t || '';
+  document.getElementById('nota-rapida-txt').value        = '';
+  const existing = notasDB[id] || [];
+  document.getElementById('nota-rapida-existentes').innerHTML = existing.length
+    ? existing.map((n, i) => `
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 13px;margin-bottom:7px">
+          <div style="font-size:12px;line-height:1.6;color:var(--fg)">${n.txt}</div>
+          <div style="font-size:10px;color:var(--fg3);margin-top:4px;display:flex;justify-content:space-between">
+            <span>${n.fecha} · ${n.usuario}</span>
+            <button class="btn btn-ghost btn-sm" style="padding:1px 6px;font-size:10px" onclick="elimNota(${id},${i});abrirNotaRapida(${id})">✕</button>
+          </div>
+        </div>`).join('')
+    : '';
+  openModal('modal-nota-rapida');
+  setTimeout(() => document.getElementById('nota-rapida-txt')?.focus(), 100);
+}
+
+function guardarNotaRapida() {
+  const id  = window._notaRapidaId;
+  const txt = document.getElementById('nota-rapida-txt').value.trim();
+  if (!txt) { toast('Escribe una nota primero', 'err'); return; }
+  const notasDB = getNotas();
+  if (!notasDB[id]) notasDB[id] = [];
+  notasDB[id].push({ txt, fecha:new Date().toLocaleDateString('es-DO', { day:'2-digit', month:'short', year:'numeric' }), usuario:SESSION.nombre.split(' ')[0] });
+  updateJBadges(); toast('📝 Nota guardada', 'ok'); closeModal('modal-nota-rapida');
+  if (curJTab === 'catalogo')  renderJurisCatalogo();
+  if (curJTab === 'favoritos') renderJurisFav();
+  if (curJTab === 'notas')     { populateNotasSel(); renderNotas(); }
+}
+
+function genAI(tipo) {
+  if (!can('write')) { toast('Sin permiso', 'err'); return; }
+  const area  = document.getElementById('rarea').value;
+  const texto = document.getElementById('rtexto').value.trim();
+  if (tipo === 'res' && !texto) { toast('Escribe el texto de la sentencia primero', 'err'); return; }
+  const btnId = tipo === 'res' ? 'btn-gr' : 'btn-gk';
+  const btn   = document.getElementById(btnId); const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Procesando...';
+  const fb    = document.getElementById('reg-ai-fb');
+  fb.innerHTML= `<div class="ai-loader"><div class="lbar"><div class="lbar-inner" id="gb"></div></div><div style="font-size:11px;color:var(--fg3)" id="gst">Procesando con IA...</div></div>`;
+  let p = 0, mi = 0;
+  const msgs = tipo === 'res' ? ['Leyendo texto...','Identificando criterios...','Redactando resumen...','Listo.'] : ['Analizando área...','Generando sugerencias...','Listo.'];
+  const iv = safeInterval(() => {
+    p += 25;
+    document.getElementById('gb')?.style.setProperty('width', p + '%');
+    const s = document.getElementById('gst'); if (s && mi < msgs.length) s.textContent = msgs[mi++];
+    if (p >= 100) {
+      safeClearInterval(iv); btn.disabled = false; btn.textContent = orig;
+      if (tipo === 'res') {
+        document.getElementById('rresumen').value = `Esta sentencia establece un precedente en materia de ${area.toLowerCase()} que reafirma los derechos procesales conforme a los principios constitucionales dominicanos. El tribunal aplica estándares constitucionales e internacionales, estableciendo criterios vinculantes para casos similares.`;
+        fb.innerHTML = `<div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);border-radius:var(--radius);padding:11px 13px;font-size:11.5px;color:var(--green)">✓ Resumen generado e insertado.</div>`;
+      } else {
+        const kwm = { Penal:'nulidad, debido proceso, prueba ilícita, presunción inocencia', Civil:'prescripción, daños y perjuicios, responsabilidad civil, nulidad', Laboral:'prestaciones, despido injustificado, salario, horas extras', Constitucional:'amparo, derechos fundamentales, garantías constitucionales', Administrativo:'acto administrativo, nulidad, recurso contencioso', Familia:'divorcio, guarda custodia, pensión alimenticia' };
+        document.getElementById('rkw').value = kwm[area] || 'derecho, jurisprudencia';
+        fb.innerHTML = `<div style="background:rgba(79,124,255,.1);border:1px solid rgba(79,124,255,.25);border-radius:var(--radius);padding:11px 13px;font-size:11.5px;color:var(--brand)">✓ Palabras clave sugeridas.</div>`;
+      }
+    }
+  }, 340);
+}
+
+function guardarJuris() {
+  if (!can('write')) { toast('Sin permiso', 'err'); return; }
+  const t = document.getElementById('rt').value.trim();
+  if (!t) { toast('El título es obligatorio', 'err'); return; }
+  const eid = getEmpresaId();
+  if (!DB_JURIS[eid]) DB_JURIS[eid] = [];
+  DB_JURIS[eid].unshift({
+    id: jNextId++, t,
+    fu:   document.getElementById('rtrib').value,
+    f:    document.getElementById('rfecha').value || new Date().toISOString().split('T')[0],
+    area: document.getElementById('rarea').value,
+    kw:   document.getElementById('rkw').value.split(',').map(k => k.trim()).filter(Boolean),
+    d:    document.getElementById('rresumen').value || 'Sin resumen.',
+    texto:document.getElementById('rtexto').value,
+    fav:false, nuevo:true, importante:false, analisis:null, empresaId:eid,
+  });
+  updateJBadges(); populateAISel(); populateVinSel(); populateNotasSel();
+  toast('✓ Sentencia guardada', 'ok'); clearReg(); switchJTab('catalogo');
+}
+
+function clearReg() {
+  ['rt','rkw','rresumen','rtexto'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('reg-ai-fb').innerHTML = '';
+}
+
+function usarSentenciaById(id) {
+  const juris = getJuris(); window._usarId = id;
+  const j = juris.find(x => x.id === id); if (!j) return;
+  document.getElementById('usar-title').textContent = `📄 Generar documento — ${j.t.substring(0,50)}${j.t.length > 50 ? '...' : ''}`;
+  document.getElementById('doc-output').innerHTML = '';
+  openModal('modal-usar');
+}
+
+function generarDoc(tipo) {
+  const juris = getJuris(); const id = window._usarId;
+  const j = juris.find(x => x.id === id); if (!j) return;
+  const el = document.getElementById('doc-output');
+  el.innerHTML = `<div class="ai-loader"><div class="lbar"><div class="lbar-inner" id="dbar"></div></div><div style="font-size:11px;color:var(--fg3)">Generando documento...</div></div>`;
+  let p = 0;
+  const iv = safeInterval(() => {
+    p += 25; document.getElementById('dbar')?.style.setProperty('width', p + '%');
+    if (p >= 100) {
+      safeClearInterval(iv);
+      const txt = tipo === 'argumento'
+        ? `ARGUMENTO LEGAL\n\nFundamento: ${j.t}\nTribunal: ${j.fu} · Fecha: ${j.f}\n\nEl suscrito abogado alega:\n\nQue conforme al criterio del ${j.fu}, ${j.d}\n\nLos hechos del proceso se subsumen en los supuestos fácticos del alto tribunal. Jurisprudencia vinculante conforme arts. 184 y 185 de la Constitución Dominicana.\n\nPalabras clave: ${(j.kw || []).join(', ')}.`
+        : `REPÚBLICA DOMINICANA\n\nHONORABLE [TRIBUNAL]:\n\nEl suscrito abogado, en representación de [CLIENTE], expone:\n\nPRIMERO: Que el ${j.fu} estableció en ${j.t} que ${j.d}\n\nSEGUNDO: Los hechos encuadran en el supuesto jurídico analizado por el tribunal.\n\nTERCERO: Procede acoger las pretensiones conforme al criterio jurisprudencial vinculante.\n\nPOR TANTO, solicitamos fallar conforme a derecho.\n\n[Ciudad], [Fecha]\n[NOMBRE ABOGADO] · Matrícula No. ______`;
+      el.innerHTML = `
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
+          <div style="font-size:10px;font-weight:700;color:var(--fg2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">${tipo === 'argumento' ? 'Argumento legal' : 'Escrito jurídico'}</div>
+          <pre id="doc-pre" style="font-size:11.5px;white-space:pre-wrap;line-height:1.9;color:var(--fg);font-family:inherit;max-height:290px;overflow-y:auto">${txt}</pre>
+          <div style="margin-top:14px;display:flex;gap:8px">
+            <button class="btn btn-green btn-sm" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('doc-pre').textContent).then(()=>toast('Copiado','ok'))">📋 Copiar</button>
+            <button class="btn btn-accent btn-sm" onclick="toast('Exportado .docx (simulado)','ok')">↓ Exportar .docx</button>
+          </div>
+        </div>`;
+    }
+  }, 280);
+}
+
+function simImport() {
+  if (!can('write')) { toast('Sin permiso para importar', 'err'); return; }
+  const srcs = ['Poder Judicial (poderjudicial.gob.do)','Tribunal Constitucional (tc.gob.do)','Observatorio Judicial Dominicano'];
+  const ov = document.createElement('div'); ov.className = 'overlay open';
+  const m  = document.createElement('div'); m.className = 'modal'; m.style.maxWidth = '480px';
+  m.innerHTML = `
+    <div class="modal-header"><h3>↓ Importar desde fuente externa</h3><button class="close-btn" onclick="this.closest('.overlay').remove()">×</button></div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--fg2);margin-bottom:16px">Selecciona una fuente para importar sentencias:</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        ${srcs.map(s => `<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:11px 15px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px">${s}</span><button class="btn btn-accent btn-sm" onclick="simLoad('${s.split('(')[0].trim()}',this)">Conectar</button></div>`).join('')}
+      </div>
+    </div>`;
+  ov.appendChild(m); document.body.appendChild(ov);
+  ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+}
+function simLoad(src, btn) {
+  btn.textContent = 'Cargando...'; btn.disabled = true;
+  let p = 0;
+  const iv = safeInterval(() => { p += 20; if (p >= 100) { safeClearInterval(iv); btn.textContent = 'Conectado ✓'; btn.className = 'btn btn-green btn-sm'; toast(`3 sentencias importadas desde ${src}`, 'ok'); } }, 300);
+}
+
+/* ══════════════════════════════════════════
+   INTERVAL REGISTRY — previene memory leaks
+   de setInterval cuando el usuario navega
+   fuera antes de que el loader termine
+══════════════════════════════════════════ */
+const _intervals = new Set();
+function safeInterval(fn, ms)  { const id = setInterval(fn, ms); _intervals.add(id); return id; }
+function safeClearInterval(id) { clearInterval(id); _intervals.delete(id); }
+function clearAllIntervals()   { _intervals.forEach(id => clearInterval(id)); _intervals.clear(); }
+
+/* ══════════════════════════════════════════
+   ESTADÍSTICAS
+══════════════════════════════════════════ */
+function initStatsMonthSelect() {
+  const msEl = document.getElementById('stats-month');
+  if (!msEl || msEl.options.length > 1) return; // guard: no duplicar opciones
+  MN.forEach((m, i) => { const o = document.createElement('option'); o.value = i; o.textContent = m; msEl.appendChild(o); });
+  msEl.value = new Date().getMonth();
+}
+
+function renderStats() {
+  const auds = getAuds();
+  const m = parseInt(document.getElementById('stats-month').value);
+  const y = parseInt(document.getElementById('stats-year').value) || 2025;
+  const tot = { Pendiente:0, Aplazada:0, Celebrada:0, Concluida:0 };
+  Object.entries(auds).forEach(([k, v]) => {
+    const [ky, km] = k.split('-');
+    if (parseInt(ky) === y && parseInt(km) - 1 === m) v.forEach(a => { if (tot[a.estado] !== undefined) tot[a.estado]++; });
+  });
+  document.getElementById('stat-cards').innerHTML = Object.entries(tot).map(([s, c]) => `
+    <div class="stat-card">
+      <div class="top-bar" style="background:${SC[s]}"></div>
+      <div class="lbl">${s}</div>
+      <div class="val" style="color:${SC[s]}">${c}</div>
+    </div>`).join('');
+  const ctx = document.getElementById('stats-chart').getContext('2d');
+  if (window.sChart) window.sChart.destroy();
+  window.sChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(tot),
+      datasets: [{ data:Object.values(tot), backgroundColor:Object.keys(tot).map(s => SC[s] + 'bb'), borderColor:Object.keys(tot).map(s => SC[s]), borderWidth:1.5, borderRadius:8 }],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:true,
+      plugins: { legend:{ display:false } },
+      scales: {
+        x: { grid:{ color:'#23284322' }, ticks:{ color:'#8892b0', font:{ size:11, family:"'DM Sans', sans-serif" } } },
+        y: { grid:{ color:'#23284322' }, ticks:{ color:'#8892b0', font:{ size:11, family:"'DM Sans', sans-serif" }, stepSize:1 }, beginAtZero:true },
+      },
+    },
+  });
+}
+
+/* ══════════════════════════════════════════
+   ADMIN — Gestión de usuarios
+══════════════════════════════════════════ */
+function renderAdminPage() {
+  if (!can('manageUsers')) {
+    document.getElementById('page-admin').innerHTML = '<div class="locked-msg"><span class="lock-icon">🔒</span><div>Acceso restringido. Solo los administradores pueden gestionar usuarios.</div></div>';
+    return;
+  }
+  const empresa  = getEmpresa();
+  const usuarios = getUsersEmpresa();
+  document.getElementById('admin-empresa-title').textContent = `Usuarios de ${empresa.nombre}`;
+  document.getElementById('admin-empresa-name').textContent  = empresa.nombre;
+  document.getElementById('admin-user-count').textContent    = `${usuarios.length} / ${empresa.maxUsers}`;
+  document.getElementById('user-quota-bar').style.width      = `${Math.round(usuarios.length / empresa.maxUsers * 100)}%`;
+  const colors = { admin:'#4f7cff', abogado:'#34d399', paralegal:'#fbbf24' };
+  document.getElementById('users-list').innerHTML = usuarios.map(u => {
+    const clr    = colors[u.rol] || '#8892b0';
+    const esSelf = u.id === SESSION.id;
+    return `
+      <div class="user-row">
+        <div class="user-row-avatar" style="background:${clr}28;color:${clr}">${u.avatar}</div>
+        <div class="user-row-info">
+          <div class="user-row-name">${u.nombre} ${esSelf ? '<span style="font-size:10px;color:var(--fg3)">(tú)</span>' : ''}</div>
+          <div class="user-row-sub">${u.email}</div>
+        </div>
+        <span class="user-role-badge role-${u.rol}" style="margin-right:9px">${u.rol}</span>
+        <span class="badge" style="background:${u.activo ? 'rgba(52,211,153,.12)' : 'rgba(248,113,113,.12)'};color:${u.activo ? 'var(--green)' : 'var(--red)'}">${u.activo ? 'Activo' : 'Inactivo'}</span>
+        <div style="margin-left:10px;display:flex;gap:6px">
+          ${!esSelf ? `<button class="btn btn-ghost btn-sm" onclick="cambiarRol('${u.id}')">Rol</button><button class="btn btn-danger btn-sm" onclick="toggleActivo('${u.id}')">${u.activo ? 'Desactivar' : 'Activar'}</button>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function cambiarRol(uid) {
+  const u = DB_USUARIOS.find(x => x.id === uid); if (!u) return;
+  const roles = ['admin','abogado','paralegal'];
+  u.rol = roles[(roles.indexOf(u.rol) + 1) % roles.length];
+  renderAdminPage(); toast(`Rol de ${u.nombre.split(' ')[0]} cambiado a ${u.rol}`, 'ok');
+}
+function toggleActivo(uid) {
+  const u = DB_USUARIOS.find(x => x.id === uid); if (!u) return;
+  u.activo = !u.activo; renderAdminPage(); toast(`Usuario ${u.activo ? 'activado' : 'desactivado'}`, 'ok');
+}
+function crearUsuario() {
+  if (!can('manageUsers')) { toast('Sin permiso', 'err'); return; }
+  const nombre = document.getElementById('nu-name').value.trim();
+  const email  = document.getElementById('nu-email').value.trim().toLowerCase();
+  const pass   = document.getElementById('nu-pass').value;
+  const rol    = document.getElementById('nu-rol').value;
+  const err    = document.getElementById('newuser-err');
+  if (!nombre || !email || !pass) { err.textContent = 'Completa todos los campos.'; err.classList.add('show'); return; }
+  if (pass.length < 6)            { err.textContent = 'La contraseña debe tener al menos 6 caracteres.'; err.classList.add('show'); return; }
+  if (DB_USUARIOS.find(u => u.email.toLowerCase() === email)) { err.textContent = 'Este correo ya está registrado.'; err.classList.add('show'); return; }
+  const empresa    = getEmpresa(); const usersCount = getUsersEmpresa().length;
+  if (usersCount >= empresa.maxUsers) { err.textContent = `Límite de usuarios alcanzado (${empresa.maxUsers}).`; err.classList.add('show'); return; }
+  const initials = nombre.split(' ').map(x => x[0] || '').join('').toUpperCase().slice(0, 2);
+  DB_USUARIOS.push({ id:'u' + uNextId++, nombre, email, pass, rol, empresaId:getEmpresaId(), activo:true, avatar:initials });
+  err.classList.remove('show');
+  ['nu-name','nu-email','nu-pass'].forEach(id => document.getElementById(id).value = '');
+  closeModal('modal-new-user'); renderAdminPage(); toast(`Usuario ${nombre.split(' ')[0]} creado`, 'ok');
+}
+
+/* ══════════════════════════════════════════
+   SUPER PANEL
+══════════════════════════════════════════ */
+function renderSABar() {
+  const btns = document.getElementById('sa-empresa-btns');
+  btns.innerHTML = Object.values(DB_EMPRESAS).map(e =>
+    `<button class="sa-empresa-btn${window._saViewEmpresa === e.id ? ' active' : ''}" onclick="saChangeEmpresa('${e.id}')">${e.nombre}</button>`
+  ).join('');
+}
+
+function saChangeEmpresa(eid) {
+  window._saViewEmpresa = eid;
+  renderSABar();
+  // Solo re-renderizar módulos ligeros; stats y mapa son baratos.
+  // initJuris() es costosa; solo llamarla si la página juris está activa.
+  renderMapa(); buildCal(); renderStats();
+  const jurisActive = document.getElementById('page-juris')?.classList.contains('active');
+  if (jurisActive) initJuris();
+  document.getElementById('stats-month').value = new Date().getMonth();
+  const empresa = DB_EMPRESAS[eid];
+  toast(`Viendo empresa: ${empresa.nombre}`, 'ok');
+  const sel = document.getElementById('sa-empresa-sel'); if (sel) sel.value = eid;
+  const vn  = document.getElementById('sa-viewing-name');  if (vn)  vn.textContent = empresa.nombre;
+  renderSAQuickActions(eid);
+}
+
+function renderSuperAdminPage() {
+  if (!isSuperAdmin()) {
+    document.getElementById('page-superadmin').innerHTML = '<div class="locked-msg"><span class="lock-icon">🔒</span><div>Acceso denegado.</div></div>';
+    return;
+  }
+  const totalEmpresas = Object.keys(DB_EMPRESAS).length;
+  const totalUsuarios = DB_USUARIOS.filter(u => u.rol !== 'superadmin').length;
+  const totalJuris    = Object.values(DB_JURIS).reduce((s, arr) => s + arr.length, 0);
+  const totalAuds     = Object.values(DB_AUDIENCIAS).reduce((s, obj) => s + Object.values(obj).reduce((ss, arr) => ss + arr.length, 0), 0);
+  const metricas = [
+    { l:'Empresas registradas',    v:totalEmpresas, c:'var(--orange)' },
+    { l:'Usuarios totales',        v:totalUsuarios, c:'var(--brand)'  },
+    { l:'Sentencias en sistema',   v:totalJuris,    c:'var(--green)'  },
+    { l:'Audiencias registradas',  v:totalAuds,     c:'var(--amber)'  },
+  ];
+  document.getElementById('sa-metrics').innerHTML = metricas.map(m => `
+    <div class="stat-card">
+      <div class="top-bar" style="background:${m.c}"></div>
+      <div class="lbl">${m.l}</div>
+      <div class="val" style="color:${m.c}">${m.v}</div>
+    </div>`).join('');
+
+  document.getElementById('sa-empresas-list').innerHTML = Object.values(DB_EMPRESAS).map(e => {
+    const uc = DB_USUARIOS.filter(u => u.empresaId === e.id).length;
+    const jc = (DB_JURIS[e.id] || []).length;
+    return `
+      <div class="sa-empresa-row">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:3px">${e.nombre}</div>
+          <div style="font-size:11px;color:var(--fg3)">${uc} usuarios · ${jc} sentencias</div>
+        </div>
+        <span class="plan-badge plan-${e.plan}">${e.plan}</span>
+        <button class="btn btn-ghost btn-sm" style="margin-left:9px" onclick="saChangeEmpresa('${e.id}');goPage('mapa')">Entrar</button>
+        <button class="btn btn-danger btn-sm" onclick="saEliminarEmpresa('${e.id}')">Eliminar</button>
+      </div>`;
+  }).join('');
+
+  const colors = { admin:'#4f7cff', abogado:'#34d399', paralegal:'#fbbf24' };
+  document.getElementById('sa-users-list').innerHTML = DB_USUARIOS.filter(u => u.rol !== 'superadmin').map(u => {
+    const clr    = colors[u.rol] || '#8892b0';
+    const empresa= DB_EMPRESAS[u.empresaId];
+    return `
+      <div class="user-row" style="padding:8px 0">
+        <div class="user-row-avatar" style="background:${clr}28;color:${clr};width:30px;height:30px;font-size:11px">${u.avatar}</div>
+        <div class="user-row-info" style="flex:1">
+          <div class="user-row-name" style="font-size:12px">${u.nombre}</div>
+          <div class="user-row-sub" style="font-size:10px">${empresa?.nombre || 'Sin empresa'}</div>
+        </div>
+        <span class="user-role-badge role-${u.rol}" style="font-size:9px">${u.rol}</span>
+        <span class="badge" style="background:${u.activo ? 'rgba(52,211,153,.12)' : 'rgba(248,113,113,.12)'};color:${u.activo ? 'var(--green)' : 'var(--red)'};font-size:9px;margin-left:6px">${u.activo ? '●' : '○'}</span>
+        <button class="btn btn-danger btn-sm" style="padding:2px 8px;font-size:10px;margin-left:6px" onclick="saEliminarUsuario('${u.id}')">✕</button>
+      </div>`;
+  }).join('');
+
+  const sel = document.getElementById('sa-empresa-sel');
+  if (sel) {
+    sel.innerHTML = Object.values(DB_EMPRESAS).map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
+    sel.value     = window._saViewEmpresa || 'e1';
+  }
+  const vn = document.getElementById('sa-viewing-name');
+  if (vn) vn.textContent = DB_EMPRESAS[window._saViewEmpresa || 'e1']?.nombre || '';
+  renderSAQuickActions(window._saViewEmpresa || 'e1');
+}
+
+function renderSAQuickActions(eid) {
+  const el     = document.getElementById('sa-quick-actions'); if (!el) return;
+  const empresa= DB_EMPRESAS[eid];
+  const jc     = (DB_JURIS[eid] || []).length;
+  const uc     = DB_USUARIOS.filter(u => u.empresaId === eid).length;
+  el.innerHTML = `
+    <button class="btn btn-ghost btn-sm" onclick="saChangeEmpresa('${eid}');goPage('mapa')">🗺 Ver Mapa</button>
+    <button class="btn btn-ghost btn-sm" onclick="saChangeEmpresa('${eid}');goPage('juris')">⚖ Jurisprudencia (${jc})</button>
+    <button class="btn btn-ghost btn-sm" onclick="saChangeEmpresa('${eid}');goPage('audiencias')">📅 Audiencias</button>
+    <button class="btn btn-ghost btn-sm" onclick="saChangeEmpresa('${eid}');goPage('admin')">👥 Usuarios (${uc})</button>
+    <button class="btn btn-ghost btn-sm" onclick="saChangeEmpresa('${eid}');goPage('stats')">📊 Estadísticas</button>
+    <div style="width:1px;background:var(--border);margin:0 5px"></div>
+    <span style="font-size:11px;color:var(--fg3);align-self:center">Plan: <strong style="color:var(--brand)">${empresa?.plan}</strong></span>`;
+}
+
+function saEliminarEmpresa(eid) {
+  const e = DB_EMPRESAS[eid]; if (!e) { toast('Empresa no encontrada', 'err'); return; }
+  const uc = DB_USUARIOS.filter(u => u.empresaId === eid).length;
+  if (!confirm(`¿Eliminar la empresa "${e.nombre}"?\n\nEsto eliminará también ${uc} usuarios y todos sus datos.\n\nEsta acción no se puede deshacer.`)) return;
+  delete DB_EMPRESAS[eid]; delete DB_JURIS[eid]; delete DB_AUDIENCIAS[eid]; delete DB_NOTAS[eid]; delete DB_VINCULOS[eid]; delete DB_PROCS[eid];
+  while (DB_USUARIOS.findIndex(u => u.empresaId === eid) >= 0)
+    DB_USUARIOS.splice(DB_USUARIOS.findIndex(u => u.empresaId === eid), 1);
+  if (window._saViewEmpresa === eid) window._saViewEmpresa = Object.keys(DB_EMPRESAS)[0] || null;
+  renderSuperAdminPage(); renderSABar(); toast(`Empresa "${e.nombre}" eliminada`, 'ok');
+}
+
+function saEliminarUsuario(uid) {
+  const u = DB_USUARIOS.find(x => x.id === uid); if (!u) return;
+  if (!confirm(`¿Eliminar al usuario "${u.nombre}" (${u.email})?`)) return;
+  DB_USUARIOS.splice(DB_USUARIOS.indexOf(u), 1);
+  renderSuperAdminPage(); toast(`Usuario ${u.nombre.split(' ')[0]} eliminado`, 'ok');
+}
+
+function saCrearEmpresa() {
+  const nombre = document.getElementById('ne-nombre').value.trim();
+  const plan   = document.getElementById('ne-plan').value;
+  const err    = document.getElementById('newempresa-err');
+  if (!nombre) { err.textContent = 'Escribe el nombre de la empresa.'; err.classList.add('show'); return; }
+  const planLimits = { basico:5, profesional:10, enterprise:50 };
+  const eid = 'e' + eNextId++;
+  DB_EMPRESAS[eid]  = { id:eid, nombre, plan, maxUsers:planLimits[plan] || 10 };
+  DB_JURIS[eid]     = []; DB_AUDIENCIAS[eid] = {}; DB_NOTAS[eid] = {}; DB_VINCULOS[eid] = []; DB_PROCS[eid] = [];
+  err.classList.remove('show');
+  document.getElementById('ne-nombre').value = '';
+  closeModal('modal-new-empresa'); renderSuperAdminPage(); renderSABar();
+  toast(`Empresa "${nombre}" creada con plan ${plan}`, 'ok');
+}
+
+/* ── Keyboard shortcuts for login ── */
+document.getElementById('l-pass').addEventListener('keydown',  e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('l-email').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+/* ══════════════════════════════════════════
+   NEXLEX CONNECT — Marketplace Legal
+   Toda la lógica de la sección de consultas
+══════════════════════════════════════════ */
+
+/* ── Estado local Connect ── */
+let _connectAnonMode   = false;
+let _connectCaseType   = '';
+let _connectContacts   = new Set(['tel']);
+let _connectFile       = null;
+let _connectActiveTab  = 'form';
+
+const CONNECT_STORAGE_KEY = 'nexlex_consultas_v1';
+
+/* ── Provincias / feed simulado ── */
+const CONNECT_FEED_ITEMS = [
+  { area:'Penal',       prov:'Santiago',         time:'Hace 3 min'  },
+  { area:'Laboral',     prov:'Distrito Nacional', time:'Hace 12 min' },
+  { area:'Familia',     prov:'La Vega',           time:'Hace 28 min' },
+  { area:'Civil',       prov:'San Cristóbal',     time:'Hace 41 min' },
+  { area:'Inmobiliario',prov:'Puerto Plata',       time:'Hace 1h'    },
+];
+
+const AREA_ICONS = {
+  Penal:'⚖️', Civil:'📜', Laboral:'👷', Familia:'👨‍👩‍👧',
+  Inmobiliario:'🏠', Tránsito:'🚗', Empresarial:'🏢', Otro:'📋',
+};
+
+/* ── Inicializar Connect cuando se entra a la página ── */
+function initConnect() {
+  renderConnectFeed();
+  renderConnectList();
+  updateConnectStats();
+}
+
+/* ── Render feed de actividad reciente ── */
+function renderConnectFeed() {
+  const el = document.getElementById('connect-feed');
+  if (!el) return;
+  el.innerHTML = CONNECT_FEED_ITEMS.map(f => `
+    <div class="cs-feed-item">
+      <div class="cs-feed-dot" style="background:var(--brand)"></div>
+      <div>
+        <div class="cs-feed-text">
+          Consulta <strong style="color:var(--fg)">${f.area}</strong> desde <strong style="color:var(--fg)">${f.prov}</strong>
+        </div>
+        <div class="cs-feed-time">${f.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── Actualizar contador hero ── */
+function updateConnectStats() {
+  const stored  = getStoredConsultas();
+  const simBase = 127; // base simulada para credibilidad
+  const total   = simBase + stored.length;
+  const el      = document.getElementById('chs-total');
+  if (el) el.textContent = total;
+}
+
+/* ── localStorage helpers ── */
+function getStoredConsultas() {
+  try {
+    return JSON.parse(_storage.getItem(CONNECT_STORAGE_KEY) || '[]');
+  } catch { return []; }
+}
+
+function saveConsulta(c) {
+  const list = getStoredConsultas();
+  list.unshift(c);
+  try { _storage.setItem(CONNECT_STORAGE_KEY, JSON.stringify(list)); } catch {}
+}
+
+/* ── Switch sub-tabs ── */
+function switchConnectTab(tab) {
+  _connectActiveTab = tab;
+  document.querySelectorAll('.connect-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('ctab-' + tab)?.classList.add('active');
+  document.getElementById('connect-form-view').style.display = tab === 'form' ? '' : 'none';
+  document.getElementById('connect-list-view').style.display = tab === 'list' ? '' : 'none';
+  if (tab === 'list') renderConnectList();
+}
+
+/* ── Toggle anónimo ── */
+function toggleAnon() {
+  _connectAnonMode = !_connectAnonMode;
+  const toggle = document.getElementById('anon-toggle');
+  const chk    = document.getElementById('anon-chk');
+  const input  = document.getElementById('cn-nombre');
+  toggle.classList.toggle('active', _connectAnonMode);
+  chk.textContent = _connectAnonMode ? '✓' : '';
+  if (input) {
+    input.disabled    = _connectAnonMode;
+    input.value       = _connectAnonMode ? '' : input.value;
+    input.placeholder = _connectAnonMode ? 'Consulta anónima activa' : 'Opcional si es anónima';
+    input.style.opacity = _connectAnonMode ? '.4' : '1';
+  }
+}
+
+/* ── Seleccionar tipo de caso ── */
+function selectCaseType(btn) {
+  document.querySelectorAll('.case-type-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  _connectCaseType = btn.dataset.type;
+  document.getElementById('case-type-hint').textContent =
+    `Categoría seleccionada: ${_connectCaseType}`;
+  document.getElementById('case-type-hint').style.color = 'var(--brand)';
+}
+
+/* ── Toggle medios de contacto ── */
+function toggleContact(btn) {
+  const ct = btn.dataset.ct;
+  btn.classList.toggle('active');
+  if (btn.classList.contains('active')) _connectContacts.add(ct);
+  else _connectContacts.delete(ct);
+
+  // Mostrar/ocultar campos
+  document.getElementById('cn-tel-wrap').style.display   = _connectContacts.has('tel')      ? '' : 'none';
+  document.getElementById('cn-wa-wrap').style.display    = _connectContacts.has('whatsapp')  ? '' : 'none';
+  document.getElementById('cn-email-wrap').style.display = _connectContacts.has('email')     ? '' : 'none';
+}
+
+/* ── Contador de caracteres ── */
+function updateCharCount() {
+  const txt = document.getElementById('cn-desc').value;
+  const el  = document.getElementById('cn-char-count');
+  if (el) {
+    el.textContent = txt.length;
+    el.style.color = txt.length > 1200 ? 'var(--orange)' : 'var(--fg3)';
+  }
+}
+
+/* ── Manejo de archivos ── */
+function handleFileSelect(input) {
+  const file = input.files?.[0];
+  if (!file) return;
+  _connectFile = file;
+  updateDropZone(file);
+}
+
+function handleFileDrop(e) {
+  e.preventDefault();
+  document.getElementById('cn-dropzone').classList.remove('dragging');
+  const file = e.dataTransfer?.files?.[0];
+  if (!file) return;
+  _connectFile = file;
+  updateDropZone(file);
+}
+
+function updateDropZone(file) {
+  const zone = document.getElementById('cn-dropzone');
+  const icon = document.getElementById('fdz-icon');
+  const text = document.getElementById('fdz-text');
+  const sub  = document.getElementById('fdz-sub');
+  if (!zone) return;
+
+  const MAX_MB = 10;
+  if (file.size > MAX_MB * 1024 * 1024) {
+    toast('El archivo supera los 10MB', 'err');
+    _connectFile = null;
+    return;
+  }
+  zone.classList.add('file-attached');
+  if (icon) icon.textContent = '📄';
+  if (text) text.textContent = file.name;
+  if (sub)  sub.textContent  = `${(file.size / 1024).toFixed(0)} KB · ${file.type || 'documento'}`;
+}
+
+/* ── Generar código de referencia ── */
+function genRef() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let r = 'NX-';
+  for (let i = 0; i < 6; i++) r += chars[Math.floor(Math.random() * chars.length)];
+  return r;
+}
+
+/* ── Validar y enviar consulta ── */
+function submitConsulta() {
+  // Validaciones básicas
+  if (!_connectCaseType) {
+    toast('Selecciona el tipo de caso', 'err');
+    document.getElementById('case-type-grid').scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  const desc = document.getElementById('cn-desc').value.trim();
+  if (desc.length < 20) {
+    toast('Describe tu caso con más detalle (mín. 20 caracteres)', 'err');
+    document.getElementById('cn-desc').focus();
+    return;
+  }
+
+  // Al menos un contacto activo con dato
+  const tel   = document.getElementById('cn-tel').value.trim();
+  const wa    = document.getElementById('cn-wa').value.trim();
+  const email = document.getElementById('cn-email').value.trim();
+
+  if (!tel && !wa && !email) {
+    toast('Ingresa al menos un medio de contacto', 'err');
+    return;
+  }
+
+  // Construir objeto
+  const consulta = {
+    id:          genRef(),
+    fecha:       new Date().toLocaleDateString('es-DO', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }),
+    anonima:     _connectAnonMode,
+    nombre:      _connectAnonMode ? 'Anónimo' : (document.getElementById('cn-nombre').value.trim() || 'Sin nombre'),
+    provincia:   document.getElementById('cn-provincia').value || 'No especificada',
+    tipo:        _connectCaseType,
+    descripcion: desc,
+    contactos:   {
+      tel:   tel,
+      wa:    wa,
+      email: email,
+    },
+    horario:     document.getElementById('cn-horario').value,
+    archivo:     _connectFile ? _connectFile.name : null,
+    estado:      'nuevo',
+  };
+
+  // Simular envío con breve loader
+  const btn = document.getElementById('btn-connect-submit');
+  btn.disabled    = true;
+  btn.textContent = 'Enviando…';
+
+  setTimeout(() => {
+    saveConsulta(consulta);
+    updateConnectStats();
+
+    // Mostrar éxito
+    document.getElementById('suc-area').textContent = consulta.tipo;
+    document.getElementById('suc-ref').textContent  = consulta.id;
+    document.getElementById('connect-form-wrap').style.display = 'none';
+    const suc = document.getElementById('connect-success');
+    suc.classList.add('visible');
+
+    btn.disabled    = false;
+    btn.textContent = 'Enviar consulta →';
+
+    toast('✅ Consulta enviada con éxito', 'ok');
+
+    // Agregar al feed de actividad
+    CONNECT_FEED_ITEMS.unshift({ area:consulta.tipo, prov:consulta.provincia, time:'Justo ahora' });
+    if (CONNECT_FEED_ITEMS.length > 5) CONNECT_FEED_ITEMS.pop();
+    renderConnectFeed();
+
+  }, 1400);
+}
+
+/* ── Resetear formulario ── */
+function resetConnectForm() {
+  // Campos de texto
+  ['cn-nombre','cn-desc','cn-tel','cn-wa','cn-email'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('cn-provincia').value = '';
+  document.getElementById('cn-horario').value   = 'Cualquier hora';
+
+  // Estado
+  _connectAnonMode = false;
+  _connectCaseType = '';
+  _connectFile     = null;
+  _connectContacts = new Set(['tel']);
+
+  // UI resets
+  const anonT = document.getElementById('anon-toggle');
+  if (anonT) anonT.classList.remove('active');
+  const anonC = document.getElementById('anon-chk');
+  if (anonC) anonC.textContent = '';
+
+  document.querySelectorAll('.case-type-btn').forEach(b => b.classList.remove('selected'));
+  const hint = document.getElementById('case-type-hint');
+  if (hint) { hint.textContent = 'Selecciona una categoría'; hint.style.color = 'var(--fg3)'; }
+
+  document.querySelectorAll('.ct-toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.ct === 'tel');
+  });
+
+  document.getElementById('cn-tel-wrap').style.display   = '';
+  document.getElementById('cn-wa-wrap').style.display    = 'none';
+  document.getElementById('cn-email-wrap').style.display = 'none';
+
+  const dz   = document.getElementById('cn-dropzone');
+  const icon = document.getElementById('fdz-icon');
+  const text = document.getElementById('fdz-text');
+  const sub  = document.getElementById('fdz-sub');
+  if (dz)   dz.classList.remove('file-attached');
+  if (icon) icon.textContent = '📎';
+  if (text) text.textContent = 'Haz clic o arrastra un documento aquí';
+  if (sub)  sub.textContent  = 'PDF, DOC, JPG, PNG · Máx. 10MB · Opcional';
+
+  document.getElementById('cn-char-count').textContent = '0';
+  const nInput = document.getElementById('cn-nombre');
+  if (nInput) { nInput.disabled = false; nInput.style.opacity = '1'; nInput.placeholder = 'Opcional si es anónima'; }
+
+  // Ocultar success, mostrar form
+  document.getElementById('connect-success').classList.remove('visible');
+  document.getElementById('connect-form-wrap').style.display = '';
+}
+
+/* ── Renderizar lista de consultas enviadas ── */
+function renderConnectList() {
+  const list     = getStoredConsultas();
+  const el       = document.getElementById('consultations-list');
+  const noEl     = document.getElementById('no-consultations');
+  if (!el) return;
+
+  if (!list.length) {
+    if (noEl) noEl.style.display = '';
+    el.innerHTML = '';
+    return;
+  }
+
+  if (noEl) noEl.style.display = 'none';
+
+  el.innerHTML = list.map(c => {
+    const icon = AREA_ICONS[c.tipo] || '📋';
+    const statusClass = c.estado === 'nuevo' ? 'status-nuevo' : c.estado === 'proceso' ? 'status-proceso' : 'status-cerrado';
+    const statusLabel = c.estado === 'nuevo' ? 'Recibido' : c.estado === 'proceso' ? 'En proceso' : 'Cerrado';
+    const contactLine = [
+      c.contactos?.tel   ? `📞 ${c.contactos.tel}`     : '',
+      c.contactos?.wa    ? `💬 ${c.contactos.wa}`      : '',
+      c.contactos?.email ? `📧 ${c.contactos.email}`  : '',
+    ].filter(Boolean).join(' · ');
+
+    return `
+      <div class="consultation-card">
+        <div class="cc-left">
+          <div class="cc-badge">${icon}</div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-title">${c.tipo} · ${c.provincia}</div>
+          <div class="cc-meta">
+            <span>${c.fecha}</span>
+            <span class="cc-status ${statusClass}">${statusLabel}</span>
+            ${c.anonima ? '<span style="font-size:10px;color:var(--fg3)">🕵️ Anónima</span>' : ''}
+          </div>
+          <div class="cc-desc">${c.descripcion}</div>
+          ${contactLine ? `<div style="font-size:11px;color:var(--fg3);margin-top:7px">${contactLine}</div>` : ''}
+        </div>
+        <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+          <div style="font-size:10px;color:var(--fg3);font-weight:700">Ref: ${c.id}</div>
+          ${c.archivo ? `<div style="font-size:10px;color:var(--brand)">📎 ${c.archivo}</div>` : ''}
+          <button class="btn btn-danger btn-sm" style="font-size:10px;padding:3px 8px"
+            onclick="deleteConsulta('${c.id}')">Eliminar</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ── Eliminar consulta ── */
+function deleteConsulta(id) {
+  if (!confirm('¿Eliminar esta consulta de tu historial local?')) return;
+  let list = getStoredConsultas();
+  list = list.filter(c => c.id !== id);
+  try { _storage.setItem(CONNECT_STORAGE_KEY, JSON.stringify(list)); } catch {}
+  renderConnectList();
+  updateConnectStats();
+  toast('Consulta eliminada', 'ok');
+}
+</script>
+</body>
+</html>
