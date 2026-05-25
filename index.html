@@ -1921,12 +1921,20 @@ body {
           <option value="paralegal">Paralegal</option>
         </select>
       </div>
-<button class="auth-btn" onclick="doRegister()">Crear cuenta</button>
+      <button class="auth-btn" onclick="doRegister()">Crear cuenta</button>
     </div>
 
-  </div><!-- /auth-card -->
-</div><!-- /auth-screen -->
-   
+    <div class="demo-hint" style="display:none;"></div>
+      <strong>Cuentas demo:</strong><br>
+      <span style="color:#fca5a5;font-weight:700">⚡ raf@sistema.com · RAF2025super</span> (Super Admin)<br>
+      admin@raf.com · <strong>admin123</strong> (Admin · Bufete Pérez)<br>
+      abogado@raf.com · <strong>legal123</strong> (Abogado · Bufete Pérez)<br>
+      paralegal@raf.com · <strong>para123</strong> (Paralegal · Bufete Pérez)<br>
+      admin2@firma.com · <strong>firma123</strong> (Admin · Firma Rodriguez)
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════════════════════════════════
      APLICACIÓN PRINCIPAL
 ══════════════════════════════════════════ -->
@@ -2680,10 +2688,10 @@ body {
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- Chart.js CDN — cargado al final del body, no necesita defer -->
+<!-- Chart.js CDN — defer evita bloqueo del parser HTML -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
-        crossorigin="anonymous"></script>
-      
+        crossorigin="anonymous"
+        defer></script>
 
 <script>
 /* ══════════════════════════════════════════
@@ -2721,8 +2729,9 @@ const DB_EMPRESAS = {
 };
 
 const DB_USUARIOS = [
-  { id:'u0', nombre:'RAF — System Owner', email:'raf@sistema.com', pass:'RAF2025super', rol:'superadmin', empresaId:null, activo:true, avatar:'⚡' },
-  { id:'u6', nombre:'Yamil Corniel',      email:'yamil@raf.com',   pass:'2208',         rol:'paralegal',  empresaId:'e1', activo:true, avatar:'YC' },
+  { id:'u0', nombre:'RAF — System Owner', email:'raf@sistema.com',   pass:'RAF2025super', rol:'superadmin', empresaId:null,  activo:true, avatar:'⚡' },
+  { id:'u1', nombre:'Rafael Pérez',       email:'admin@raf.com',     pass:'admin123',     rol:'admin',      empresaId:'e1', activo:true, avatar:'RP' },
+  { id:'u2', nombre:'Yamil Corniel',          email:'YamilCorniel@raf.com',   pass:'2208',     rol:'abogado',    empresaId:'e1', activo:true, avatar:'AG' },
 ];
 
 let DB_JURIS = {
@@ -2893,16 +2902,16 @@ function doRegister() {
 
 function iniciarSesion(user) {
   SESSION = { ...user };
-  initStatsMonthSelect();
-  applyRoleUI();
+  initStatsMonthSelect();                           // safe: DOM ya está listo
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('main-app').classList.add('visible');
-  const smEl = document.getElementById('stats-month');
-  if (smEl && smEl.value === '') smEl.value = new Date().getMonth();
+  document.getElementById('stats-month').value = new Date().getMonth();
+  applyRoleUI();
   buildNav();
   renderUserPill();
   updateConfigPage();
   if (isSuperAdmin()) {
+    window._saViewEmpresa = 'e1';
     goPage('superadmin');
     toast('⚡ Bienvenido, System Owner. Acceso total activo.', 'ok');
   } else {
@@ -3749,30 +3758,22 @@ function initStatsMonthSelect() {
   MN.forEach((m, i) => { const o = document.createElement('option'); o.value = i; o.textContent = m; msEl.appendChild(o); });
   msEl.value = new Date().getMonth();
 }
-jsfunction renderStats() {
-  if (typeof Chart === 'undefined') return;
 
+function renderStats() {
   const auds = getAuds();
-  const rawM = parseInt(document.getElementById('stats-month').value);
-  const rawY = parseInt(document.getElementById('stats-year').value);
-  const m = isNaN(rawM) ? new Date().getMonth() : rawM;
-  const y = isNaN(rawY) ? new Date().getFullYear() : rawY;
-
+  const m = parseInt(document.getElementById('stats-month').value);
+  const y = parseInt(document.getElementById('stats-year').value) || 2025;
   const tot = { Pendiente:0, Aplazada:0, Celebrada:0, Concluida:0 };
-
   Object.entries(auds).forEach(([k, v]) => {
     const [ky, km] = k.split('-');
-    if (parseInt(ky) === y && parseInt(km) - 1 === m)
-      v.forEach(a => { if (tot[a.estado] !== undefined) tot[a.estado]++; });
+    if (parseInt(ky) === y && parseInt(km) - 1 === m) v.forEach(a => { if (tot[a.estado] !== undefined) tot[a.estado]++; });
   });
-
   document.getElementById('stat-cards').innerHTML = Object.entries(tot).map(([s, c]) => `
     <div class="stat-card">
       <div class="top-bar" style="background:${SC[s]}"></div>
       <div class="lbl">${s}</div>
       <div class="val" style="color:${SC[s]}">${c}</div>
     </div>`).join('');
-
   const ctx = document.getElementById('stats-chart').getContext('2d');
   if (window.sChart) window.sChart.destroy();
   window.sChart = new Chart(ctx, {
@@ -3791,6 +3792,7 @@ jsfunction renderStats() {
     },
   });
 }
+
 /* ══════════════════════════════════════════
    ADMIN — Gestión de usuarios
 ══════════════════════════════════════════ */
