@@ -1921,9 +1921,11 @@ body {
           <option value="paralegal">Paralegal</option>
         </select>
       </div>
-      <button class="auth-btn" onclick="doRegister()">Crear cuenta</button>
+<button class="auth-btn" onclick="doRegister()">Crear cuenta</button>
     </div>
 
+  </div><!-- /auth-card -->
+</div><!-- /auth-screen -->
    
 <!-- ══════════════════════════════════════════
      APLICACIÓN PRINCIPAL
@@ -3747,24 +3749,30 @@ function initStatsMonthSelect() {
   MN.forEach((m, i) => { const o = document.createElement('option'); o.value = i; o.textContent = m; msEl.appendChild(o); });
   msEl.value = new Date().getMonth();
 }
-
-function renderStats() {
+jsfunction renderStats() {
   if (typeof Chart === 'undefined') return;
+
   const auds = getAuds();
   const rawM = parseInt(document.getElementById('stats-month').value);
   const rawY = parseInt(document.getElementById('stats-year').value);
   const m = isNaN(rawM) ? new Date().getMonth() : rawM;
   const y = isNaN(rawY) ? new Date().getFullYear() : rawY;
+
+  const tot = { Pendiente:0, Aplazada:0, Celebrada:0, Concluida:0 };
+
   Object.entries(auds).forEach(([k, v]) => {
     const [ky, km] = k.split('-');
-    if (parseInt(ky) === y && parseInt(km) - 1 === m) v.forEach(a => { if (tot[a.estado] !== undefined) tot[a.estado]++; });
+    if (parseInt(ky) === y && parseInt(km) - 1 === m)
+      v.forEach(a => { if (tot[a.estado] !== undefined) tot[a.estado]++; });
   });
+
   document.getElementById('stat-cards').innerHTML = Object.entries(tot).map(([s, c]) => `
     <div class="stat-card">
       <div class="top-bar" style="background:${SC[s]}"></div>
       <div class="lbl">${s}</div>
       <div class="val" style="color:${SC[s]}">${c}</div>
     </div>`).join('');
+
   const ctx = document.getElementById('stats-chart').getContext('2d');
   if (window.sChart) window.sChart.destroy();
   window.sChart = new Chart(ctx, {
@@ -3783,7 +3791,6 @@ function renderStats() {
     },
   });
 }
-
 /* ══════════════════════════════════════════
    ADMIN — Gestión de usuarios
 ══════════════════════════════════════════ */
