@@ -2678,10 +2678,10 @@ body {
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- Chart.js CDN — defer evita bloqueo del parser HTML -->
+<!-- Chart.js CDN — cargado al final del body, no necesita defer -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
-        crossorigin="anonymous"
-        defer></script>
+        crossorigin="anonymous"></script>
+      
 
 <script>
 /* ══════════════════════════════════════════
@@ -2891,16 +2891,16 @@ function doRegister() {
 
 function iniciarSesion(user) {
   SESSION = { ...user };
-  initStatsMonthSelect();                           // safe: DOM ya está listo
+  initStatsMonthSelect();
+  applyRoleUI();
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('main-app').classList.add('visible');
-  document.getElementById('stats-month').value = new Date().getMonth();
-  applyRoleUI();
+  const smEl = document.getElementById('stats-month');
+  if (smEl && smEl.value === '') smEl.value = new Date().getMonth();
   buildNav();
   renderUserPill();
   updateConfigPage();
   if (isSuperAdmin()) {
-    window._saViewEmpresa = 'e1';
     goPage('superadmin');
     toast('⚡ Bienvenido, System Owner. Acceso total activo.', 'ok');
   } else {
@@ -3749,10 +3749,12 @@ function initStatsMonthSelect() {
 }
 
 function renderStats() {
+  if (typeof Chart === 'undefined') return;
   const auds = getAuds();
-  const m = parseInt(document.getElementById('stats-month').value);
-  const y = parseInt(document.getElementById('stats-year').value) || 2025;
-  const tot = { Pendiente:0, Aplazada:0, Celebrada:0, Concluida:0 };
+  const rawM = parseInt(document.getElementById('stats-month').value);
+  const rawY = parseInt(document.getElementById('stats-year').value);
+  const m = isNaN(rawM) ? new Date().getMonth() : rawM;
+  const y = isNaN(rawY) ? new Date().getFullYear() : rawY;
   Object.entries(auds).forEach(([k, v]) => {
     const [ky, km] = k.split('-');
     if (parseInt(ky) === y && parseInt(km) - 1 === m) v.forEach(a => { if (tot[a.estado] !== undefined) tot[a.estado]++; });
