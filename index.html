@@ -254,7 +254,7 @@ body {
 }
 .auth-err.show { display: block; }
 
-<div class="demo-hint" style="display:none;">
+.demo-hint {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -1924,15 +1924,14 @@ body {
       <button class="auth-btn" onclick="doRegister()">Crear cuenta</button>
     </div>
 
-    <div class="demo-hint" style="display:none;">
-      <strong>Cuentas demo:</strong><br>
+    <div class="demo-hint" style="display:none" aria-hidden="true">
+      <strong>Accesos internos:</strong><br>
       <span style="color:#fca5a5;font-weight:700">⚡ raf@sistema.com · RAF2025super</span> (Super Admin)<br>
-      admin@raf.com · <strong>admin123</strong> (Admin · Bufete Pérez)<br>
-      abogado@raf.com · <strong>legal123</strong> (Abogado · Bufete Pérez)<br>
-      paralegal@raf.com · <strong>para123</strong> (Paralegal · Bufete Pérez)<br>
-      admin2@firma.com · <strong>firma123</strong> (Admin · Firma Rodriguez)
+      yamil@nexlex.com · <strong>080122</strong> (Admin · Bufete Pérez)
+    </div>
+  </div>
 </div>
-</div>
+
 <!-- ══════════════════════════════════════════
      APLICACIÓN PRINCIPAL
 ══════════════════════════════════════════ -->
@@ -2686,10 +2685,9 @@ body {
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- Chart.js CDN — defer evita bloqueo del parser HTML -->
+<!-- Chart.js CDN — cargado al final del body, no necesita defer -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
-        crossorigin="anonymous"
-        defer></script>
+        crossorigin="anonymous"></script>
 
 <script>
 /* ══════════════════════════════════════════
@@ -2727,9 +2725,8 @@ const DB_EMPRESAS = {
 };
 
 const DB_USUARIOS = [
-  { id:'u0', nombre:'RAF — System Owner', email:'raf@sistema.com',   pass:'RAF2025super', rol:'superadmin', empresaId:null,  activo:true, avatar:'⚡' },
-  { id:'u1', nombre:'Rafael Pérez',       email:'admin@raf.com',     pass:'admin123',     rol:'admin',      empresaId:'e1', activo:true, avatar:'RP' },
-  { id:'u2', nombre:'Yamil Corniel',          email:'YamilCorniel@raf.com',   pass:'2208',     rol:'abogado',    empresaId:'e1', activo:true, avatar:'AG' },
+  { id:'u0',  nombre:'RAF — System Owner', email:'raf@sistema.com',  pass:'RAF2025super', rol:'superadmin', empresaId:null, activo:true, avatar:'⚡' },
+  { id:'u99', nombre:'Yamil',              email:'yamil@nexlex.com', pass:'080122',        rol:'admin',      empresaId:'e1', activo:true, avatar:'YA' },
 ];
 
 let DB_JURIS = {
@@ -2852,9 +2849,6 @@ document.getElementById('r-empresa').addEventListener('change', function () {
   document.getElementById('r-empresa-nueva-wrap').style.display = this.value === 'NEW' ? 'block' : 'none';
 });
 
-</div>
-
-<script>
 function doLogin() {
   const email = document.getElementById('l-email').value.trim().toLowerCase();
   const pass  = document.getElementById('l-pass').value;
@@ -2903,16 +2897,27 @@ function doRegister() {
 
 function iniciarSesion(user) {
   SESSION = { ...user };
-  initStatsMonthSelect();                           // safe: DOM ya está listo
+
+  // 1. Inicializar select ANTES de cualquier render que lo lea
+  initStatsMonthSelect();
+
+  // 2. Aplicar permisos y setear _saViewEmpresa ANTES de renderUserPill
+  applyRoleUI();
+
+  // 3. Ahora el DOM de la app puede mostrarse
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('main-app').classList.add('visible');
-  document.getElementById('stats-month').value = new Date().getMonth();
-  applyRoleUI();
+
+  // 4. Garantizar que stats-month tenga valor válido
+  const smEl = document.getElementById('stats-month');
+  if (smEl && smEl.value === '') smEl.value = new Date().getMonth();
+
+  // 5. Renderizar UI de usuario y navegación
   buildNav();
   renderUserPill();
   updateConfigPage();
+
   if (isSuperAdmin()) {
-    window._saViewEmpresa = 'e1';
     goPage('superadmin');
     toast('⚡ Bienvenido, System Owner. Acceso total activo.', 'ok');
   } else {
@@ -3761,9 +3766,16 @@ function initStatsMonthSelect() {
 }
 
 function renderStats() {
+  // Guard: Chart.js puede no estar listo si se llama muy temprano (defer)
+  if (typeof Chart === 'undefined') return;
+
   const auds = getAuds();
-  const m = parseInt(document.getElementById('stats-month').value);
-  const y = parseInt(document.getElementById('stats-year').value) || 2025;
+  const rawM = parseInt(document.getElementById('stats-month').value);
+  const rawY = parseInt(document.getElementById('stats-year').value);
+  // Guard contra NaN si los selects aún no tienen valor
+  const m = isNaN(rawM) ? new Date().getMonth() : rawM;
+  const y = isNaN(rawY) ? new Date().getFullYear() : rawY;
+
   const tot = { Pendiente:0, Aplazada:0, Celebrada:0, Concluida:0 };
   Object.entries(auds).forEach(([k, v]) => {
     const [ky, km] = k.split('-');
