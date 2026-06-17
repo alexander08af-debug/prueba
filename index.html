@@ -271,6 +271,19 @@ body {
 ══════════════════════════════════════════ */
 .app { display: none; flex-direction: column; height: 100vh; min-height: 600px; }
 .app.visible { display: flex; }
+body.connect-public-mode #auth-screen { display:none !important; }
+body.connect-public-mode #main-app { display:flex !important; min-height:100vh; height:auto; }
+body.connect-public-mode .topnav,
+body.connect-public-mode #sa-bar,
+body.connect-public-mode .app-footer,
+body.connect-public-mode .page:not(#page-connect),
+body.connect-public-mode #ctab-inbox,
+body.connect-public-mode #connect-inbox-view,
+body.connect-public-mode .connect-hero-stats { display:none !important; }
+body.connect-public-mode #page-connect { display:flex !important; }
+.public-login-btn { position:fixed; top:14px; right:14px; z-index:2000; background:rgba(13,18,32,.86); color:var(--fg2); border:1px solid var(--border-hi); border-radius:999px; padding:7px 12px; font:600 11px Inter,system-ui,sans-serif; cursor:pointer; backdrop-filter:blur(10px); }
+.public-login-btn:hover { color:var(--fg); border-color:var(--brand); }
+
 
 .topnav {
   display: flex;
@@ -1846,8 +1859,197 @@ body {
   .connect-hero-stats { flex-direction: row; flex-wrap: wrap; min-width: 0; }
 }
 
-@media (max-width: 480px) {
-  .case-type-grid { grid-template-columns: repeat(2, 1fr); }
+/* ── Inbox cards ── */
+.inbox-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 10px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.inbox-card:hover { border-color: var(--border-hi); box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+.inbox-card.estado-nuevo,
+.inbox-card.estado-consulta_recibida { border-left: 4px solid var(--green); }
+.inbox-card.estado-proceso,
+.inbox-card.estado-en_analisis       { border-left: 4px solid var(--brand); }
+.inbox-card.estado-respondido,
+.inbox-card.estado-respuesta_emitida { border-left: 4px solid var(--amber); }
+.inbox-card.estado-contratado        { border-left: 4px solid var(--orange); }
+.inbox-card.estado-asignado          { border-left: 4px solid #22d3ee; }
+.inbox-card.estado-cerrado           { border-left: 4px solid var(--fg3); }
+
+.inbox-top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+.inbox-title { font-size:13px; font-weight:700; color:var(--fg); }
+.inbox-ref   { font-size:10px; color:var(--fg3); font-weight:600; }
+.inbox-meta  { font-size:11px; color:var(--fg3); margin-bottom:8px; display:flex; gap:10px; flex-wrap:wrap; }
+.inbox-desc  { font-size:12px; color:var(--fg2); line-height:1.65; margin-bottom:12px; }
+.inbox-contact { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; font-size:11.5px; color:var(--fg2); }
+.inbox-actions { display:flex; gap:6px; flex-wrap:wrap; }
+
+.estado-badge-nuevo,
+.estado-badge-consulta_recibida { background:rgba(52,211,153,.12); color:var(--green);  border:1px solid rgba(52,211,153,.25); }
+.estado-badge-proceso,
+.estado-badge-en_analisis       { background:rgba(79,124,255,.12); color:var(--brand);  border:1px solid var(--brand-line); }
+.estado-badge-respondido,
+.estado-badge-respuesta_emitida { background:rgba(251,191,36,.12); color:var(--amber);  border:1px solid rgba(251,191,36,.25); }
+.estado-badge-contratado        { background:rgba(251,146,60,.12); color:var(--orange); border:1px solid rgba(251,146,60,.3); }
+.estado-badge-asignado          { background:rgba(34,211,238,.12); color:#22d3ee; border:1px solid rgba(34,211,238,.28); }
+.estado-badge-cerrado           { background:rgba(148,163,184,.12); color:var(--fg2); border:1px solid rgba(148,163,184,.28); }
+
+.crm-assignment-box { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; background:rgba(79,124,255,.06); border:1px solid var(--brand-line); border-radius:var(--radius); padding:10px; margin:10px 0 12px; }
+.crm-assignment-item { min-width:0; }
+.crm-assignment-label { font-size:9.5px;color:var(--fg3);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px; }
+.crm-assignment-value { font-size:11.5px;color:var(--fg);font-weight:650;white-space:normal;overflow-wrap:anywhere; }
+.crm-select { background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:5px 9px;color:var(--fg);font-size:11px;font-family:inherit;outline:none;min-height:30px; }
+.connect-private-hidden { display:none !important; }
+.inbox-card.no-leida { box-shadow:0 0 0 1px rgba(248,113,113,.28), 0 10px 26px rgba(248,113,113,.08); }
+.crm-notif-pill { display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:800;background:rgba(248,113,113,.14);color:#fca5a5;border:1px solid rgba(248,113,113,.32); }
+.crm-date-grid { display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 10px;font-size:10.5px;color:var(--fg3); }
+.crm-date-grid span { background:var(--card-hover);border:1px solid var(--border);border-radius:999px;padding:3px 8px; }
+
+
+/* Autocomplete */
+.cliente-sug-item {
+  padding: 9px 13px;
+  font-size: 12.5px;
+  cursor: pointer;
+  color: var(--fg);
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.cliente-sug-item:last-child { border-bottom: none; }
+.cliente-sug-item:hover { background: var(--card-hover); }
+
+/* Connect nav badge pulse */
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.2); }
+}
+.badge-pulse { animation: badge-pulse 1.5s infinite; }
+
+/* ── Conversación abogado-cliente ── */
+.conv-modal { width: 600px; }
+
+.conv-thread {
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+
+.conv-msg {
+  max-width: 82%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  position: relative;
+}
+
+.conv-msg.abogado {
+  background: var(--brand);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.conv-msg.cliente {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  color: var(--fg);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.conv-msg .conv-who {
+  font-size: 9.5px;
+  font-weight: 700;
+  opacity: .7;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.conv-msg .conv-time {
+  font-size: 9px;
+  opacity: .6;
+  margin-top: 5px;
+  text-align: right;
+}
+
+.conv-empty {
+  text-align: center;
+  color: var(--fg3);
+  font-size: 12px;
+  padding: 24px;
+}
+
+.conv-input-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.conv-textarea {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  color: var(--fg);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  resize: none;
+  min-height: 44px;
+  max-height: 120px;
+  transition: border-color .15s;
+  line-height: 1.5;
+}
+.conv-textarea:focus { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-glow); }
+
+/* Inbox card — botón ver conversación */
+.inbox-conv-btn {
+  background: rgba(79,124,255,.1);
+  border: 1px solid var(--brand-line);
+  color: var(--brand);
+  border-radius: var(--radius);
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.inbox-conv-btn:hover { background: rgba(79,124,255,.2); }
+.inbox-conv-count {
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  min-width: 16px;
+  text-align: center;
+}
+
+/* Seguimiento por código */
+.track-result-card {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 12px;
 }
 </style>
 </head>
@@ -1955,6 +2157,7 @@ body {
       <div class="nav-tab hidden-tab" data-page="superadmin" id="nav-superadmin">🛡 Super Panel</div>
       <div class="nav-tab" data-page="config">⚙ Config</div>
       <div class="nav-tab" data-page="connect" style="color:var(--green);font-weight:700" id="nav-connect">🔗 Connect</div>
+      <div class="nav-tab hidden-tab perm-write" data-page="inbox" id="nav-inbox">📥 Bandeja <span class="nbadge" id="badge-inbox" style="display:none">0</span></div>
     </div>
 
     <!-- User pill -->
@@ -2230,14 +2433,24 @@ body {
     <!-- Hero -->
     <div class="connect-hero">
       <div class="connect-hero-text">
-        <div class="connect-hero-tag">NEXLEX Connect · Consulta Legal Online</div>
-        <h1>Tu situación legal merece<br><span>atención profesional</span> rápida.</h1>
-        <p>Describe tu caso de forma rápida y confidencial. Nuestros abogados te contactarán con orientación personalizada en toda la República Dominicana.</p>
+        <div class="connect-hero-tag">NEXLEX Connect · Marketplace Legal Dominicano</div>
+        <h1>Publica tu caso.<br><span>Un abogado real te responderá.</span></h1>
+        <p>Describe tu situación legal en minutos y conecta con abogados especializados en toda la República Dominicana. Rápido, confidencial y sin compromiso inicial.</p>
         <div class="connect-trust">
-          <div class="trust-pill"><div class="tp-dot"></div> Consulta 100% confidencial</div>
-          <div class="trust-pill"><div class="tp-dot"></div> Opción anónima disponible</div>
-          <div class="trust-pill"><div class="tp-dot"></div> Cobertura nacional</div>
-          <div class="trust-pill"><div class="tp-dot"></div> Respuesta en 24h</div>
+          <div class="trust-pill"><div class="tp-dot"></div> Atención humana, no un bot</div>
+          <div class="trust-pill"><div class="tp-dot"></div> 100% confidencial</div>
+          <div class="trust-pill"><div class="tp-dot"></div> Cobertura nacional RD</div>
+          <div class="trust-pill"><div class="tp-dot"></div> Respuesta en menos de 24h</div>
+        </div>
+        <div style="margin-top:18px;padding:14px 16px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:var(--radius-lg);display:flex;align-items:center;gap:12px">
+          <div style="font-size:22px">⚖️</div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:2px">¿Ya enviaste una consulta?</div>
+            <div style="font-size:11.5px;color:var(--fg2)">
+              Consulta el estado con tu código de seguimiento.
+              <button onclick="switchConnectTab('list')" style="background:none;border:none;color:var(--brand);cursor:pointer;font-size:11.5px;font-weight:600;padding:0;font-family:inherit;text-decoration:underline">Ver mis consultas →</button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="connect-hero-stats">
@@ -2267,26 +2480,44 @@ body {
           <div class="cs-info-title">Cómo funciona</div>
           <div class="cs-step">
             <div class="cs-step-num">1</div>
-            <div class="cs-step-text"><strong>Describe tu caso</strong> con el mayor detalle posible, de forma anónima si lo prefieres.</div>
+            <div class="cs-step-text"><strong>Publica tu caso</strong> — Describe tu situación legal con el mayor detalle posible. Tienes la opción de hacerlo de forma anónima.</div>
           </div>
           <div class="cs-step">
             <div class="cs-step-num">2</div>
-            <div class="cs-step-text"><strong>Un abogado especializado</strong> en el área revisará tu situación.</div>
+            <div class="cs-step-text"><strong>Un abogado real lo revisa</strong> — No es una IA. Un profesional especializado en el área de tu caso evaluará tu situación.</div>
           </div>
           <div class="cs-step">
             <div class="cs-step-num">3</div>
-            <div class="cs-step-text"><strong>Recibirás orientación</strong> por tu medio de contacto preferido en menos de 24 horas.</div>
+            <div class="cs-step-text"><strong>Te contactamos directamente</strong> — Por WhatsApp, teléfono o correo, según prefieras. En menos de 24 horas.</div>
           </div>
+          <div class="cs-step">
+            <div class="cs-step-num">4</div>
+            <div class="cs-step-text"><strong>Tú decides si contratas</strong> — Recibes orientación profesional y decides libremente si continúas con representación legal.</div>
+          </div>
+        </div>
+
+        <!-- Buscar consulta por código -->
+        <div class="cs-info-card">
+          <div class="cs-info-title">📋 Seguimiento de tu caso</div>
+          <div style="font-size:11.5px;color:var(--fg2);margin-bottom:10px;line-height:1.5">Ingresa el código que recibiste al publicar tu consulta.</div>
+          <div style="display:flex;gap:6px">
+            <input id="track-code" placeholder="Ej: NX-ABC123"
+              style="flex:1;background:var(--card-hover);border:1px solid var(--border-hi);border-radius:var(--radius);padding:8px 10px;color:var(--fg);font-size:12px;font-family:inherit;outline:none"
+              onkeydown="if(event.key==='Enter') buscarConsultaPorCodigo()">
+            <button class="btn btn-accent btn-sm" onclick="buscarConsultaPorCodigo()">Buscar</button>
+          </div>
+          <div id="track-result" style="margin-top:10px"></div>
         </div>
 
         <!-- Garantías -->
         <div class="cs-info-card">
           <div class="cs-info-title">Tus garantías</div>
           <div class="cs-guarantee"><div class="cs-g-icon">🔒</div> Información completamente confidencial</div>
-          <div class="cs-guarantee"><div class="cs-g-icon">🕵️</div> Puedes consultar de forma anónima</div>
-          <div class="cs-guarantee"><div class="cs-g-icon">🗺️</div> Atención en todo el territorio nacional</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">👤</div> Atención humana, nunca automatizada</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">🕵️</div> Opción de consulta anónima</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">🗺️</div> Abogados en toda la República Dominicana</div>
           <div class="cs-guarantee"><div class="cs-g-icon">⚖️</div> Abogados colegiados y verificados</div>
-          <div class="cs-guarantee"><div class="cs-g-icon">📞</div> Eliges el medio de contacto</div>
+          <div class="cs-guarantee"><div class="cs-g-icon">📞</div> Tú eliges el medio de contacto</div>
         </div>
 
         <!-- Feed de actividad reciente -->
@@ -2303,7 +2534,8 @@ body {
         <!-- Sub-tabs -->
         <div class="connect-tabs">
           <button class="connect-tab active" id="ctab-form" onclick="switchConnectTab('form')">✍ Nueva consulta</button>
-          <button class="connect-tab" id="ctab-list" onclick="switchConnectTab('list')">📋 Consultas enviadas</button>
+          <button class="connect-tab" id="ctab-list" onclick="switchConnectTab('list')">📋 Mis consultas</button>
+          <button class="connect-tab" id="ctab-inbox" onclick="switchConnectTab('inbox')">📥 Bandeja <span id="inbox-badge" style="background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;margin-left:4px;display:none">0</span></button>
         </div>
 
         <!-- FORMULARIO -->
@@ -2451,9 +2683,65 @@ body {
           </div>
         </div>
 
+        <!-- BANDEJA DE RECEPCIÓN (panel interno abogados) -->
+        <div id="connect-inbox-view" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--fg)">📥 Bandeja de consultas</div>
+              <div style="font-size:11.5px;color:var(--fg3);margin-top:3px">Casos recibidos por NEXLEX Connect</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="inbox-filter" onchange="renderInbox()" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:6px 10px;color:var(--fg);font-size:12px;font-family:inherit;outline:none">
+                <option value="">Todos los estados</option>
+                <option value="consulta_recibida">Consulta recibida</option>
+                <option value="asignado">Asignado</option>
+                <option value="en_analisis">En análisis</option>
+                <option value="respuesta_emitida">Respuesta emitida</option>
+                <option value="contratado">Contratado</option>
+                <option value="cerrado">Cerrado</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" onclick="renderInbox()">↻ Actualizar</button>
+            </div>
+          </div>
+          <div id="inbox-list">
+            <div style="text-align:center;padding:48px;color:var(--fg3);font-size:13px" id="no-inbox">
+              <div style="font-size:32px;margin-bottom:12px">📥</div>
+              No hay consultas recibidas aún.
+            </div>
+          </div>
+        </div>
+
       </div><!-- /main -->
     </div><!-- /body -->
   </div><!-- /page-connect -->
+
+  <!-- ── BANDEJA DE CONSULTAS ── -->
+  <div class="page" id="page-inbox">
+    <div class="hbar">
+      <span class="hbar-title">📥 Bandeja de consultas — NEXLEX Connect</span>
+      <div class="hbar-right">
+        <select id="inbox-page-filter" onchange="renderInboxPage()" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:7px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none">
+          <option value="">Todos los estados</option>
+                <option value="consulta_recibida">Consulta recibida</option>
+                <option value="asignado">Asignado</option>
+                <option value="en_analisis">En análisis</option>
+                <option value="respuesta_emitida">Respuesta emitida</option>
+                <option value="contratado">Contratado</option>
+                <option value="cerrado">Cerrado</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="renderInboxPage()">↻ Actualizar</button>
+        <button class="btn btn-danger btn-sm" onclick="limpiarInbox()">🗑 Limpiar todos</button>
+      </div>
+    </div>
+    <div style="padding:20px;flex:1;overflow-y:auto" id="inbox-page-body">
+      <div style="text-align:center;padding:60px;color:var(--fg3);font-size:13px" id="no-inbox-page">
+        <div style="font-size:40px;margin-bottom:14px">📥</div>
+        No hay consultas recibidas aún.<br>
+        <span style="font-size:11.5px;margin-top:8px;display:block">Las consultas enviadas desde NEXLEX Connect aparecerán aquí.</span>
+      </div>
+      <div id="inbox-page-list"></div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <div class="app-footer">
@@ -2554,7 +2842,14 @@ body {
   <div class="modal">
     <div class="modal-header"><h3 id="aud-title">Nueva Audiencia</h3><button class="close-btn" onclick="closeModal('modal-add-aud')">×</button></div>
     <div class="modal-body">
-      <div class="form-group"><label>Cliente</label><input id="aud-cliente" placeholder="Nombre del cliente"></div>
+      <div class="form-group">
+        <label>Cliente</label>
+        <div style="position:relative">
+          <input id="aud-cliente" placeholder="Nombre del cliente" autocomplete="off"
+            oninput="showClienteSug(this.value)" onblur="setTimeout(()=>hideClienteSug(),200)">
+          <div id="cliente-sug" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.4);max-height:150px;overflow-y:auto"></div>
+        </div>
+      </div>
       <div class="g2">
         <div class="form-group"><label>Hora</label><input id="aud-hora" placeholder="09:00"></div>
         <div class="form-group"><label>Estado</label><select id="aud-estado"><option>Pendiente</option><option>Celebrada</option><option>Aplazada</option><option>Concluida</option></select></div>
@@ -2678,6 +2973,50 @@ body {
   </div>
 </div>
 
+<!-- Modal de conversación abogado-cliente -->
+<div class="overlay" id="modal-conversacion">
+  <div class="modal conv-modal">
+    <div class="modal-header">
+      <div style="flex:1">
+        <h3 id="conv-titulo">Conversación</h3>
+        <div style="font-size:11px;color:var(--fg3);margin-top:2px" id="conv-ref"></div>
+      </div>
+      <div id="conv-estado-badge" style="margin-right:8px"></div>
+      <button class="close-btn" onclick="closeModal('modal-conversacion')">×</button>
+    </div>
+    <div class="modal-body" style="padding:16px 20px">
+      <!-- Info del caso -->
+      <div id="conv-caso-info" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--fg2)"></div>
+      <!-- Hilo de mensajes -->
+      <div class="conv-thread" id="conv-thread">
+        <div class="conv-empty" id="conv-empty">No hay mensajes aún. Sé el primero en responder.</div>
+      </div>
+      <!-- Input respuesta -->
+      <div class="conv-input-wrap">
+        <textarea class="conv-textarea" id="conv-input" placeholder="Escribe tu respuesta al cliente..." rows="2"
+          onkeydown="if(event.ctrlKey && event.key==='Enter'){ enviarMensajeConv(); }"></textarea>
+        <button class="btn btn-accent" onclick="enviarMensajeConv()" style="padding:10px 16px;align-self:flex-end">
+          Enviar
+        </button>
+      </div>
+      <div style="font-size:10.5px;color:var(--fg3);margin-top:6px">Ctrl+Enter para enviar rápido</div>
+    </div>
+    <div class="modal-footer">
+      <select id="conv-estado-sel"
+        style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:7px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none">
+        <option value="consulta_recibida">Consulta recibida</option>
+        <option value="asignado">Asignado</option>
+        <option value="en_analisis">En análisis</option>
+        <option value="respuesta_emitida">Respuesta emitida</option>
+        <option value="contratado">Contratado</option>
+        <option value="cerrado">Cerrado</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" onclick="guardarEstadoConv()">Guardar estado</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-conversacion')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <!-- Context menu + Toast -->
 <div id="ctx-menu">
   <div class="ctx-item" id="ctx-rename" onclick="ctxRename()">✏ Renombrar</div>
@@ -2731,30 +3070,41 @@ const DB_USUARIOS = [
 
 let DB_JURIS = {
   e1: [
-    { id:1, t:'STC-TC-0420-24 — Derecho a la defensa y prueba ilícita', f:'2024-10-15', fu:'Tribunal Constitucional', area:'Penal', kw:['prueba ilícita','debido proceso','defensa','nulidad'], d:'El TC establece que toda prueba obtenida en violación de derechos fundamentales es nula de pleno derecho.', texto:'La presente sentencia establece que conforme al artículo 69 de la Constitución, nadie puede ser juzgado con pruebas obtenidas mediante violación a derechos fundamentales.', fav:true,  nuevo:true,  importante:true,  analisis:null, empresaId:'e1' },
-    { id:2, t:'SCJ-PS-2024-0312 — Nulidad por defecto de notificación',  f:'2024-09-03', fu:'Suprema Corte',           area:'Civil', kw:['nulidad','notificación','acto de alguacil'],              d:'La SCJ reitera que la omisión de notificación válida genera nulidad absoluta del procedimiento.',          texto:'La Suprema Corte considera que la notificación es un acto esencial que garantiza el derecho de defensa.',                                                                              fav:false, nuevo:true,  importante:false, analisis:null, empresaId:'e1' },
-    { id:3, t:'TC-0055-23 — Proporcionalidad de medidas de coerción',    f:'2023-11-10', fu:'Tribunal Constitucional', area:'Penal', kw:['medida de coerción','proporcionalidad','prisión preventiva'], d:'El TC exige el test de proporcionalidad: idoneidad, necesidad y proporcionalidad en sentido estricto.', texto:'El artículo 40 de la Constitución garantiza la libertad personal. La prisión preventiva es la última ratio.', fav:true, nuevo:false, importante:true, analisis:{ resumen:'Establece estándar constitucional de proporcionalidad obligatorio para medidas de coerción.', puntos:['Test tripartito obligatorio','Prisión preventiva como última opción','Motivación reforzada obligatoria','Derecho a revisión periódica'], aplicacion:'Citar en toda audiencia de medida de coerción al impugnar la proporcionalidad.', importancia:'Alta. Cambia el estándar penal preventivo. Vinculante para todos los tribunales.' }, empresaId:'e1' },
+    { id:1,  t:'TC/0420/24 — Derecho a la defensa y prueba ilícita',                f:'2024-10-15', fu:'Tribunal Constitucional',          area:'Penal',           kw:['prueba ilícita','debido proceso','defensa','nulidad','Art. 69 Constitución'], d:'El Tribunal Constitucional establece que toda prueba obtenida en violación de derechos fundamentales es nula de pleno derecho, conforme al Art. 69 de la Constitución Dominicana.',                                                                                texto:'De conformidad con el artículo 69 de la Constitución de la República Dominicana, se garantiza la tutela judicial efectiva y el debido proceso. Ninguna persona puede ser juzgada mediante pruebas obtenidas con violación a sus derechos fundamentales. Esta sentencia reitera el principio de exclusión probatoria.',    fav:true,  nuevo:true,  importante:true,  analisis:null, empresaId:'e1' },
+    { id:2,  t:'SCJ-Pleno-2024-0312 — Nulidad por defecto de notificación',          f:'2024-09-03', fu:'Suprema Corte de Justicia',         area:'Civil',           kw:['nulidad','notificación','acto de alguacil','Art. 61 CPC'], d:'La Suprema Corte reitera que la omisión de notificación válida mediante acto de alguacil genera nulidad absoluta del procedimiento, conforme al Art. 61 del Código de Procedimiento Civil.',                                                            texto:'La Suprema Corte de Justicia, en funciones de Pleno, considera que la notificación es un acto esencial del procedimiento que garantiza el derecho de defensa. Su ausencia o defecto formal genera nulidad absoluta e insubsanable del proceso.',                                                                              fav:false, nuevo:true,  importante:false, analisis:null, empresaId:'e1' },
+    { id:3,  t:'TC/0055/23 — Proporcionalidad de medidas de coerción',               f:'2023-11-10', fu:'Tribunal Constitucional',          area:'Penal',           kw:['medida de coerción','proporcionalidad','prisión preventiva','Art. 40 Constitución'], d:'El TC exige aplicación del test de proporcionalidad (idoneidad, necesidad y proporcionalidad estricta) en toda medida de coerción privativa de libertad.',                                texto:'El artículo 40 de la Constitución Dominicana consagra el derecho a la libertad personal. La prisión preventiva como medida de coerción es de carácter excepcional y debe superar el triple test constitucional de proporcionalidad antes de ser impuesta.',                                                                  fav:true,  nuevo:false, importante:true,  analisis:{ resumen:'Establece estándar constitucional del triple test de proporcionalidad para toda medida de coerción privativa de libertad en República Dominicana.', puntos:['Test tripartito obligatorio: idoneidad, necesidad y proporcionalidad','Prisión preventiva como ultima ratio del sistema','Motivación reforzada y específica del tribunal','Derecho a revisión periódica de la medida'], aplicacion:'Citar obligatoriamente en toda audiencia de medida de coerción para impugnar proporcionalidad.', importancia:'Vinculante para todos los tribunales dominicanos. Cambia el estándar de motivación judicial.' }, empresaId:'e1' },
+    { id:4,  t:'SCJ-1ra. Sala-2024-087 — Prescripción en materia laboral',           f:'2024-07-22', fu:'Suprema Corte de Justicia',         area:'Laboral',         kw:['prescripción','Código de Trabajo','Art. 706','acciones laborales'], d:'La SCJ establece que las acciones derivadas del contrato de trabajo prescriben a los tres años conforme al Art. 706 del Código de Trabajo Dominicano, computados desde el cese de la relación laboral.',                              texto:'El Código de Trabajo de la República Dominicana en su artículo 706 establece el plazo prescriptivo de tres años para todas las acciones derivadas del contrato de trabajo. Dicho plazo corre desde la extinción del vínculo laboral.',                                                                                        fav:false, nuevo:true,  importante:true,  analisis:null, empresaId:'e1' },
+    { id:5,  t:'TC/0310/22 — Inconstitucionalidad de norma penal en blanco',         f:'2022-12-05', fu:'Tribunal Constitucional',          area:'Constitucional',  kw:['norma penal en blanco','principio legalidad','Art. 40.13','tipicidad'], d:'El TC declara la inconstitucionalidad de normas penales en blanco que no cumplen con el estándar de taxatividad requerido por el principio de legalidad consagrado en el Art. 40.13 de la Constitución.',                              texto:'El principio de legalidad penal exige que la ley defina de manera clara, precisa y suficiente los elementos constitutivos del tipo penal. Las normas penales en blanco que remiten a reglamentos administrativos sin criterios suficientes vulneran el artículo 40.13 de la Constitución Dominicana.',                       fav:false, nuevo:false, importante:true,  analisis:null, empresaId:'e1' },
+    { id:6,  t:'SCJ-3ra. Sala-2023-442 — Deslinde y partición de inmueble registrado', f:'2023-08-14', fu:'Suprema Corte de Justicia',     area:'Inmobiliario',    kw:['deslinde','partición','registro inmobiliario','Ley 108-05'], d:'La SCJ aclara el procedimiento de deslinde y partición de inmuebles registrados bajo la Ley 108-05, estableciendo requisitos formales del acto de deslinde ante el Tribunal Superior de Tierras.',                                   texto:'Conforme a la Ley 108-05 de Registro Inmobiliario y su Reglamento, el procedimiento de deslinde exige levantamiento parcelario certificado por el INDRHI y sometimiento al Tribunal Superior de Tierras competente. La omisión de estos pasos genera ineficacia del acto.',                                                  fav:true,  nuevo:false, importante:false, analisis:null, empresaId:'e1' },
+    { id:7,  t:'TC/0180/23 — Tutela judicial efectiva y plazo razonable',             f:'2023-05-30', fu:'Tribunal Constitucional',          area:'Constitucional',  kw:['tutela judicial efectiva','plazo razonable','Art. 69.2','mora judicial'], d:'El TC establece que la mora judicial sistemática vulnera el derecho a la tutela judicial efectiva y al plazo razonable garantizados en el artículo 69.2 de la Constitución Dominicana.',                                               texto:'La Constitución Dominicana garantiza en su artículo 69.2 el derecho al juicio dentro de un plazo razonable. La omisión del Estado en dictar sentencia dentro de plazos prudenciales configura una violación constitucional susceptible de ser amparada por acción de amparo.',                                              fav:false, nuevo:false, importante:false, analisis:null, empresaId:'e1' },
+    { id:8,  t:'SCJ-Pleno-2023-0178 — Daños morales y criterios de cuantificación',  f:'2023-03-18', fu:'Suprema Corte de Justicia',         area:'Civil',           kw:['daños morales','responsabilidad civil extracontractual','cuantificación','Art. 1382 CC'], d:'La SCJ establece criterios objetivos para la cuantificación de daños morales en responsabilidad civil extracontractual, rechazando indemnizaciones simbólicas que no reparan el daño real causado.',     texto:'Conforme a los artículos 1382 y siguientes del Código Civil Dominicano, los daños morales son reparables y deben cuantificarse conforme a parámetros objetivos: naturaleza del daño, intensidad del sufrimiento, repercusión en la vida de la víctima y circunstancias del caso.',                                         fav:false, nuevo:true,  importante:true,  analisis:null, empresaId:'e1' },
   ],
   e2: [
-    { id:10, t:'CCA-2024-001 — Responsabilidad del Estado por error judicial', f:'2024-08-20', fu:'Corte de Apelación', area:'Administrativo', kw:['responsabilidad','estado','error judicial'], d:'El Estado responde patrimonialmente por los errores judiciales cometidos en el ejercicio de la función jurisdiccional.', texto:'La corte establece que el artículo 148 de la Constitución consagra la responsabilidad del Estado.', fav:true, nuevo:true, importante:true, analisis:null, empresaId:'e2' },
+    { id:10, t:'CCA-2024-001 — Responsabilidad patrimonial del Estado por error judicial', f:'2024-08-20', fu:'Corte de Apelación',         area:'Administrativo',  kw:['responsabilidad estado','error judicial','Art. 148 Constitución'], d:'El Estado Dominicano responde patrimonialmente por los errores judiciales conforme al Art. 148 de la Constitución, sin necesidad de probar dolo del funcionario.',                             texto:'El artículo 148 de la Constitución Dominicana consagra la responsabilidad patrimonial del Estado por los daños causados en el ejercicio de sus funciones. Esta responsabilidad es directa, objetiva y no requiere la prueba de intencionalidad del funcionario.',                                                             fav:true,  nuevo:true,  importante:true,  analisis:null, empresaId:'e2' },
   ],
 };
 
 let DB_AUDIENCIAS = { e1:{}, e2:{}, e3:{} };
 let DB_NOTAS      = { e1:{}, e2:{}, e3:{} };
 let DB_VINCULOS   = { e1:[], e2:[], e3:[] };
+
+/* Historial de clientes para autocompletado */
+let DB_CLIENTES_HIST = { e1:[], e2:[], e3:[] };
+
 let DB_PROCS = {
   e1: [
-    { e:'📕', n:'Recursos de Apelación',     s:['Apelación Civil','Apelación Penal'] },
-    { e:'📘', n:'Procedimientos Civiles',     s:['Demanda Ordinaria','Medida Cautelar'] },
-    { e:'⚖',  n:'Derecho Penal',             s:['Instrucción','Juicio Oral','Medida de Coerción'] },
-    { e:'🏛',  n:'Derecho Administrativo',    s:['Recurso de Nulidad'] },
-    { e:'👨‍👩‍👧', n:'Derecho de Familia',      s:['Divorcio','Pensión Alimenticia'] },
-    { e:'🔒', n:'Amparo',                     s:['Amparo de Libertad','Amparo Constitucional'] },
+    { e:'⚖',  n:'Derecho Penal',              s:['Querella por particulares','Acusación pública','Medida de coerción (Art. 226 CPP)','Instrucción preliminar','Juicio oral y público','Recurso de apelación penal','Recurso de casación penal','Habeas corpus','Revisión de medida de coerción'] },
+    { e:'📜', n:'Derecho Civil',               s:['Demanda ordinaria civil','Demanda en referimiento','Embargo retentivo','Embargo ejecutivo','Oposición a embargo','Partición de bienes','Acción en rescisión de contrato','Acción en daños y perjuicios','Recurso de apelación civil'] },
+    { e:'👷', n:'Derecho Laboral',             s:['Demanda laboral (juzgado de trabajo)','Prestaciones laborales','Fuero sindical','Acción en nulidad de despido','Reinstalación al puesto','Recurso de apelación laboral','Demanda por accidente de trabajo'] },
+    { e:'🏛',  n:'Derecho Administrativo',     s:['Recurso contencioso administrativo','Recurso de amparo administrativo','Nulidad de acto administrativo','Recurso jerárquico','Acción en repetición contra el Estado','Contrato administrativo'] },
+    { e:'👨‍👩‍👧', n:'Derecho de Familia',       s:['Divorcio al vapor (Art. 131 CC)','Divorcio por causal','Guarda y custodia','Pensión alimenticia','Adopción','Reconocimiento de hijo','Tutela','Declaración de ausencia'] },
+    { e:'🏠', n:'Derecho Inmobiliario',        s:['Deslinde (Ley 108-05)','Partición de inmueble','Acción reivindicatoria','Desahucio','Hipoteca','Cancelación de hipoteca','Transferencia de inmueble','Recurso ante TST'] },
+    { e:'🔒', n:'Amparo y Habeas Corpus',      s:['Acción de amparo (Art. 72 Const.)','Habeas corpus (Art. 71 Const.)','Habeas data','Acción de inconstitucionalidad','Recurso de revisión constitucional'] },
+    { e:'📋', n:'Contratos y Notarial',        s:['Contrato de compraventa','Contrato de arrendamiento','Contrato de préstamo','Poder notarial','Acto de reconocimiento de firma','Promesa de venta','Protocolización de documentos'] },
   ],
   e2: [
-    { e:'📋', n:'Contratos Comerciales', s:['Compraventa','Arrendamiento'] },
-    { e:'🏢', n:'Derecho Laboral',       s:['Despido','Prestaciones Laborales'] },
+    { e:'📋', n:'Contratos Comerciales',       s:['Compraventa mercantil','Arrendamiento comercial','Sociedad comercial (SRL/SA)','Contrato de agencia','Franquicia'] },
+    { e:'🏢', n:'Derecho Laboral',             s:['Despido con causa','Prestaciones laborales','Accidente de trabajo','Fuero de maternidad'] },
   ],
   e3: [],
 };
@@ -2946,6 +3296,9 @@ function applyRoleUI() {
   document.querySelectorAll('.perm-write').forEach(el => el.style.display = can('write')       ? '' : 'none');
   document.querySelectorAll('.hidden-admin').forEach(el => el.style.display = can('manageUsers') ? '' : 'none');
   document.getElementById('nav-admin').classList.toggle('hidden-tab', !can('manageUsers'));
+  // Bandeja visible para abogados, admins y superadmin
+  const navInbox = document.getElementById('nav-inbox');
+  if (navInbox) navInbox.classList.toggle('hidden-tab', !can('write'));
   const saTab = document.getElementById('nav-superadmin');
   saTab.classList.toggle('hidden-tab', !isSuperAdmin());
   if (isSuperAdmin()) { window._saViewEmpresa = 'e1'; }
@@ -2998,6 +3351,7 @@ function goPage(id) {
   if (id === 'config')     updateConfigPage();
   if (id === 'superadmin') renderSuperAdminPage();
   if (id === 'connect')    initConnect();
+  if (id === 'inbox')      renderInboxPage();
 }
 
 /* ══════════════════════════════════════════
@@ -3078,7 +3432,59 @@ function openEditor(nombre) {
   if (!can('write')) { toast('Sin permiso para editar', 'err'); return; }
   document.getElementById('editor-title').textContent = nombre;
   const ea = EA();
-  ea.innerHTML = savedDocs[nombre] || '<p>1. Presentar escrito ante el tribunal competente.</p><p>2. Adjuntar documentos requeridos según el Art. 69 CPC.</p><p>3. Pagar los aranceles judiciales correspondientes.</p><p>4. Esperar notificación del despacho saneador.</p><p>5. Comparecer a la audiencia preliminar.</p>';
+
+  /* ── Contenido real por procedimiento — República Dominicana ── */
+  const PROC_CONTENT = {
+    /* ══ DERECHO PENAL ══ */
+    'Querella por particulares': `<h3>Querella por Particulares — República Dominicana</h3><p><strong>Base legal:</strong> Arts. 29 y 118 del Código Procesal Penal (Ley 76-02).</p><p><strong>¿Cuándo procede?</strong> Cuando la víctima o sus herederos desean iniciar persecución penal por delitos de acción pública o semi-privada.</p><h4>Documentos requeridos:</h4><ul><li>Cédula de identidad del querellante</li><li>Escrito de querella firmado por abogado</li><li>Documentos que acrediten los hechos (contratos, fotos, actas, etc.)</li><li>Pruebas disponibles</li></ul><h4>Pasos procesales:</h4><ol><li>Redactar escrito de querella y depositarlo ante el Ministerio Público o el Juez de Paz competente</li><li>El MP evalúa y puede imputar al querellado</li><li>Se fija audiencia preliminar ante el Juez de Instrucción</li><li>El juez evalúa si hay méritos para juicio oral</li><li>Si procede, se dicta auto de apertura a juicio</li></ol><p><strong>Tribunal competente:</strong> Juzgado de Instrucción / Juez de Paz del municipio donde ocurrieron los hechos.</p><p><strong>Tiempo aproximado:</strong> 6 meses a 2 años según la complejidad.</p><p><strong>Costo estimado:</strong> Honorarios de abogado + tasas judiciales (RD$500–RD$2,000).</p>`,
+
+    'Medida de coerción (Art. 226 CPP)': `<h3>Medida de Coerción — Art. 226 CPP</h3><p><strong>Base legal:</strong> Arts. 226–240 del Código Procesal Penal (Ley 76-02).</p><p><strong>¿Qué es?</strong> Restricción a la libertad del imputado para garantizar su presencia en el proceso.</p><h4>Tipos disponibles:</h4><ul><li>Presentación periódica ante el tribunal</li><li>Arresto domiciliario</li><li>Prisión preventiva (última ratio)</li><li>Prohibición de salida del país</li><li>Fianza económica</li></ul><h4>Para impugnar una medida:</h4><ol><li>Solicitar revisión ante el Juez de Instrucción (Art. 239 CPP)</li><li>Alegar el triple test: idoneidad, necesidad y proporcionalidad (TC/0055/23)</li><li>Ofrecer medida alternativa menos gravosa</li><li>Presentar arraigo familiar, laboral y domiciliario</li></ol><p><strong>Plazo máximo de prisión preventiva:</strong> 3 meses prorrogables (Art. 241 CPP).</p><p><strong>Tribunal competente:</strong> Juez de Instrucción que conoce el caso.</p>`,
+
+    'Habeas corpus': `<h3>Habeas Corpus — Art. 71 Constitución</h3><p><strong>Base legal:</strong> Art. 71 Constitución Dominicana y Ley 137-11 sobre el Tribunal Constitucional.</p><p><strong>¿Cuándo procede?</strong> Cuando una persona es detenida o privada de libertad de forma ilegal o arbitraria.</p><h4>Pasos:</h4><ol><li>Presentar escrito de habeas corpus ante cualquier juez, incluyendo sábados y domingos</li><li>El juez ordena la presentación del detenido en 24 horas</li><li>Audiencia inmediata</li><li>El juez evalúa la legalidad de la detención</li><li>Si es ilegal: libertad inmediata</li></ol><p><strong>Plazo de resolución:</strong> 48 horas máximo.</p><p><strong>Nota:</strong> No requiere depositar tasas. Es de naturaleza urgente.</p>`,
+
+    'Juicio oral y público': `<h3>Juicio Oral y Público — CPP Dominicano</h3><p><strong>Base legal:</strong> Arts. 294–351 del Código Procesal Penal.</p><h4>Fases del juicio:</h4><ol><li><strong>Apertura:</strong> Constitución del tribunal, verificación de partes</li><li><strong>Alegatos de apertura:</strong> MP y defensa exponen teoría del caso</li><li><strong>Producción de prueba:</strong> Testimonios, documentales, periciales</li><li><strong>Interrogatorio y contrainterrogatorio</strong></li><li><strong>Alegatos de clausura</strong></li><li><strong>Deliberación:</strong> Tribunal se retira (máx. 24h)</li><li><strong>Sentencia:</strong> Lectura pública obligatoria</li></ol><p><strong>Principios:</strong> Oralidad, publicidad, contradicción, concentración e inmediación.</p><p><strong>Plazo para recurrir:</strong> 10 días hábiles desde la lectura integral.</p>`,
+
+    /* ══ DERECHO CIVIL ══ */
+    'Demanda ordinaria civil': `<h3>Demanda Ordinaria Civil — República Dominicana</h3><p><strong>Base legal:</strong> Arts. 1–73 del Código de Procedimiento Civil (CPC).</p><h4>Documentos requeridos:</h4><ul><li>Escrito introductivo de instancia</li><li>Documentos que sustenten la acción (contratos, facturas, etc.)</li><li>Cédula del demandante</li><li>Poder especial si actúa apoderado</li></ul><h4>Pasos procesales:</h4><ol><li>Redactar instancia y notificar al demandado por acto de alguacil</li><li>Depositar expediente en Secretaría del Tribunal de Primera Instancia</li><li>El tribunal fija audiencia de puesta en estado (despacho saneador)</li><li>Audiencia de fondo con alegatos y documentos</li><li>Deliberación y sentencia (plazo: 30 días hábiles)</li></ol><p><strong>Tribunal competente:</strong> Juzgado de Primera Instancia de la jurisdicción donde ocurrió el hecho o donde se cumplirá la obligación.</p><p><strong>Tiempo estimado:</strong> 8–18 meses.</p>`,
+
+    'Demanda en referimiento': `<h3>Demanda en Referimiento — Urgencia Civil</h3><p><strong>Base legal:</strong> Arts. 101–113 del CPC.</p><p><strong>¿Cuándo procede?</strong> Casos urgentes que no admiten demora: amenaza de daño inminente, turbación manifiesta, ejecución de providencias urgentes.</p><h4>Características:</h4><ul><li>Expedito: audiencia en días</li><li>Provisional: no decide el fondo</li><li>Contradictorio: el demandado debe ser citado</li></ul><h4>Pasos:</h4><ol><li>Redactar demanda en referimiento urgente</li><li>Notificar al demandado con un mínimo de 24 horas</li><li>Audiencia ante el Presidente del Tribunal de Primera Instancia</li><li>Ordonnance de referimiento con ejecución provisional</li></ol><p><strong>Tiempo de resolución:</strong> 3–10 días.</p>`,
+
+    'Embargo retentivo': `<h3>Embargo Retentivo — Procedimiento Dominicano</h3><p><strong>Base legal:</strong> Arts. 557–582 del CPC.</p><p><strong>¿Qué es?</strong> Medida cautelar que congela valores del deudor en manos de terceros (bancos, empleadores).</p><h4>Pasos:</h4><ol><li>Obtener autorización judicial (si no hay título ejecutorio)</li><li>Redactar acto de embargo notificado al tercero embargado</li><li>Denunciar el embargo al deudor principal</li><li>Validación del embargo: demanda en validez dentro de los 8 días</li><li>Sentencia que ordena pago al embargante</li></ol><p><strong>Documentos:</strong> Título de crédito, contrato, sentencia o pagaré.</p>`,
+
+    /* ══ DERECHO DE FAMILIA ══ */
+    'Divorcio al vapor (Art. 131 CC)': `<h3>Divorcio por Mutuo Consentimiento — Art. 131 CC</h3><p><strong>Base legal:</strong> Arts. 131 y siguientes del Código Civil Dominicano.</p><p><strong>Requisito fundamental:</strong> Acuerdo pleno entre los cónyuges sobre todos los aspectos.</p><h4>Documentos requeridos:</h4><ul><li>Acta de matrimonio (original o certificada por Oficialía del Estado Civil)</li><li>Cédulas de ambos cónyuges</li><li>Actas de nacimiento de los hijos menores (si aplica)</li><li>Acuerdo de bienes (si tienen inmuebles o vehículos)</li><li>Convenio sobre guarda, custodia y pensión alimentaria</li><li>Poder especial si alguno reside en el exterior</li></ul><h4>Pasos procesales:</h4><ol><li>Redactar demanda conjunta de divorcio y convenio</li><li>Notificar al otro cónyuge (aunque sea de común acuerdo, el acto es requerido)</li><li>Depositar expediente en el Tribunal de Primera Instancia, Cámara Civil (Sala de Familia donde exista)</li><li>Audiencia de conciliación (el juez intenta reconciliación)</li><li>Si no hay reconciliación: segunda audiencia de fondo</li><li>Sentencia de divorcio y homologación del convenio</li><li>Transcripción marginal en el Acta de Matrimonio</li></ol><p><strong>Tribunal competente:</strong> Tribunal de Primera Instancia del domicilio conyugal.</p><p><strong>Tiempo estimado:</strong> 3–6 meses.</p><p><strong>Costos aproximados:</strong> Honorarios + aranceles (RD$2,000–RD$5,000) + transcripción.</p>`,
+
+    'Pensión alimenticia': `<h3>Pensión Alimenticia — Procedimiento Dominicano</h3><p><strong>Base legal:</strong> Arts. 203–211 del Código Civil y Ley 14-94 sobre Niños, Niñas y Adolescentes.</p><h4>Documentos:</h4><ul><li>Acta de nacimiento del menor</li><li>Prueba de filiación</li><li>Prueba de ingresos del demandado (si disponible)</li><li>Cédula del solicitante</li></ul><h4>Pasos:</h4><ol><li>Interponer demanda ante el Tribunal de Niños, Niñas y Adolescentes (NNA) o Cámara Civil</li><li>El tribunal puede fijar pensión provisional al inicio</li><li>Audiencia con prueba de necesidad y capacidad</li><li>Sentencia fijando monto y modalidad de pago</li></ol><p><strong>Ejecución:</strong> Vía embargo de salario o retención bancaria si hay incumplimiento.</p><p><strong>Revisión:</strong> Procedente si cambian las circunstancias económicas de cualquiera de las partes.</p>`,
+
+    'Guarda y custodia': `<h3>Guarda y Custodia de Menores</h3><p><strong>Base legal:</strong> Ley 14-94 (Código para la Protección de NNA) y Art. 374 del Código Civil.</p><h4>Criterio principal:</h4><p>El interés superior del menor prevalece sobre cualquier otro criterio.</p><h4>Documentos:</h4><ul><li>Acta de nacimiento del menor</li><li>Documento que acredite relación con el menor</li><li>Pruebas de idoneidad (testimonios, informes escolares, médicos)</li></ul><h4>Proceso:</h4><ol><li>Demanda ante Tribunal de NNA</li><li>Informe de trabajador(a) social designado(a) por el tribunal</li><li>Audiencia con participación del menor si tiene edad suficiente</li><li>Sentencia otorgando custodia y régimen de visitas</li></ol>`,
+
+    /* ══ DERECHO INMOBILIARIO ══ */
+    'Deslinde (Ley 108-05)': `<h3>Deslinde de Inmueble — Ley 108-05</h3><p><strong>Base legal:</strong> Ley 108-05 de Registro Inmobiliario y Reglamento General de Mensura.</p><p><strong>¿Qué es?</strong> Procedimiento para individualizar una parcela derivada de otra ya registrada.</p><h4>Documentos requeridos:</h4><ul><li>Certificado de Título original</li><li>Plano de mensura catastral elaborado por agrimensor autorizado</li><li>Constancia de linderos firmada por colindantes</li><li>Cédulas de propietarios</li></ul><h4>Pasos:</h4><ol><li>Contratar agrimensor para levantamiento parcelario</li><li>Someter plano al INDRHI/IGM para aprobación</li><li>Notificar colindantes</li><li>Depositar expediente ante el Tribunal Superior de Tierras competente</li><li>El tribunal designa inspector</li><li>Audiencia técnica</li><li>Resolución aprobando deslinde</li><li>Emisión de nuevos certificados de título</li></ol><p><strong>Tribunal competente:</strong> Tribunal Superior de Tierras de la jurisdicción del inmueble.</p><p><strong>Tiempo:</strong> 4–12 meses según carga del tribunal.</p>`,
+
+    'Transferencia de inmueble': `<h3>Transferencia de Inmueble Registrado</h3><p><strong>Base legal:</strong> Ley 108-05 de Registro Inmobiliario.</p><h4>Documentos requeridos:</h4><ul><li>Certificado de Título original</li><li>Contrato de compraventa notarizado</li><li>Cédulas del vendedor y comprador</li><li>Solvencia del DGII (IPI y transferencia)</li><li>Pago del impuesto de transferencia (3% del valor)</li><li>Formulario del Registro de Títulos</li></ul><h4>Pasos:</h4><ol><li>Autenticar contrato ante notario</li><li>Pagar impuesto de transferencia en la DGII (3% del valor o avalúo)</li><li>Depositar expediente en el Registro de Títulos correspondiente</li><li>El Registro emite nuevo Certificado de Título a nombre del comprador</li></ol><p><strong>Institución:</strong> Registro de Títulos del Departamento Judicial del inmueble.</p><p><strong>Tiempo:</strong> 15–45 días hábiles.</p>`,
+
+    'Desahucio': `<h3>Desahucio — Procedimiento Dominicano</h3><p><strong>Base legal:</strong> Ley 4314 sobre Alquileres y Arts. CPC.</p><h4>Causales:</h4><ul><li>Falta de pago de alquiler</li><li>Uso indebido del inmueble</li><li>Vencimiento del contrato</li><li>Necesidad propia del propietario</li></ul><h4>Pasos:</h4><ol><li>Enviar carta de desahucio con 30 días de anticipación</li><li>Si no desocupa: interponer demanda en referimiento o acción principal</li><li>Audiencia ante el tribunal</li><li>Sentencia de lanzamiento</li><li>Ejecución por alguacil con orden del tribunal</li></ol><p><strong>Nota:</strong> Verificar si el inquilino tiene hijos menores o es persona vulnerable (protección especial).</p>`,
+
+    /* ══ AMPARO ══ */
+    'Acción de amparo (Art. 72 Const.)': `<h3>Acción de Amparo — Art. 72 Constitución</h3><p><strong>Base legal:</strong> Art. 72 Constitución Dominicana y Ley 137-11.</p><p><strong>¿Cuándo procede?</strong> Cuando un derecho fundamental reconocido en la Constitución es vulnerado o amenazado por acción u omisión de cualquier persona, entidad pública o privada.</p><h4>Características:</h4><ul><li>Acción expedita y preferente</li><li>No requiere agotamiento de vías administrativas si hay urgencia</li><li>Puede solicitarse medida cautelar inmediata</li></ul><h4>Pasos:</h4><ol><li>Redactar demanda de amparo indicando derecho vulnerado y responsable</li><li>Depositar ante el tribunal de primera instancia con jurisdicción</li><li>Audiencia dentro de los 10 días hábiles</li><li>Resolución en 5 días adicionales</li><li>Si hay urgencia: medida cautelar inmediata</li></ol><p><strong>Recurso:</strong> Apelación ante la Corte de Apelación en 5 días.</p>`,
+
+    /* ══ CONTRATOS Y NOTARIAL ══ */
+    'Contrato de compraventa': `<h3>Contrato de Compraventa — República Dominicana</h3><p><strong>Base legal:</strong> Arts. 1582–1701 del Código Civil Dominicano.</p><h4>Elementos esenciales:</h4><ul><li>Partes identificadas (cédulas)</li><li>Objeto claramente determinado</li><li>Precio fijado o determinable</li><li>Consentimiento libre de vicios</li></ul><h4>Para inmuebles registrados:</h4><ol><li>Verificar estado del Certificado de Título (hipotecas, gravámenes)</li><li>Redactar y firmar contrato ante notario</li><li>Pagar impuesto de transferencia (3%) ante DGII</li><li>Depositar ante Registro de Títulos</li></ol><h4>Para vehículos:</h4><ol><li>Verificar estado en DIGESETT</li><li>Contrato de compraventa y traspaso notarial</li><li>Pago de impuesto de traspaso en DGII</li><li>Actualización en DGII/DIGESETT</li></ol>`,
+
+    'Poder notarial': `<h3>Poder Notarial — República Dominicana</h3><p><strong>Base legal:</strong> Arts. 1984–2004 del Código Civil y Ley Notarial 140-15.</p><h4>Tipos:</h4><ul><li><strong>Poder general:</strong> Para todos los actos de administración</li><li><strong>Poder especial:</strong> Para actos específicamente determinados</li><li><strong>Poder para litigar:</strong> Representación ante tribunales</li></ul><h4>Requisitos:</h4><ul><li>Cédula del poderdante</li><li>Identificación del apoderado</li><li>Descripción clara del objeto</li><li>Firma ante notario público</li><li>Legalización si será usado en el exterior (Apostilla o Cancillería)</li></ul><p><strong>Apostilla:</strong> Para uso en países del Convenio de La Haya. Se tramita en la Procuraduría General de la República.</p>`,
+
+    /* ══ LABORAL ══ */
+    'Demanda laboral (juzgado de trabajo)': `<h3>Demanda Laboral — República Dominicana</h3><p><strong>Base legal:</strong> Código de Trabajo (Ley 16-92) y sus modificaciones.</p><h4>Documentos del trabajador:</h4><ul><li>Carta de terminación o prueba de despido</li><li>Cédula de identidad</li><li>Contrato de trabajo (si existe escrito)</li><li>Recibos de pago o talones</li><li>Carné del IDSS o constancia de afiliación</li></ul><h4>Prestaciones laborales ordinarias:</h4><ul><li>Auxilio de cesantía (Art. 80 CT): 23.33 días por año</li><li>Preaviso (Arts. 76–79 CT)</li><li>Vacaciones no disfrutadas</li><li>Participación en beneficios (bonificación)</li><li>Salarios caídos</li></ul><h4>Pasos:</h4><ol><li>Depositar demanda en el Juzgado de Trabajo del domicilio del trabajador o empleador</li><li>Conciliación obligatoria ante el tribunal</li><li>Si no hay acuerdo: audiencia de fondo</li><li>Sentencia con condena o absolución</li></ol><p><strong>Prescripción:</strong> 3 años desde el cese (Art. 706 CT).</p>`,
+
+    'Prestaciones laborales': `<h3>Cálculo de Prestaciones Laborales</h3><p><strong>Base legal:</strong> Arts. 76–82 del Código de Trabajo.</p><h4>Fórmula de Auxilio de Cesantía:</h4><p>Salario mensual × (años trabajados × 23.33 días) ÷ 30</p><h4>Preaviso:</h4><ul><li>Menos de 3 meses: 7 días</li><li>3–6 meses: 14 días</li><li>6 meses–1 año: 28 días</li><li>Más de 1 año: 28 días</li></ul><h4>Otros conceptos:</h4><ul><li>Vacaciones: 14 días laborables por año (primer año: proporcional)</li><li>Bonificación: 10% de las utilidades (mín. 5% del salario anual)</li><li>Horas extras: 35% adicional días hábiles, 100% feriados</li></ul>`,
+
+    /* ══ ADMINISTRATIVO ══ */
+    'Recurso contencioso administrativo': `<h3>Recurso Contencioso Administrativo</h3><p><strong>Base legal:</strong> Ley 1494 y Arts. Constitución sobre control de actos del Estado.</p><p><strong>¿Cuándo procede?</strong> Contra actos administrativos definitivos de la Administración Pública que lesionen derechos o intereses.</p><h4>Pasos:</h4><ol><li>Agotar la vía administrativa: recurso jerárquico previo</li><li>Si no hay respuesta en 30 días: silencio administrativo negativo</li><li>Depositar recurso ante el Tribunal Superior Administrativo (TSA) en Santo Domingo, o Tribunal de Primera Instancia con competencia administrativa</li><li>Plazo: 30 días desde la notificación del acto</li><li>Proceso escrito con alegatos y pruebas</li><li>Sentencia</li></ol><p><strong>Tribunal competente:</strong> Tribunal Superior Administrativo (primer nivel), Corte Suprema (casación).</p>`,
+  };
+
+  ea.innerHTML = savedDocs[nombre] || PROC_CONTENT[nombre] ||
+    `<h3>${nombre}</h3><p><strong>Procedimiento:</strong> ${nombre}</p><p><strong>Base legal:</strong> [Indicar artículos y leyes aplicables]</p><h4>Documentos requeridos:</h4><ul><li>Cédula de identidad</li><li>Documentos específicos del caso</li></ul><h4>Pasos procesales:</h4><ol><li>Consultar con abogado especializado</li><li>Reunir documentación</li><li>Presentar ante tribunal competente</li><li>Seguimiento del proceso</li></ol><p><strong>Nota:</strong> Este procedimiento aplica bajo el derecho dominicano. Consulte siempre con un abogado habilitado.</p>`;
+
   updateWC(); syncTb(); openModal('modal-editor');
   setTimeout(() => ea.focus(), 150);
 }
@@ -3254,6 +3660,8 @@ function saveAud() {
   const nota   = document.getElementById('aud-nota').value.trim();
   if (!auds[audDate]) auds[audDate] = [];
   auds[audDate].push({ cliente:cli, hora, tipo, estado, nota, usuarioId:SESSION.id });
+  // Guardar cliente en historial de autocompletado
+  if (cli !== 'Sin nombre') addClienteHist(cli);
   closeModal('modal-add-aud'); buildCal(); toast(`Audiencia guardada para ${audDate}`, 'ok');
 }
 function verAuds(fecha) {
@@ -4007,10 +4415,6 @@ function saCrearEmpresa() {
   toast(`Empresa "${nombre}" creada con plan ${plan}`, 'ok');
 }
 
-/* ── Keyboard shortcuts for login ── */
-document.getElementById('l-pass').addEventListener('keydown',  e => { if (e.key === 'Enter') doLogin(); });
-document.getElementById('l-email').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-
 /* ══════════════════════════════════════════
    NEXLEX CONNECT — Marketplace Legal
    Toda la lógica de la sección de consultas
@@ -4024,6 +4428,96 @@ let _connectFile       = null;
 let _connectActiveTab  = 'form';
 
 const CONNECT_STORAGE_KEY = 'nexlex_consultas_v1';
+
+const CONNECT_ESTADOS = [
+  { key:'consulta_recibida', label:'Consulta recibida' },
+  { key:'asignado',          label:'Asignado' },
+  { key:'en_analisis',       label:'En análisis' },
+  { key:'respuesta_emitida', label:'Respuesta emitida' },
+  { key:'contratado',        label:'Contratado' },
+  { key:'cerrado',           label:'Cerrado' },
+];
+const CONNECT_ESTADO_LABELS = CONNECT_ESTADOS.reduce((acc, e) => (acc[e.key] = e.label, acc), {});
+const CONNECT_LEGACY_ESTADOS = { nuevo:'consulta_recibida', proceso:'en_analisis', respondido:'respuesta_emitida', cerrado:'cerrado', consulta_recibida:'consulta_recibida', asignado:'asignado', en_analisis:'en_analisis', respuesta_emitida:'respuesta_emitida', contratado:'contratado' };
+function normalizeConnectEstado(estado) { return CONNECT_LEGACY_ESTADOS[estado] || 'consulta_recibida'; }
+function getConnectEstadoLabel(estado) { return CONNECT_ESTADO_LABELS[normalizeConnectEstado(estado)] || 'Consulta recibida'; }
+function getTodayDO() { return new Date().toLocaleDateString('es-DO', { day:'2-digit', month:'2-digit', year:'numeric' }); }
+function getCurrentLawyerName() { return SESSION?.nombre || document.getElementById('user-name-display')?.textContent || 'Abogado asignado'; }
+function normalizeConsulta(c) {
+  const estado = normalizeConnectEstado(c?.estadoInterno || c?.estado);
+  const fechaRecepcion = c?.fechaRecepcion || c?.fechaRecibido || c?.fecha || new Date().toISOString();
+  const leida = c?.leida === true;
+  return {
+    ...c,
+    estado,
+    estadoInterno: estado,
+    abogadoAsignado: c?.abogadoAsignado || 'Sin asignar',
+    fechaAsignacion: c?.fechaAsignacion || '',
+    contactos: c?.contactos || {},
+    leida,
+    noLeida: !leida,
+    fechaRecepcion,
+    fechaRecibido: c?.fechaRecibido || fechaRecepcion,
+    fechaLectura: c?.fechaLectura || '',
+    fechaRespuesta: c?.fechaRespuesta || '',
+  };
+}
+function isConnectPrivateMode() { return !!SESSION; }
+function applyConnectVisibility() {
+  const privateMode = isConnectPrivateMode();
+  document.body.classList.toggle('connect-public-mode', !privateMode && document.getElementById('page-connect')?.classList.contains('active'));
+  ['ctab-inbox','connect-inbox-view'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('connect-private-hidden', !privateMode);
+  });
+  document.querySelectorAll('.connect-hero-stats').forEach(el => el.classList.toggle('connect-private-hidden', !privateMode));
+  if (!privateMode && _connectActiveTab === 'inbox') switchConnectTab('form');
+  updateInboxBadge();
+}
+
+function ensurePublicLoginButton() {
+  if (document.getElementById('connect-public-login')) return;
+  const btn = document.createElement('button');
+  btn.id = 'connect-public-login';
+  btn.className = 'public-login-btn';
+  btn.type = 'button';
+  btn.textContent = 'Acceso interno';
+  btn.onclick = showInternalLogin;
+  document.body.appendChild(btn);
+}
+function showPublicConnectMode() {
+  if (SESSION) return;
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('main-app').classList.add('visible');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-connect')?.classList.add('active');
+  ensurePublicLoginButton();
+  document.getElementById('connect-public-login').style.display = '';
+  if (_connectActiveTab === 'inbox') _connectActiveTab = 'form';
+  switchConnectTab(_connectActiveTab === 'list' ? 'list' : 'form');
+  applyConnectVisibility();
+}
+function showInternalLogin() {
+  if (SESSION) return;
+  document.body.classList.remove('connect-public-mode');
+  document.getElementById('connect-public-login')?.style && (document.getElementById('connect-public-login').style.display = 'none');
+  document.getElementById('main-app').classList.remove('visible');
+  document.getElementById('auth-screen').style.display = 'flex';
+}
+
+function formatCRMDate(value) {
+  if (!value) return 'Pendiente';
+  const d = new Date(value);
+  if (!Number.isNaN(d.getTime())) return d.toLocaleDateString('es-DO', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  return value;
+}
+
+function escapeHtml(str) { return String(str ?? '').replace(/[&<>'"]/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[ch])); }
+function getLawyerOptionsHtml(selected) { const selectedName = selected || 'Sin asignar'; const users = (typeof getUsersEmpresa === 'function' ? getUsersEmpresa() : DB_USUARIOS).filter(u => ['abogado','admin'].includes(u.rol) && u.activo !== false); const names = [...new Set([selectedName, getCurrentLawyerName(), ...users.map(u => u.nombre)].filter(Boolean).filter(n => n !== 'Sin asignar'))]; return `<option value="">Seleccionar abogado</option>` + names.map(n => `<option value="${escapeHtml(n)}" ${n === selectedName ? 'selected' : ''}>${escapeHtml(n)}</option>`).join(''); }
+function renderEstadoOptions(selected) { const s = normalizeConnectEstado(selected); return CONNECT_ESTADOS.map(e => `<option value="${e.key}" ${s === e.key ? 'selected' : ''}>${e.label}</option>`).join(''); }
+function updateStoredConsultaById(id, updates) { const list = getStoredConsultas().map(c => c.id === id ? normalizeConsulta({ ...c, ...updates }) : c); try { _storage.setItem(CONNECT_STORAGE_KEY, JSON.stringify(list)); } catch {} }
+function syncConsultaFromInbox(item) { updateStoredConsultaById(item.id, { estado:normalizeConnectEstado(item.estadoInterno || item.estado), estadoInterno:normalizeConnectEstado(item.estadoInterno || item.estado), abogadoAsignado:item.abogadoAsignado || 'Sin asignar', fechaAsignacion:item.fechaAsignacion || '', leida:item.leida === true, noLeida:item.leida !== true, fechaRecepcion:item.fechaRecepcion || item.fechaRecibido || '', fechaRecibido:item.fechaRecibido || item.fechaRecepcion || '', fechaLectura:item.fechaLectura || '', fechaRespuesta:item.fechaRespuesta || '' }); }
+
 
 /* ── Provincias / feed simulado ── */
 const CONNECT_FEED_ITEMS = [
@@ -4044,6 +4538,8 @@ function initConnect() {
   renderConnectFeed();
   renderConnectList();
   updateConnectStats();
+  updateInboxBadge();   // actualizar badge bandeja al entrar
+  applyConnectVisibility();
 }
 
 /* ── Render feed de actividad reciente ── */
@@ -4073,9 +4569,8 @@ function updateConnectStats() {
 
 /* ── localStorage helpers ── */
 function getStoredConsultas() {
-  try {
-    return JSON.parse(_storage.getItem(CONNECT_STORAGE_KEY) || '[]');
-  } catch { return []; }
+  try { return JSON.parse(_storage.getItem(CONNECT_STORAGE_KEY) || '[]').map(normalizeConsulta); }
+  catch { return []; }
 }
 
 function saveConsulta(c) {
@@ -4229,7 +4724,15 @@ function submitConsulta() {
     },
     horario:     document.getElementById('cn-horario').value,
     archivo:     _connectFile ? _connectFile.name : null,
-    estado:      'nuevo',
+    estado:      'consulta_recibida',
+    estadoInterno:'consulta_recibida',
+    abogadoAsignado:'Sin asignar',
+    fechaAsignacion:'',
+    leida:false,
+    noLeida:true,
+    fechaRecepcion:new Date().toISOString(),
+    fechaLectura:'',
+    fechaRespuesta:'',
   };
 
   // Simular envío con breve loader
@@ -4319,60 +4822,362 @@ function renderConnectList() {
   const el       = document.getElementById('consultations-list');
   const noEl     = document.getElementById('no-consultations');
   if (!el) return;
-
-  if (!list.length) {
-    if (noEl) noEl.style.display = '';
-    el.innerHTML = '';
-    return;
-  }
-
+  if (!list.length) { if (noEl) noEl.style.display = ''; el.innerHTML = ''; return; }
   if (noEl) noEl.style.display = 'none';
-
-  el.innerHTML = list.map(c => {
-    const icon = AREA_ICONS[c.tipo] || '📋';
-    const statusClass = c.estado === 'nuevo' ? 'status-nuevo' : c.estado === 'proceso' ? 'status-proceso' : 'status-cerrado';
-    const statusLabel = c.estado === 'nuevo' ? 'Recibido' : c.estado === 'proceso' ? 'En proceso' : 'Cerrado';
-    const contactLine = [
-      c.contactos?.tel   ? `📞 ${c.contactos.tel}`     : '',
-      c.contactos?.wa    ? `💬 ${c.contactos.wa}`      : '',
-      c.contactos?.email ? `📧 ${c.contactos.email}`  : '',
-    ].filter(Boolean).join(' · ');
-
-    return `
-      <div class="consultation-card">
-        <div class="cc-left">
-          <div class="cc-badge">${icon}</div>
-        </div>
-        <div class="cc-body">
-          <div class="cc-title">${c.tipo} · ${c.provincia}</div>
-          <div class="cc-meta">
-            <span>${c.fecha}</span>
-            <span class="cc-status ${statusClass}">${statusLabel}</span>
-            ${c.anonima ? '<span style="font-size:10px;color:var(--fg3)">🕵️ Anónima</span>' : ''}
-          </div>
-          <div class="cc-desc">${c.descripcion}</div>
-          ${contactLine ? `<div style="font-size:11px;color:var(--fg3);margin-top:7px">${contactLine}</div>` : ''}
-        </div>
-        <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
-          <div style="font-size:10px;color:var(--fg3);font-weight:700">Ref: ${c.id}</div>
-          ${c.archivo ? `<div style="font-size:10px;color:var(--brand)">📎 ${c.archivo}</div>` : ''}
-          <button class="btn btn-danger btn-sm" style="font-size:10px;padding:3px 8px"
-            onclick="deleteConsulta('${c.id}')">Eliminar</button>
-        </div>
-      </div>`;
+  el.innerHTML = list.map(raw => {
+    const c = normalizeConsulta(raw);
+    const icon = AREA_ICONS[c.tipo] || '??';
+    const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado);
+    const statusClass = estadoKey === 'consulta_recibida' ? 'status-nuevo' : ['asignado','en_analisis','respuesta_emitida'].includes(estadoKey) ? 'status-proceso' : 'status-cerrado';
+    const contactLine = [c.contactos?.tel ? `?? ${escapeHtml(c.contactos.tel)}` : '', c.contactos?.wa ? `?? ${escapeHtml(c.contactos.wa)}` : '', c.contactos?.email ? `?? ${escapeHtml(c.contactos.email)}` : ''].filter(Boolean).join(' ? ');
+    return `<div class="consultation-card"><div class="cc-left"><div class="cc-badge">${icon}</div></div><div class="cc-body"><div class="cc-title">${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)}</div><div class="cc-meta"><span>${escapeHtml(c.fecha)}</span><span class="cc-status ${statusClass}">${getConnectEstadoLabel(estadoKey)}</span>${c.anonima ? '<span style="font-size:10px;color:var(--fg3)">Anónima</span>' : ''}</div><div class="cc-desc">${escapeHtml(c.descripcion)}</div><div style="font-size:11px;color:var(--fg3);margin-top:7px">Abogado asignado: <strong style="color:var(--fg2)">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</strong>${c.fechaAsignacion ? ` &middot; ${escapeHtml(c.fechaAsignacion)}` : ''}</div>${contactLine ? `<div style="font-size:11px;color:var(--fg3);margin-top:7px">${contactLine}</div>` : ''}</div><div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px"><div style="font-size:10px;color:var(--fg3);font-weight:700">Ref: ${escapeHtml(c.id)}</div>${c.archivo ? `<div style="font-size:10px;color:var(--brand)">Adjunto ${escapeHtml(c.archivo)}</div>` : ''}<button class="btn btn-danger btn-sm" style="font-size:10px;padding:3px 8px" onclick="deleteConsulta('${c.id}')">Eliminar</button></div></div>`;
   }).join('');
 }
 
-/* ── Eliminar consulta ── */
+/* ?? Eliminar consulta ── */
 function deleteConsulta(id) {
   if (!confirm('¿Eliminar esta consulta de tu historial local?')) return;
   let list = getStoredConsultas();
   list = list.filter(c => c.id !== id);
   try { _storage.setItem(CONNECT_STORAGE_KEY, JSON.stringify(list)); } catch {}
+  try { _storage.setItem(INBOX_KEY, JSON.stringify(getInboxConsultas().filter(c => c.id !== id))); } catch {}
   renderConnectList();
   updateConnectStats();
   toast('Consulta eliminada', 'ok');
 }
+
+/* ══════════════════════════════════════════
+   BANDEJA DE RECEPCIÓN — Panel interno
+   Abogados ven todas las consultas recibidas
+══════════════════════════════════════════ */
+const INBOX_KEY = 'nexlex_inbox_v1';
+
+function getInboxConsultas() {
+  try { return JSON.parse(_storage.getItem(INBOX_KEY) || '[]').map(normalizeConsulta); } catch { return []; }
+}
+
+function saveToInbox(consulta) {
+  const list = getInboxConsultas();
+  const ahora = new Date().toISOString();
+  list.unshift({ ...normalizeConsulta(consulta), estado:'consulta_recibida', estadoInterno:'consulta_recibida', abogadoAsignado:'Sin asignar', fechaAsignacion:'', leida:false, noLeida:true, fechaRecepcion:ahora, fechaRecibido:ahora, fechaLectura:'', fechaRespuesta:'' });
+  try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {}
+  updateInboxBadge();
+}
+
+function updateInboxBadge() {
+  const list     = getInboxConsultas();
+  const nuevos   = isConnectPrivateMode() ? list.filter(c => !c.leida).length : 0;
+  const badge    = document.getElementById('inbox-badge');
+  if (badge) {
+    badge.textContent   = nuevos;
+    badge.style.display = nuevos > 0 ? '' : 'none';
+    badge.classList.toggle('badge-pulse', nuevos > 0);
+  }
+  const navBadge = document.getElementById('badge-inbox');
+  if (navBadge) {
+    navBadge.textContent   = nuevos;
+    navBadge.style.display = nuevos > 0 ? '' : 'none';
+    navBadge.classList.toggle('badge-pulse', nuevos > 0);
+  }
+  const connectBadge = document.querySelector('.nav-tab[data-page="connect"] .nbadge');
+  if (connectBadge) {
+    connectBadge.textContent   = nuevos;
+    connectBadge.style.display = nuevos > 0 ? '' : 'none';
+  }
+}
+
+function renderInbox() {
+  if (!isConnectPrivateMode()) { applyConnectVisibility(); return; }
+  const list   = getInboxConsultas();
+  const filter = document.getElementById('inbox-filter')?.value || '';
+  const el     = document.getElementById('inbox-list');
+  const noEl   = document.getElementById('no-inbox');
+  if (!el) return;
+  const filtered = filter ? list.filter(c => normalizeConnectEstado(c.estadoInterno) === filter) : list;
+  if (!filtered.length) { if (noEl) noEl.style.display = ''; el.innerHTML = ''; return; }
+  if (noEl) noEl.style.display = 'none';
+  el.innerHTML = filtered.map(raw => {
+    const c = normalizeConsulta(raw); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado); const icon = AREA_ICONS[c.tipo] || 'Caso'; const eBadge = `estado-badge-${estadoKey}`; const eLabel = getConnectEstadoLabel(estadoKey);
+    const contactLine = [c.contactos?.tel ? `Tel. ${escapeHtml(c.contactos.tel)}` : '', c.contactos?.wa ? `WhatsApp ${escapeHtml(c.contactos.wa)}` : '', c.contactos?.email ? `Email ${escapeHtml(c.contactos.email)}` : ''].filter(Boolean).join(' ? ');
+    return `<div class="inbox-card estado-${estadoKey} ${!c.leida ? 'no-leida' : ''}" id="inbox-card-${c.id}"><div class="inbox-top"><div><div class="inbox-title">${icon} ${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)} ${!c.leida ? '<span class="crm-notif-pill">No le?da</span>' : ''}</div><div class="inbox-ref">Ref: ${escapeHtml(c.id)} &middot; ${escapeHtml(c.fecha)}</div></div><span class="badge ${eBadge}" style="font-size:10px;padding:3px 10px">${eLabel}</span></div><div class="inbox-meta">${c.anonima ? '<span>An?nima</span>' : `<span>${escapeHtml(c.nombre)}</span>`}<span>${escapeHtml(c.horario)}</span>${c.archivo ? `<span>Adjunto ${escapeHtml(c.archivo)}</span>` : ''}</div><div class="crm-date-grid"><span>Recepci?n: ${formatCRMDate(c.fechaRecepcion)}</span><span>Lectura: ${formatCRMDate(c.fechaLectura)}</span><span>Respuesta: ${formatCRMDate(c.fechaRespuesta)}</span></div><div class="crm-assignment-box"><div class="crm-assignment-item"><div class="crm-assignment-label">Abogado asignado</div><div class="crm-assignment-value">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Fecha asignaci?n</div><div class="crm-assignment-value">${c.fechaAsignacion ? escapeHtml(c.fechaAsignacion) : 'Pendiente'}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Estado actual</div><div class="crm-assignment-value">${eLabel}</div></div></div><div class="inbox-desc">${escapeHtml(c.descripcion)}</div>${contactLine ? `<div class="inbox-contact">${contactLine}</div>` : ''}<div class="inbox-actions"><select class="crm-select" onchange="cambiarEstadoInbox('${c.id}',this.value)">${renderEstadoOptions(estadoKey)}</select><button class="btn btn-accent btn-sm" onclick="asignarmeCaso('${c.id}')">Asignarme</button><select class="crm-select" id="reassign-${c.id}">${getLawyerOptionsHtml(c.abogadoAsignado)}</select><button class="btn btn-ghost btn-sm" onclick="reasignarCaso('${c.id}')">Reasignar</button>${!c.leida ? `<button class="btn btn-ghost btn-sm" onclick="marcarConsultaLeida('${c.id}')">Marcar le?da</button>` : ''}${c.contactos?.wa ? `<a href="https://wa.me/${c.contactos.wa.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">WhatsApp</a>` : ''}${c.contactos?.tel ? `<a href="tel:${escapeHtml(c.contactos.tel)}" class="btn btn-ghost btn-sm">Llamar</a>` : ''}${c.contactos?.email ? `<a href="mailto:${escapeHtml(c.contactos.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}<button class="btn btn-danger btn-sm" onclick="eliminarDeInbox('${c.id}')">Eliminar</button></div></div>`;
+  }).join('');
+}
+
+function cambiarEstadoInbox(id, nuevoEstado) {
+  const list = getInboxConsultas(); const item = list.find(c => c.id === id);
+  if (item) {
+    item.estadoInterno = normalizeConnectEstado(nuevoEstado); item.estado = item.estadoInterno;
+    item.leida = true; item.noLeida = false; if (!item.fechaLectura) item.fechaLectura = new Date().toISOString();
+    if (item.estadoInterno === 'respuesta_emitida' && !item.fechaRespuesta) item.fechaRespuesta = new Date().toISOString();
+    try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {} syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); toast(`Estado actualizado: ${getConnectEstadoLabel(item.estadoInterno)}`, 'ok');
+  }
+}
+function asignarCaso(id, abogado) { const nombre = (abogado || '').trim(); if (!nombre) { toast('Selecciona un abogado', 'err'); return; } const list = getInboxConsultas(); const item = list.find(c => c.id === id); if (!item) return; item.abogadoAsignado = nombre; item.fechaAsignacion = getTodayDO(); item.estadoInterno = 'asignado'; item.estado = 'asignado'; item.leida = true; item.noLeida = false; if (!item.fechaLectura) item.fechaLectura = new Date().toISOString(); try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {} syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); toast(`Caso asignado a ${nombre}`, 'ok'); }
+function asignarmeCaso(id) { asignarCaso(id, getCurrentLawyerName()); }
+function reasignarCaso(id) { const sel = document.getElementById('reassign-' + id) || document.getElementById('page-reassign-' + id); asignarCaso(id, sel?.value || ''); }
+function marcarConsultaLeida(id) { const list = getInboxConsultas(); const item = list.find(c => c.id === id); if (!item) return; item.leida = true; item.noLeida = false; if (!item.fechaLectura) item.fechaLectura = new Date().toISOString(); try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {} syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); }
+function buildTimeline(c) { c = normalizeConsulta(c); const estado = normalizeConnectEstado(c.estadoInterno || c.estado); const idx = CONNECT_ESTADOS.findIndex(e => e.key === estado); return CONNECT_ESTADOS.map((step, i) => { const done = i <= idx; const current = i === idx; let title = step.label; let sub = ''; if (step.key === 'asignado') { title = c.abogadoAsignado && c.abogadoAsignado !== 'Sin asignar' ? `Asignado a ${escapeHtml(c.abogadoAsignado)}` : 'Asignado'; sub = c.fechaAsignacion ? `Fecha de asignación: ${escapeHtml(c.fechaAsignacion)}` : 'Pendiente de asignación'; } return `<div class="legal-step ${done ? 'done' : ''} ${current ? 'current' : ''}"><div class="legal-dot">${done ? '&#10003;' : '&#9633;'}</div><div><div class="legal-step-title">${title}</div>${sub ? `<div class="legal-step-sub">${sub}</div>` : ''}</div></div>`; }).join(''); }
+function buscarConsultaPorCodigo() { const code = document.getElementById('track-code')?.value.trim().toUpperCase(); const out = document.getElementById('track-result'); if (!out) return; if (!code) { out.innerHTML = '<div class="track-result-card" style="color:var(--fg3)">Ingresa tu código de seguimiento.</div>'; return; } const inbox = getInboxConsultas(); const stored = getStoredConsultas(); const found = inbox.find(x => String(x.id).toUpperCase() === code) || stored.find(x => String(x.id).toUpperCase() === code); if (!found) { out.innerHTML = '<div class="track-result-card" style="color:var(--fg3)">No encontramos una consulta con ese código. Verifica que esté escrito exactamente como lo recibiste.</div>'; return; } const c = normalizeConsulta(found); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado); out.innerHTML = `<div class="track-result-card"><div class="track-head"><div><div class="track-title">${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)}</div><div class="track-ref">Código ${escapeHtml(c.id)}</div></div><div class="track-pill estado-badge-${estadoKey}">${getConnectEstadoLabel(estadoKey)}</div></div><div class="legal-timeline">${buildTimeline(c)}</div><div class="track-case-meta"><span>${escapeHtml(c.fecha)}</span><span>${c.anonima ? 'Consulta anónima' : escapeHtml(c.nombre || 'Sin nombre')}</span></div></div>`; }
+
+function eliminarDeInbox(id) {
+  if (!confirm('¿Eliminar este caso de la bandeja?')) return;
+  let list = getInboxConsultas().filter(c => c.id !== id);
+  try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {}
+  updateStoredConsultaById(id, { estado:'cerrado', estadoInterno:'cerrado' });
+  updateInboxBadge();
+  renderInbox();
+  toast('Caso eliminado de la bandeja', 'ok');
+}
+
+/* ══════════════════════════════════════════
+   AUTOCOMPLETADO DE CLIENTES EN AUDIENCIAS
+══════════════════════════════════════════ */
+function getClientesHist() {
+  const eid = getEmpresaId();
+  if (!DB_CLIENTES_HIST[eid]) DB_CLIENTES_HIST[eid] = [];
+  // también leer de localStorage para persistencia
+  try {
+    const stored = JSON.parse(_storage.getItem('nexlex_clientes_' + eid) || '[]');
+    // merge sin duplicados
+    stored.forEach(n => { if (!DB_CLIENTES_HIST[eid].includes(n)) DB_CLIENTES_HIST[eid].push(n); });
+  } catch {}
+  return DB_CLIENTES_HIST[eid];
+}
+
+function addClienteHist(nombre) {
+  if (!nombre || nombre.length < 2) return;
+  const eid  = getEmpresaId();
+  const list = getClientesHist();
+  if (!list.includes(nombre)) {
+    list.unshift(nombre);
+    if (list.length > 80) list.splice(80);
+    DB_CLIENTES_HIST[eid] = list;
+    try { _storage.setItem('nexlex_clientes_' + eid, JSON.stringify(list)); } catch {}
+  }
+}
+
+function showClienteSug(q) {
+  const box = document.getElementById('cliente-sug');
+  if (!box) return;
+  if (!q || q.length < 2) { box.style.display = 'none'; return; }
+  const matches = getClientesHist().filter(n => n.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
+  if (!matches.length) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  box.innerHTML = matches.map(n =>
+    `<div class="cliente-sug-item" onmousedown="selectClienteSug('${n.replace(/'/g,"\\'")}')">👤 ${n}</div>`
+  ).join('');
+}
+
+function selectClienteSug(nombre) {
+  const input = document.getElementById('aud-cliente');
+  if (input) { input.value = nombre; }
+  hideClienteSug();
+}
+
+function hideClienteSug() {
+  const box = document.getElementById('cliente-sug');
+  if (box) box.style.display = 'none';
+}
+
+/* ══════════════════════════════════════════
+   PATCH: switchConnectTab — agregar inbox
+══════════════════════════════════════════ */
+function switchConnectTab(tab) {
+  if (tab === 'inbox' && !isConnectPrivateMode()) tab = 'form';
+  _connectActiveTab = tab;
+  document.querySelectorAll('.connect-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('ctab-' + tab)?.classList.add('active');
+  document.getElementById('connect-form-view').style.display  = tab === 'form'  ? '' : 'none';
+  document.getElementById('connect-list-view').style.display  = tab === 'list'  ? '' : 'none';
+  document.getElementById('connect-inbox-view').style.display = tab === 'inbox' ? '' : 'none';
+  applyConnectVisibility();
+  if (tab === 'list')  renderConnectList();
+  if (tab === 'inbox') renderInbox();
+}
+
+/* ══════════════════════════════════════════
+   submitConsulta — versión final unificada
+   (reemplaza cualquier versión anterior)
+══════════════════════════════════════════ */
+function submitConsulta() {
+  if (!_connectCaseType) {
+    toast('Selecciona el tipo de caso', 'err');
+    document.getElementById('case-type-grid').scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+  const desc = document.getElementById('cn-desc').value.trim();
+  if (desc.length < 20) {
+    toast('Describe tu caso con más detalle (mín. 20 caracteres)', 'err');
+    document.getElementById('cn-desc').focus();
+    return;
+  }
+  const tel   = document.getElementById('cn-tel').value.trim();
+  const wa    = document.getElementById('cn-wa').value.trim();
+  const email = document.getElementById('cn-email').value.trim();
+  if (!tel && !wa && !email) {
+    toast('Ingresa al menos un medio de contacto', 'err');
+    return;
+  }
+  const consulta = {
+    id:          genRef(),
+    fecha:       new Date().toLocaleDateString('es-DO', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }),
+    anonima:     _connectAnonMode,
+    nombre:      _connectAnonMode ? 'Anónimo' : (document.getElementById('cn-nombre').value.trim() || 'Sin nombre'),
+    provincia:   document.getElementById('cn-provincia').value || 'No especificada',
+    tipo:        _connectCaseType,
+    descripcion: desc,
+    contactos:   { tel, wa, email },
+    horario:     document.getElementById('cn-horario').value,
+    archivo:     _connectFile ? _connectFile.name : null,
+    estado:      'consulta_recibida',
+    estadoInterno:'consulta_recibida',
+    abogadoAsignado:'Sin asignar',
+    fechaAsignacion:'',
+    leida:false,
+    noLeida:true,
+    fechaRecepcion:new Date().toISOString(),
+    fechaLectura:'',
+    fechaRespuesta:'',
+  };
+  const btn = document.getElementById('btn-connect-submit');
+  btn.disabled    = true;
+  btn.textContent = 'Enviando…';
+  setTimeout(() => {
+    saveConsulta(consulta);
+    saveToInbox(consulta);
+    updateConnectStats();
+    // Intentar notificación por email (si está configurado)
+    enviarNotificacionNuevaConsulta(consulta);
+    document.getElementById('suc-area').textContent = consulta.tipo;
+    document.getElementById('suc-ref').textContent  = consulta.id;
+    document.getElementById('connect-form-wrap').style.display = 'none';
+    document.getElementById('connect-success').classList.add('visible');
+    btn.disabled    = false;
+    btn.textContent = 'Enviar consulta →';
+    toast('✅ Consulta enviada. Un abogado te contactará pronto.', 'ok');
+    CONNECT_FEED_ITEMS.unshift({ area:consulta.tipo, prov:consulta.provincia, time:'Justo ahora' });
+    if (CONNECT_FEED_ITEMS.length > 5) CONNECT_FEED_ITEMS.pop();
+    renderConnectFeed();
+  }, 1400);
+}
+
+/* ── Init Connect: llamada directa sin wrapper recursivo ── */
+/* initConnect ya está definida arriba con toda la lógica.
+   goPage('connect') la llama directamente. No se necesita wrapper. */
+
+/* ══════════════════════════════════════════
+   BANDEJA — Página completa de consultas
+   (diferente a la vista inline de Connect)
+══════════════════════════════════════════ */
+function renderInboxPage() {
+  if (!isConnectPrivateMode()) return;
+  const filterVal = document.getElementById('inbox-page-filter')?.value || ''; let list = getInboxConsultas(); if (filterVal) list = list.filter(c => normalizeConnectEstado(c.estadoInterno) === filterVal);
+  const noEl = document.getElementById('no-inbox-page'); const listEl = document.getElementById('inbox-page-list'); if (!listEl) return;
+  if (!list.length) { if (noEl) noEl.style.display = ''; listEl.innerHTML = ''; return; } if (noEl) noEl.style.display = 'none';
+  const stColors = { consulta_recibida:'var(--green)', asignado:'#22d3ee', en_analisis:'var(--brand)', respuesta_emitida:'var(--amber)', contratado:'var(--orange)', cerrado:'var(--fg3)' };
+  listEl.innerHTML = list.map(raw => { const c = normalizeConsulta(raw); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado); const icon = AREA_ICONS[c.tipo] || '??'; const sc = stColors[estadoKey] || 'var(--fg3)'; const sl = getConnectEstadoLabel(estadoKey); const cLine = [c.contactos?.tel ? `Tel. ${escapeHtml(c.contactos.tel)}` : '', c.contactos?.wa ? `WhatsApp ${escapeHtml(c.contactos.wa)}` : '', c.contactos?.email ? `Email ${escapeHtml(c.contactos.email)}` : ''].filter(Boolean).join(' ? ');
+    return `<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:12px;border-left:4px solid ${sc}"><div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap"><div style="width:44px;height:44px;border-radius:var(--radius);background:rgba(79,124,255,.1);border:1px solid var(--brand-line);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${icon}</div><div style="flex:1;min-width:200px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px"><span style="font-size:13px;font-weight:700;color:var(--fg)">${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)}</span><span style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:${sc}22;color:${sc};border:1px solid ${sc}44">${sl}</span>${c.anonima ? '<span style="font-size:10px;color:var(--fg3)">Anónimo</span>' : ''}</div>${!c.leida ? '<span class="crm-notif-pill">No le?da</span>' : ''}<div class="crm-date-grid"><span>Recepci?n: ${formatCRMDate(c.fechaRecepcion)}</span><span>Lectura: ${formatCRMDate(c.fechaLectura)}</span><span>Respuesta: ${formatCRMDate(c.fechaRespuesta)}</span></div><div class="crm-assignment-box" style="margin:8px 0 10px"><div class="crm-assignment-item"><div class="crm-assignment-label">Abogado asignado</div><div class="crm-assignment-value">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Fecha asignación</div><div class="crm-assignment-value">${c.fechaAsignacion ? escapeHtml(c.fechaAsignacion) : 'Pendiente'}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Estado actual</div><div class="crm-assignment-value">${sl}</div></div></div><div style="font-size:12px;color:var(--fg2);line-height:1.65;margin-bottom:8px">${escapeHtml(c.descripcion)}</div>${cLine ? `<div style="font-size:11px;color:var(--fg3);margin-bottom:8px">${cLine}</div>` : ''}<div style="font-size:10.5px;color:var(--fg3)">${escapeHtml(c.fecha)} &middot; Ref: <strong style="color:var(--brand)">${escapeHtml(c.id)}</strong>${c.archivo ? ` &middot; Adjunto ${escapeHtml(c.archivo)}` : ''}</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;min-width:180px"><select class="crm-select" onchange="cambiarEstadoInbox('${c.id}', this.value)">${renderEstadoOptions(estadoKey)}</select><button class="btn btn-accent btn-sm" onclick="asignarmeCaso('${c.id}')">Asignarme</button><select class="crm-select" id="page-reassign-${c.id}">${getLawyerOptionsHtml(c.abogadoAsignado)}</select><button class="btn btn-ghost btn-sm" onclick="reasignarCaso('${c.id}')">Reasignar</button>${c.contactos?.wa ? `<a href="https://wa.me/${c.contactos.wa.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">WhatsApp</a>` : ''}${c.contactos?.tel ? `<a href="tel:${escapeHtml(c.contactos.tel)}" class="btn btn-ghost btn-sm">Llamar</a>` : ''}${c.contactos?.email ? `<a href="mailto:${escapeHtml(c.contactos.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}<button class="btn btn-danger btn-sm" onclick="eliminarDeInbox('${c.id}');renderInboxPage()">Eliminar</button></div></div></div>`; }).join('');
+}
+
+function limpiarInbox() {
+  if (!confirm('¿Eliminar TODAS las consultas de la bandeja? Esta acción no se puede deshacer.')) return;
+  try { _storage.setItem(INBOX_KEY, '[]'); } catch {}
+  updateInboxBadge();
+  renderInboxPage();
+  toast('Bandeja limpiada', 'ok');
+}
+
+/* ══════════════════════════════════════════
+   EMAIL NOTIFICATION SYSTEM — NEXLEX CONNECT
+   Preparado para: FormSubmit · EmailJS · Webhook
+   ─────────────────────────────────────────────
+   PARA ACTIVAR:
+   1. Cambiar enabled: true
+   2. Poner tu correo en "to"
+   3. Elegir provider: 'formsubmit' es el más fácil
+      (no requiere cuenta — solo tu email)
+══════════════════════════════════════════ */
+const NEXLEX_EMAIL_CONFIG = {
+  enabled:    false,                   // activar cuando se configure proveedor real
+  provider:   'formsubmit',            // 'emailjs' | 'resend' | 'formsubmit' | 'webhook'
+  to:         'abogado@nexlex.com',
+  from:       'NEXLEX Connect <notificaciones@nexlex.app>',
+  subjectPrefix: 'NEXLEX ? Nueva consulta',
+  // EmailJS
+  serviceId:  '',
+  templateId: '',
+  publicKey:  '',
+  // Resend
+  resendApiKey: '',
+  resendEndpoint: 'https://api.resend.com/emails',
+  // Webhook
+  webhookUrl: '',
+};
+
+function buildConsultaEmailPayload(consulta) {
+  const c = normalizeConsulta(consulta);
+  const body = `NUEVA CONSULTA ? NEXLEX Connect\nRef: ${c.id}\nTipo: ${c.tipo} | Provincia: ${c.provincia}\nFecha recepci?n: ${formatCRMDate(c.fechaRecepcion)}\nNombre: ${c.nombre}\nEstado: ${getConnectEstadoLabel(c.estadoInterno)}\nDescripci?n: ${c.descripcion}\nTel: ${c.contactos.tel || '?'} | WA: ${c.contactos.wa || '?'} | Email: ${c.contactos.email || '?'}\nHorario: ${c.horario}`;
+  return { consulta:c, subject:`${NEXLEX_EMAIL_CONFIG.subjectPrefix} ${c.tipo} (${c.id})`, body };
+}
+
+async function enviarNotificacionNuevaConsulta(consulta) {
+  if (!NEXLEX_EMAIL_CONFIG.enabled) return;
+  const payload = buildConsultaEmailPayload(consulta);
+  try {
+    if (NEXLEX_EMAIL_CONFIG.provider === 'formsubmit') {
+      const fd = new FormData();
+      fd.append('_to', NEXLEX_EMAIL_CONFIG.to);
+      fd.append('_subject', payload.subject);
+      fd.append('_captcha', 'false');
+      fd.append('message', payload.body);
+      await fetch(`https://formsubmit.co/ajax/${NEXLEX_EMAIL_CONFIG.to}`, { method:'POST', headers:{ 'Accept':'application/json' }, body:fd });
+    } else if (NEXLEX_EMAIL_CONFIG.provider === 'emailjs' && typeof emailjs !== 'undefined') {
+      await emailjs.send(NEXLEX_EMAIL_CONFIG.serviceId, NEXLEX_EMAIL_CONFIG.templateId, { to_email:NEXLEX_EMAIL_CONFIG.to, subject:payload.subject, message:payload.body, ref:payload.consulta.id, consulta:payload.consulta }, NEXLEX_EMAIL_CONFIG.publicKey);
+    } else if (NEXLEX_EMAIL_CONFIG.provider === 'resend') {
+      await fetch(NEXLEX_EMAIL_CONFIG.resendEndpoint, { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${NEXLEX_EMAIL_CONFIG.resendApiKey}` }, body:JSON.stringify({ from:NEXLEX_EMAIL_CONFIG.from, to:[NEXLEX_EMAIL_CONFIG.to], subject:payload.subject, text:payload.body }) });
+    } else if (NEXLEX_EMAIL_CONFIG.provider === 'webhook') {
+      await fetch(NEXLEX_EMAIL_CONFIG.webhookUrl, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(payload) });
+    }
+    console.log('[NEXLEX] Notificaci?n nueva consulta preparada/enviada:', payload.consulta.id);
+  } catch (err) {
+    console.warn('[NEXLEX] Notificaci?n nueva consulta fall? (no cr?tico):', err);
+  }
+}
+
+async function nexlexSendEmailNotification(consulta) {
+  return enviarNotificacionNuevaConsulta(consulta);
+}
+
+
+
+const _nexlexOriginalDoLoginForConnect = typeof doLogin === 'function' ? doLogin : null;
+if (_nexlexOriginalDoLoginForConnect && !_nexlexOriginalDoLoginForConnect._connectWrapped) {
+  doLogin = function() {
+    const r = _nexlexOriginalDoLoginForConnect.apply(this, arguments);
+    setTimeout(() => {
+      document.body.classList.remove('connect-public-mode');
+      const b = document.getElementById('connect-public-login');
+      if (b) b.style.display = 'none';
+      applyConnectVisibility();
+    }, 0);
+    return r;
+  };
+  doLogin._connectWrapped = true;
+}
+const _nexlexOriginalDoLogoutForConnect = typeof doLogout === 'function' ? doLogout : null;
+if (_nexlexOriginalDoLogoutForConnect && !_nexlexOriginalDoLogoutForConnect._connectWrapped) {
+  doLogout = function() {
+    const r = _nexlexOriginalDoLogoutForConnect.apply(this, arguments);
+    setTimeout(showPublicConnectMode, 0);
+    return r;
+  };
+  doLogout._connectWrapped = true;
+}
+setTimeout(() => { if (!SESSION) showPublicConnectMode(); else applyConnectVisibility(); }, 0);
+
+/* ── Keyboard shortcuts for login ── */
+document.getElementById('l-pass').addEventListener('keydown',  e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('l-email').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 </script>
 </body>
 </html>
