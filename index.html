@@ -1,7 +1,7 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
+<meta charset="<!DOCTYPE html>
+UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0d14">
 <meta name="description" content="NEXLEX by Grupo RAF — Sistema de Gestión Jurídica multiusuario. Mapa de procedimientos, jurisprudencia, audiencias y consulta legal online.">
@@ -18,6 +18,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
 <!-- Fuentes con display=swap para no bloquear render -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -4427,6 +4429,119 @@ let _connectContacts   = new Set(['tel']);
 let _connectFile       = null;
 let _connectActiveTab  = 'form';
 
+/* ══════════════════════════════════════════
+   SUPABASE — Configuración NEXLEX CONNECT
+══════════════════════════════════════════ */
+const _SUPA_URL = 'https://cxjltgrlalezoxkbyvdt.supabase.co';
+const _SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4amx0Z3JsYWxlem94a2J5dmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MDkzODAsImV4cCI6MjA5ODI4NTM4MH0.AypSAnCJdb2zAB3itLJXsrPORYkl3jF84hUrBXf-eaQ';
+const _supa = (typeof supabase !== 'undefined') ? supabase.createClient(_SUPA_URL, _SUPA_KEY) : null;
+
+/* Convierte objeto consulta NEXLEX → fila Supabase */
+function _consultaToRow(c) {
+  return {
+    id:                  c.id,
+    codigo:              c.id,
+    tipo:                c.tipo || '',
+    descripcion:         c.descripcion || '',
+    provincia:           c.provincia || '',
+    nombre:              c.nombre || 'Anónimo',
+    telefono:            c.contactos?.tel || '',
+    whatsapp:            c.contactos?.wa || '',
+    email:               c.contactos?.email || '',
+    estado:              c.estadoInterno || c.estado || 'consulta_recibida',
+    abogado_asignado:    c.abogadoAsignado || 'Sin asignar',
+    observaciones:       c.observaciones || '',
+    empresa_id:          c.empresaId || 'raf',
+    leida:               c.leida === true,
+    fecha_creacion:      c.fechaRecepcion || new Date().toISOString(),
+    fecha_actualizacion: new Date().toISOString()
+  };
+}
+
+/* Convierte fila Supabase → objeto consulta NEXLEX */
+function _rowToConsulta(row) {
+  return normalizeConsulta({
+    id:               row.id,
+    fecha:            row.fecha_creacion ? new Date(row.fecha_creacion).toLocaleDateString('es-DO', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '',
+    tipo:             row.tipo || '',
+    descripcion:      row.descripcion || '',
+    provincia:        row.provincia || '',
+    nombre:           row.nombre || 'Anónimo',
+    anonima:          row.nombre === 'Anónimo',
+    contactos: {
+      tel:   row.telefono || '',
+      wa:    row.whatsapp || '',
+      email: row.email || ''
+    },
+    estadoInterno:    row.estado || 'consulta_recibida',
+    estado:           row.estado || 'consulta_recibida',
+    abogadoAsignado:  row.abogado_asignado || 'Sin asignar',
+    observaciones:    row.observaciones || '',
+    empresaId:        row.empresa_id || 'raf',
+    leida:            row.leida === true,
+    noLeida:          row.leida !== true,
+    fechaRecepcion:   row.fecha_creacion || new Date().toISOString(),
+    fechaRecibido:    row.fecha_creacion || new Date().toISOString(),
+    fechaLectura:     '',
+    fechaRespuesta:   '',
+    fechaAsignacion:  ''
+  });
+}
+
+/* Insertar consulta en Supabase (público) */
+async function _supaInsertConsulta(c) {
+  if (!_supa) return;
+  try {
+    const { error } = await _supa.from('consultas').upsert(_consultaToRow(c));
+    if (error) console.warn('[NEXLEX] Supabase insert error:', error.message);
+  } catch(e) { console.warn('[NEXLEX] Supabase insert exception:', e); }
+}
+
+/* Leer todas las consultas desde Supabase (autenticado) */
+async function _supaGetConsultas() {
+  if (!_supa) return [];
+  try {
+    const { data, error } = await _supa.from('consultas').select('*').order('fecha_creacion', { ascending: false });
+    if (error) { console.warn('[NEXLEX] Supabase select error:', error.message); return []; }
+    return (data || []).map(_rowToConsulta);
+  } catch(e) { console.warn('[NEXLEX] Supabase select exception:', e); return []; }
+}
+
+/* Actualizar campos de una consulta en Supabase */
+async function _supaUpdateConsulta(id, fields) {
+  if (!_supa) return;
+  try {
+    const row = {};
+    if (fields.estadoInterno !== undefined) row.estado = fields.estadoInterno;
+    if (fields.estado !== undefined) row.estado = fields.estado;
+    if (fields.abogadoAsignado !== undefined) row.abogado_asignado = fields.abogadoAsignado;
+    if (fields.leida !== undefined) row.leida = fields.leida;
+    if (fields.observaciones !== undefined) row.observaciones = fields.observaciones;
+    row.fecha_actualizacion = new Date().toISOString();
+    const { error } = await _supa.from('consultas').update(row).eq('id', id);
+    if (error) console.warn('[NEXLEX] Supabase update error:', error.message);
+  } catch(e) { console.warn('[NEXLEX] Supabase update exception:', e); }
+}
+
+/* Buscar una consulta por código en Supabase (público) */
+async function _supaFindByCodigo(codigo) {
+  if (!_supa) return null;
+  try {
+    const { data, error } = await _supa.from('consultas').select('*').eq('id', codigo.toUpperCase()).maybeSingle();
+    if (error || !data) return null;
+    return _rowToConsulta(data);
+  } catch(e) { return null; }
+}
+
+/* Eliminar consulta de Supabase */
+async function _supaDeleteConsulta(id) {
+  if (!_supa) return;
+  try {
+    const { error } = await _supa.from('consultas').delete().eq('id', id);
+    if (error) console.warn('[NEXLEX] Supabase delete error:', error.message);
+  } catch(e) { console.warn('[NEXLEX] Supabase delete exception:', e); }
+}
+
 const CONNECT_STORAGE_KEY = 'nexlex_consultas_v1';
 
 const CONNECT_ESTADOS = [
@@ -4742,6 +4857,8 @@ function submitConsulta() {
 
   setTimeout(() => {
     saveConsulta(consulta);
+    if (typeof saveToInbox === 'function') saveToInbox(consulta);
+    if (typeof enviarNotificacionNuevaConsulta === 'function') enviarNotificacionNuevaConsulta(consulta);
     updateConnectStats();
 
     // Mostrar éxito
@@ -4859,9 +4976,30 @@ function getInboxConsultas() {
 function saveToInbox(consulta) {
   const list = getInboxConsultas();
   const ahora = new Date().toISOString();
-  list.unshift({ ...normalizeConsulta(consulta), estado:'consulta_recibida', estadoInterno:'consulta_recibida', abogadoAsignado:'Sin asignar', fechaAsignacion:'', leida:false, noLeida:true, fechaRecepcion:ahora, fechaRecibido:ahora, fechaLectura:'', fechaRespuesta:'' });
+  const item = {
+    ...normalizeConsulta(consulta),
+    estado:'consulta_recibida',
+    estadoInterno:'consulta_recibida',
+    abogadoAsignado: consulta.abogadoAsignado || 'Sin asignar',
+    fechaAsignacion: consulta.fechaAsignacion || '',
+    leida: consulta.leida === true,
+    noLeida: consulta.leida !== true,
+    fechaRecepcion: consulta.fechaRecepcion || ahora,
+    fechaRecibido: consulta.fechaRecibido || consulta.fechaRecepcion || ahora,
+    fechaLectura: consulta.fechaLectura || '',
+    fechaRespuesta: consulta.fechaRespuesta || ''
+  };
+  const idx = list.findIndex(c => c.id === item.id);
+  if (idx >= 0) list[idx] = { ...list[idx], ...item };
+  else list.unshift(item);
   try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {}
+  // Guardar en Supabase (funciona desde cualquier navegador)
+  _supaInsertConsulta(item);
   updateInboxBadge();
+  if (isConnectPrivateMode()) {
+    if (_connectActiveTab === 'inbox') renderInbox();
+    if (document.getElementById('inbox-page-list')) renderInboxPage();
+  }
 }
 
 function updateInboxBadge() {
@@ -4888,19 +5026,30 @@ function updateInboxBadge() {
 
 function renderInbox() {
   if (!isConnectPrivateMode()) { applyConnectVisibility(); return; }
-  const list   = getInboxConsultas();
   const filter = document.getElementById('inbox-filter')?.value || '';
   const el     = document.getElementById('inbox-list');
   const noEl   = document.getElementById('no-inbox');
   if (!el) return;
-  const filtered = filter ? list.filter(c => normalizeConnectEstado(c.estadoInterno) === filter) : list;
-  if (!filtered.length) { if (noEl) noEl.style.display = ''; el.innerHTML = ''; return; }
-  if (noEl) noEl.style.display = 'none';
-  el.innerHTML = filtered.map(raw => {
-    const c = normalizeConsulta(raw); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado); const icon = AREA_ICONS[c.tipo] || 'Caso'; const eBadge = `estado-badge-${estadoKey}`; const eLabel = getConnectEstadoLabel(estadoKey);
-    const contactLine = [c.contactos?.tel ? `Tel. ${escapeHtml(c.contactos.tel)}` : '', c.contactos?.wa ? `WhatsApp ${escapeHtml(c.contactos.wa)}` : '', c.contactos?.email ? `Email ${escapeHtml(c.contactos.email)}` : ''].filter(Boolean).join(' ? ');
-    return `<div class="inbox-card estado-${estadoKey} ${!c.leida ? 'no-leida' : ''}" id="inbox-card-${c.id}"><div class="inbox-top"><div><div class="inbox-title">${icon} ${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)} ${!c.leida ? '<span class="crm-notif-pill">No le?da</span>' : ''}</div><div class="inbox-ref">Ref: ${escapeHtml(c.id)} &middot; ${escapeHtml(c.fecha)}</div></div><span class="badge ${eBadge}" style="font-size:10px;padding:3px 10px">${eLabel}</span></div><div class="inbox-meta">${c.anonima ? '<span>An?nima</span>' : `<span>${escapeHtml(c.nombre)}</span>`}<span>${escapeHtml(c.horario)}</span>${c.archivo ? `<span>Adjunto ${escapeHtml(c.archivo)}</span>` : ''}</div><div class="crm-date-grid"><span>Recepci?n: ${formatCRMDate(c.fechaRecepcion)}</span><span>Lectura: ${formatCRMDate(c.fechaLectura)}</span><span>Respuesta: ${formatCRMDate(c.fechaRespuesta)}</span></div><div class="crm-assignment-box"><div class="crm-assignment-item"><div class="crm-assignment-label">Abogado asignado</div><div class="crm-assignment-value">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Fecha asignaci?n</div><div class="crm-assignment-value">${c.fechaAsignacion ? escapeHtml(c.fechaAsignacion) : 'Pendiente'}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Estado actual</div><div class="crm-assignment-value">${eLabel}</div></div></div><div class="inbox-desc">${escapeHtml(c.descripcion)}</div>${contactLine ? `<div class="inbox-contact">${contactLine}</div>` : ''}<div class="inbox-actions"><select class="crm-select" onchange="cambiarEstadoInbox('${c.id}',this.value)">${renderEstadoOptions(estadoKey)}</select><button class="btn btn-accent btn-sm" onclick="asignarmeCaso('${c.id}')">Asignarme</button><select class="crm-select" id="reassign-${c.id}">${getLawyerOptionsHtml(c.abogadoAsignado)}</select><button class="btn btn-ghost btn-sm" onclick="reasignarCaso('${c.id}')">Reasignar</button>${!c.leida ? `<button class="btn btn-ghost btn-sm" onclick="marcarConsultaLeida('${c.id}')">Marcar le?da</button>` : ''}${c.contactos?.wa ? `<a href="https://wa.me/${c.contactos.wa.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">WhatsApp</a>` : ''}${c.contactos?.tel ? `<a href="tel:${escapeHtml(c.contactos.tel)}" class="btn btn-ghost btn-sm">Llamar</a>` : ''}${c.contactos?.email ? `<a href="mailto:${escapeHtml(c.contactos.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}<button class="btn btn-danger btn-sm" onclick="eliminarDeInbox('${c.id}')">Eliminar</button></div></div>`;
-  }).join('');
+  // Cargar de Supabase si está disponible
+  _supaGetConsultas().then(supaList => {
+    // Merge: Supabase tiene prioridad, localStorage como fallback
+    const localList = getInboxConsultas();
+    const merged = supaList.length > 0 ? supaList : localList;
+    // Sincronizar localStorage con datos de Supabase
+    if (supaList.length > 0) {
+      try { _storage.setItem(INBOX_KEY, JSON.stringify(merged)); } catch {}
+      updateInboxBadge();
+    }
+    const list = merged;
+    const filtered = filter ? list.filter(c => normalizeConnectEstado(c.estadoInterno) === filter) : list;
+    if (!filtered.length) { if (noEl) noEl.style.display = ''; el.innerHTML = ''; return; }
+    if (noEl) noEl.style.display = 'none';
+    el.innerHTML = filtered.map(raw => {
+      const c = normalizeConsulta(raw); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado); const icon = AREA_ICONS[c.tipo] || 'Caso'; const eBadge = `estado-badge-${estadoKey}`; const eLabel = getConnectEstadoLabel(estadoKey);
+      const contactLine = [c.contactos?.tel ? `Tel. ${escapeHtml(c.contactos.tel)}` : '', c.contactos?.wa ? `WhatsApp ${escapeHtml(c.contactos.wa)}` : '', c.contactos?.email ? `Email ${escapeHtml(c.contactos.email)}` : ''].filter(Boolean).join(' · ');
+      return `<div class="inbox-card estado-${estadoKey} ${!c.leida ? 'no-leida' : ''}" id="inbox-card-${c.id}"><div class="inbox-top"><div><div class="inbox-title">${icon} ${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)} ${!c.leida ? '<span class="crm-notif-pill">No leída</span>' : ''}</div><div class="inbox-ref">Ref: ${escapeHtml(c.id)} &middot; ${escapeHtml(c.fecha)}</div></div><span class="badge ${eBadge}" style="font-size:10px;padding:3px 10px">${eLabel}</span></div><div class="inbox-meta">${c.anonima ? '<span>Anónima</span>' : `<span>${escapeHtml(c.nombre)}</span>`}<span>${escapeHtml(c.horario||'')}</span>${c.archivo ? `<span>Adjunto ${escapeHtml(c.archivo)}</span>` : ''}</div><div class="crm-date-grid"><span>Recepción: ${formatCRMDate(c.fechaRecepcion)}</span><span>Lectura: ${formatCRMDate(c.fechaLectura)}</span><span>Respuesta: ${formatCRMDate(c.fechaRespuesta)}</span></div><div class="crm-assignment-box"><div class="crm-assignment-item"><div class="crm-assignment-label">Abogado asignado</div><div class="crm-assignment-value">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Fecha asignación</div><div class="crm-assignment-value">${c.fechaAsignacion ? escapeHtml(c.fechaAsignacion) : 'Pendiente'}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Estado actual</div><div class="crm-assignment-value">${eLabel}</div></div></div><div class="inbox-desc">${escapeHtml(c.descripcion)}</div>${contactLine ? `<div class="inbox-contact">${contactLine}</div>` : ''}<div class="inbox-actions"><select class="crm-select" onchange="cambiarEstadoInbox('${c.id}',this.value)">${renderEstadoOptions(estadoKey)}</select><button class="btn btn-accent btn-sm" onclick="asignarmeCaso('${c.id}')">Asignarme</button><select class="crm-select" id="reassign-${c.id}">${getLawyerOptionsHtml(c.abogadoAsignado)}</select><button class="btn btn-ghost btn-sm" onclick="reasignarCaso('${c.id}')">Reasignar</button>${!c.leida ? `<button class="btn btn-ghost btn-sm" onclick="marcarConsultaLeida('${c.id}')">Marcar leída</button>` : ''}${c.contactos?.wa ? `<a href="https://wa.me/${c.contactos.wa.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">WhatsApp</a>` : ''}${c.contactos?.tel ? `<a href="tel:${escapeHtml(c.contactos.tel)}" class="btn btn-ghost btn-sm">Llamar</a>` : ''}${c.contactos?.email ? `<a href="mailto:${escapeHtml(c.contactos.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}<button class="btn btn-danger btn-sm" onclick="eliminarDeInbox('${c.id}')">Eliminar</button></div></div>`;
+    }).join('');
+  });
 }
 
 function cambiarEstadoInbox(id, nuevoEstado) {
@@ -4909,20 +5058,45 @@ function cambiarEstadoInbox(id, nuevoEstado) {
     item.estadoInterno = normalizeConnectEstado(nuevoEstado); item.estado = item.estadoInterno;
     item.leida = true; item.noLeida = false; if (!item.fechaLectura) item.fechaLectura = new Date().toISOString();
     if (item.estadoInterno === 'respuesta_emitida' && !item.fechaRespuesta) item.fechaRespuesta = new Date().toISOString();
-    try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {} syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); toast(`Estado actualizado: ${getConnectEstadoLabel(item.estadoInterno)}`, 'ok');
+    try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {}
+    _supaUpdateConsulta(id, { estadoInterno: item.estadoInterno, leida: true });
+    syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); toast(`Estado actualizado: ${getConnectEstadoLabel(item.estadoInterno)}`, 'ok');
   }
 }
-function asignarCaso(id, abogado) { const nombre = (abogado || '').trim(); if (!nombre) { toast('Selecciona un abogado', 'err'); return; } const list = getInboxConsultas(); const item = list.find(c => c.id === id); if (!item) return; item.abogadoAsignado = nombre; item.fechaAsignacion = getTodayDO(); item.estadoInterno = 'asignado'; item.estado = 'asignado'; item.leida = true; item.noLeida = false; if (!item.fechaLectura) item.fechaLectura = new Date().toISOString(); try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {} syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); toast(`Caso asignado a ${nombre}`, 'ok'); }
+function asignarCaso(id, abogado) { const nombre = (abogado || '').trim(); if (!nombre) { toast('Selecciona un abogado', 'err'); return; } const list = getInboxConsultas(); const item = list.find(c => c.id === id); if (!item) return; item.abogadoAsignado = nombre; item.fechaAsignacion = getTodayDO(); item.estadoInterno = 'asignado'; item.estado = 'asignado'; item.leida = true; item.noLeida = false; if (!item.fechaLectura) item.fechaLectura = new Date().toISOString(); try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {} _supaUpdateConsulta(id, { estadoInterno: 'asignado', abogadoAsignado: nombre, leida: true }); syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); toast(`Caso asignado a ${nombre}`, 'ok'); }
 function asignarmeCaso(id) { asignarCaso(id, getCurrentLawyerName()); }
 function reasignarCaso(id) { const sel = document.getElementById('reassign-' + id) || document.getElementById('page-reassign-' + id); asignarCaso(id, sel?.value || ''); }
-function marcarConsultaLeida(id) { const list = getInboxConsultas(); const item = list.find(c => c.id === id); if (!item) return; item.leida = true; item.noLeida = false; if (!item.fechaLectura) item.fechaLectura = new Date().toISOString(); try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {} syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); }
+function marcarConsultaLeida(id) { const list = getInboxConsultas(); const item = list.find(c => c.id === id); if (!item) return; item.leida = true; item.noLeida = false; if (!item.fechaLectura) item.fechaLectura = new Date().toISOString(); try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {} _supaUpdateConsulta(id, { leida: true }); syncConsultaFromInbox(item); updateInboxBadge(); renderInbox(); if (document.getElementById('inbox-page-list')) renderInboxPage(); }
 function buildTimeline(c) { c = normalizeConsulta(c); const estado = normalizeConnectEstado(c.estadoInterno || c.estado); const idx = CONNECT_ESTADOS.findIndex(e => e.key === estado); return CONNECT_ESTADOS.map((step, i) => { const done = i <= idx; const current = i === idx; let title = step.label; let sub = ''; if (step.key === 'asignado') { title = c.abogadoAsignado && c.abogadoAsignado !== 'Sin asignar' ? `Asignado a ${escapeHtml(c.abogadoAsignado)}` : 'Asignado'; sub = c.fechaAsignacion ? `Fecha de asignación: ${escapeHtml(c.fechaAsignacion)}` : 'Pendiente de asignación'; } return `<div class="legal-step ${done ? 'done' : ''} ${current ? 'current' : ''}"><div class="legal-dot">${done ? '&#10003;' : '&#9633;'}</div><div><div class="legal-step-title">${title}</div>${sub ? `<div class="legal-step-sub">${sub}</div>` : ''}</div></div>`; }).join(''); }
-function buscarConsultaPorCodigo() { const code = document.getElementById('track-code')?.value.trim().toUpperCase(); const out = document.getElementById('track-result'); if (!out) return; if (!code) { out.innerHTML = '<div class="track-result-card" style="color:var(--fg3)">Ingresa tu código de seguimiento.</div>'; return; } const inbox = getInboxConsultas(); const stored = getStoredConsultas(); const found = inbox.find(x => String(x.id).toUpperCase() === code) || stored.find(x => String(x.id).toUpperCase() === code); if (!found) { out.innerHTML = '<div class="track-result-card" style="color:var(--fg3)">No encontramos una consulta con ese código. Verifica que esté escrito exactamente como lo recibiste.</div>'; return; } const c = normalizeConsulta(found); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado); out.innerHTML = `<div class="track-result-card"><div class="track-head"><div><div class="track-title">${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)}</div><div class="track-ref">Código ${escapeHtml(c.id)}</div></div><div class="track-pill estado-badge-${estadoKey}">${getConnectEstadoLabel(estadoKey)}</div></div><div class="legal-timeline">${buildTimeline(c)}</div><div class="track-case-meta"><span>${escapeHtml(c.fecha)}</span><span>${c.anonima ? 'Consulta anónima' : escapeHtml(c.nombre || 'Sin nombre')}</span></div></div>`; }
+function buscarConsultaPorCodigo() {
+  const code = document.getElementById('track-code')?.value.trim().toUpperCase();
+  const out  = document.getElementById('track-result');
+  if (!out) return;
+  if (!code) { out.innerHTML = '<div class="track-result-card" style="color:var(--fg3)">Ingresa tu código de seguimiento.</div>'; return; }
+  out.innerHTML = '<div class="track-result-card" style="color:var(--fg3)">Buscando...</div>';
+  // Buscar primero en localStorage, luego en Supabase
+  const inbox  = getInboxConsultas();
+  const stored = getStoredConsultas();
+  const local  = inbox.find(x => String(x.id).toUpperCase() === code) || stored.find(x => String(x.id).toUpperCase() === code);
+  if (local) {
+    _renderTrackResult(out, local); return;
+  }
+  // Si no está en local, buscar en Supabase
+  _supaFindByCodigo(code).then(found => {
+    if (!found) { out.innerHTML = '<div class="track-result-card" style="color:var(--fg3)">No encontramos una consulta con ese código. Verifica que esté escrito exactamente como lo recibiste.</div>'; return; }
+    _renderTrackResult(out, found);
+  });
+}
+function _renderTrackResult(out, found) {
+  const c = normalizeConsulta(found); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado);
+  out.innerHTML = `<div class="track-result-card"><div class="track-head"><div><div class="track-title">${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)}</div><div class="track-ref">Código ${escapeHtml(c.id)}</div></div><div class="track-pill estado-badge-${estadoKey}">${getConnectEstadoLabel(estadoKey)}</div></div><div class="legal-timeline">${buildTimeline(c)}</div><div class="track-case-meta"><span>${escapeHtml(c.fecha)}</span><span>${c.anonima ? 'Consulta anónima' : escapeHtml(c.nombre || 'Sin nombre')}</span></div></div>`;
+}
 
 function eliminarDeInbox(id) {
   if (!confirm('¿Eliminar este caso de la bandeja?')) return;
   let list = getInboxConsultas().filter(c => c.id !== id);
   try { _storage.setItem(INBOX_KEY, JSON.stringify(list)); } catch {}
+  _supaDeleteConsulta(id);
   updateStoredConsultaById(id, { estado:'cerrado', estadoInterno:'cerrado' });
   updateInboxBadge();
   renderInbox();
@@ -5159,6 +5333,10 @@ if (_nexlexOriginalDoLoginForConnect && !_nexlexOriginalDoLoginForConnect._conne
       const b = document.getElementById('connect-public-login');
       if (b) b.style.display = 'none';
       applyConnectVisibility();
+      // Re-renderizar bandeja con las consultas que llegaron en modo público
+      updateInboxBadge();
+      if (document.getElementById('inbox-list')) renderInbox();
+      if (document.getElementById('inbox-page-list')) renderInboxPage();
     }, 0);
     return r;
   };
