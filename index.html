@@ -368,6 +368,145 @@ body.connect-public-mode #page-connect { display:flex !important; }
 
 .nav-tab.hidden-tab { display: none; }
 
+/* ══ NAV DROPDOWN ══ */
+.nav-group { position:relative; display:flex; align-items:stretch; }
+.nav-group-trigger { display:flex; align-items:center; padding:0 16px; cursor:pointer; font-size:12px; font-weight:600; color:var(--fg2); border-bottom:2px solid transparent; transition:color .15s,background .15s,border-color .15s; white-space:nowrap; gap:6px; letter-spacing:.01em; user-select:none; }
+.nav-group-trigger:hover { color:var(--fg); background:var(--card-hover); }
+.nav-group-trigger.active { color:var(--brand); border-bottom-color:var(--brand); }
+.nav-group-trigger .nav-arrow { font-size:8px; opacity:.5; transition:transform .2s; }
+.nav-group:hover .nav-arrow { transform:rotate(180deg); }
+.nav-dropdown { display:none; position:absolute; top:100%; left:0; min-width:200px; background:var(--surface); border:1px solid var(--border-hi); border-radius:0 0 var(--radius) var(--radius); box-shadow:0 16px 40px rgba(0,0,0,.5); z-index:999; padding:6px 0;
+  /* Pequeño padding-top invisible para que el mouse no pierda el hover al moverse hacia abajo */
+  margin-top:-2px; padding-top:8px; }
+.nav-group:hover .nav-dropdown { display:block; }
+.nav-dropdown-item { display:flex; align-items:center; gap:10px; padding:9px 16px; font-size:12px; font-weight:500; color:var(--fg2); cursor:pointer; transition:background .12s,color .12s; white-space:nowrap; user-select:none; }
+.nav-dropdown-item:hover { background:var(--card-hover); color:var(--fg); }
+.nav-dropdown-item.active { color:var(--brand); background:var(--brand-glow); }
+.nav-dropdown-sep { height:1px; background:var(--border); margin:5px 12px; }
+.nav-dropdown-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--fg3); padding:8px 16px 4px; }
+.nav-group.hidden-group { display:none; }
+
+/* ══ WORKSPACE GESTIÓN ══ */
+.workspace-layout { display:flex; flex-direction:column; height:100%; overflow:hidden; }
+.workspace-tabs { display:flex; border-bottom:1px solid var(--border); background:var(--surface); padding:0 20px; gap:2px; overflow-x:auto; flex-shrink:0; }
+.workspace-tab { padding:12px 16px; font-size:12px; font-weight:600; color:var(--fg3); border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; transition:color .15s,border-color .15s; }
+.workspace-tab:hover { color:var(--fg2); }
+.workspace-tab.active { color:var(--brand); border-bottom-color:var(--brand); }
+.workspace-tab.coming-soon { opacity:.45; cursor:default; }
+.workspace-panel { display:none; flex:1; overflow-y:auto; }
+.workspace-panel.active { display:block; }
+.workspace-header { display:flex; align-items:center; justify-content:space-between; padding:20px 24px 16px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.workspace-title { font-size:16px; font-weight:700; color:var(--fg); }
+.workspace-subtitle { font-size:11px; color:var(--fg3); margin-top:2px; }
+.gestion-client-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; cursor:pointer; transition:border-color .15s,background .15s; display:flex; align-items:center; gap:14px; }
+.gestion-client-card:hover { border-color:var(--brand-line); background:var(--card-hover); }
+.gestion-client-avatar { width:40px; height:40px; border-radius:50%; background:var(--brand-glow); border:1px solid var(--brand-line); display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:var(--brand); flex-shrink:0; }
+.gestion-client-info { flex:1; min-width:0; }
+.gestion-client-name { font-size:13px; font-weight:700; color:var(--fg); }
+.gestion-client-meta { font-size:11px; color:var(--fg3); margin-top:2px; }
+.gestion-case-pill { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; background:var(--brand-glow); color:var(--brand); border:1px solid var(--brand-line); white-space:nowrap; }
+.case-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; cursor:pointer; transition:border-color .15s; display:flex; align-items:center; gap:12px; }
+.case-card:hover { border-color:var(--brand-line); }
+.case-card-icon { width:36px; height:36px; border-radius:var(--radius-sm); background:var(--card-hover); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.case-card-info { flex:1; }
+.case-card-name { font-size:12px; font-weight:700; color:var(--fg); }
+.case-card-meta { font-size:11px; color:var(--fg3); margin-top:2px; }
+
+/* Dashboard Gestión */
+#gestion-panel-dashboard { overflow-y:auto; }
+#gestion-panel-clientes  { display:flex; flex-direction:column; overflow:hidden; }
+#gestion-panel-casos     { display:flex; flex-direction:column; overflow:hidden; }
+#gestion-panel-clientes .workspace-panel,
+#gestion-panel-casos    .workspace-panel { flex:1; overflow-y:auto; }
+.coming-soon-panel { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center; color:var(--fg3); gap:10px; }
+.coming-soon-panel .cs-icon { font-size:32px; opacity:.4; }
+.coming-soon-panel .cs-title { font-size:14px; font-weight:700; color:var(--fg2); }
+.coming-soon-panel .cs-desc { font-size:12px; max-width:300px; line-height:1.6; }
+
+/* ══ GESTIÓN CRM — Filtros ══ */
+.gestion-filter-btn {
+  background: none;
+  border: none;
+  padding: 6px 13px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg3);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .12s, color .12s;
+  white-space: nowrap;
+}
+.gestion-filter-btn:hover { background: var(--card-hover); color: var(--fg2); }
+.gestion-filter-btn.active { background: var(--brand); color: #fff; }
+
+/* ══ GESTIÓN CRM — Cliente card mejorada ══ */
+.gestion-client-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.gestion-client-card:hover {
+  border-color: var(--brand-line);
+  background: var(--card-hover);
+  box-shadow: 0 4px 16px rgba(0,0,0,.2);
+}
+.gestion-client-card.archivado { opacity: .55; }
+.gestion-client-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--brand-glow);
+  border: 1px solid var(--brand-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--brand);
+  flex-shrink: 0;
+}
+.gestion-client-avatar.empresa { background: rgba(52,211,153,.1); border-color: rgba(52,211,153,.3); color: var(--green); }
+.gestion-client-avatar.favorito { background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.3); color: var(--amber); }
+.gestion-client-info { flex: 1; min-width: 0; }
+.gestion-client-name { font-size: 13px; font-weight: 700; color: var(--fg); display:flex; align-items:center; gap:6px; }
+.gestion-client-code { font-size: 9px; font-weight: 700; color: var(--fg3); background: var(--card-hover); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; letter-spacing:.04em; }
+.gestion-client-meta { font-size: 11px; color: var(--fg3); margin-top: 3px; }
+.gestion-case-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--brand-glow);
+  color: var(--brand);
+  border: 1px solid var(--brand-line);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ══ GESTIÓN CRM — Case card mejorada ══ */
+.case-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.case-card:hover { border-color: var(--brand-line); box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+.case-card-icon { width: 38px; height: 38px; border-radius: var(--radius); background: var(--card-hover); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.case-card-info { flex: 1; min-width: 0; }
+.case-card-name { font-size: 12px; font-weight: 700; color: var(--fg); }
+.case-card-meta { font-size: 11px; color: var(--fg3); margin-top: 2px; }
+
 /* User pill */
 .user-pill {
   display: flex;
@@ -2153,15 +2292,95 @@ body.connect-public-mode #page-connect { display:flex !important; }
 
     <!-- Nav tabs -->
     <div class="nav" id="main-nav">
-      <div class="nav-tab active" data-page="mapa">🗺 Mapa</div>
-      <div class="nav-tab" data-page="audiencias">📅 Audiencias</div>
-      <div class="nav-tab" data-page="juris">⚖ Jurisprudencia <span class="nbadge" id="badge-jalert" style="display:none">0</span></div>
-      <div class="nav-tab" data-page="stats">📊 Estadísticas</div>
-      <div class="nav-tab hidden-tab" data-page="admin" id="nav-admin">👥 Usuarios</div>
-      <div class="nav-tab hidden-tab" data-page="superadmin" id="nav-superadmin">🛡 Super Panel</div>
-      <div class="nav-tab" data-page="config">⚙ Config</div>
-      <div class="nav-tab" data-page="connect" style="color:var(--green);font-weight:700" id="nav-connect">🔗 Connect</div>
-      <div class="nav-tab hidden-tab perm-write" data-page="inbox" id="nav-inbox">📥 Bandeja <span class="nbadge" id="badge-inbox" style="display:none">0</span></div>
+
+      <!-- 🏠 Inicio — Dashboard principal -->
+      <div class="nav-tab" data-page="inicio" id="nav-inicio">🏠 Inicio</div>
+
+      <!-- 📥 Connect -->
+      <div class="nav-tab" data-page="connect" id="nav-connect" style="color:var(--green);font-weight:700">
+        📥 Connect <span class="nbadge" id="badge-inbox" style="display:none">0</span>
+      </div>
+      <div class="nav-tab hidden-tab perm-write" data-page="inbox" id="nav-inbox">📬 Bandeja</div>
+
+      <!-- 👥 Gestión -->
+      <div class="nav-group" id="nav-group-gestion">
+        <div class="nav-group-trigger" id="nav-trigger-gestion">
+          👥 Gestión <span class="nav-arrow">▼</span>
+        </div>
+        <div class="nav-dropdown">
+          <div class="nav-dropdown-item" onmousedown="goPage('gestion')">👤 Clientes &amp; Casos</div>
+          <div class="nav-dropdown-sep"></div>
+          <div class="nav-dropdown-label">Próximamente</div>
+          <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">📁 Documentos</div>
+          <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">🧾 Facturación</div>
+        </div>
+      </div>
+
+      <!-- ⚖ Práctica Jurídica -->
+      <div class="nav-group">
+        <div class="nav-group-trigger" id="nav-trigger-practica">
+          ⚖ Práctica <span class="nav-arrow">▼</span>
+        </div>
+        <div class="nav-dropdown">
+          <div class="nav-dropdown-label">Herramientas</div>
+          <div class="nav-dropdown-item" onmousedown="goPage('mapa')">🗺 Mapa Procesal</div>
+          <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">📋 Modelos &amp; Plantillas</div>
+          <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">📝 Editor Legal</div>
+        </div>
+      </div>
+
+      <!-- 📊 Control -->
+      <div class="nav-group">
+        <div class="nav-group-trigger" id="nav-trigger-control">
+          📊 Control <span class="nav-arrow">▼</span>
+        </div>
+        <div class="nav-dropdown">
+          <div class="nav-dropdown-item" onmousedown="goPage('audiencias')">📅 Audiencias</div>
+          <div class="nav-dropdown-item" onmousedown="goPage('stats')">📊 Estadísticas</div>
+          <div class="nav-dropdown-sep"></div>
+          <div class="nav-dropdown-label">Próximamente</div>
+          <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">⏰ Plazos &amp; Alertas</div>
+        </div>
+      </div>
+
+      <!-- 📚 Conocimiento -->
+      <div class="nav-group">
+        <div class="nav-group-trigger" id="nav-trigger-conocimiento">
+          📚 Conocimiento <span class="nav-arrow">▼</span>
+        </div>
+        <div class="nav-dropdown">
+          <div class="nav-dropdown-item" onmousedown="goPage('juris')">
+            ⚖ Jurisprudencia <span class="nbadge" id="badge-jalert" style="display:none;margin-left:4px">0</span>
+          </div>
+          <div class="nav-dropdown-sep"></div>
+          <div class="nav-dropdown-label">Próximamente</div>
+          <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">🤖 IA Jurídica</div>
+          <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">📰 Legislación</div>
+        </div>
+      </div>
+
+      <!-- Tabs ocultos — preservan goPage() y badges existentes -->
+      <div class="nav-tab hidden-tab" data-page="mapa">Mapa</div>
+      <div class="nav-tab hidden-tab" data-page="audiencias">Audiencias</div>
+      <div class="nav-tab hidden-tab" data-page="juris">Jurisprudencia</div>
+      <div class="nav-tab hidden-tab" data-page="stats">Estadísticas</div>
+      <div class="nav-tab hidden-tab" data-page="admin" id="nav-admin">Usuarios</div>
+      <div class="nav-tab hidden-tab" data-page="superadmin" id="nav-superadmin">Super Panel</div>
+      <div class="nav-tab hidden-tab" data-page="config">Config</div>
+      <div class="nav-tab hidden-tab" data-page="gestion">Gestión</div>
+
+      <!-- ⚙ Admin — visible solo para admin/superadmin -->
+      <div class="nav-group hidden-group" id="nav-group-admin">
+        <div class="nav-group-trigger">
+          ⚙ Admin <span class="nav-arrow">▼</span>
+        </div>
+        <div class="nav-dropdown">
+          <div class="nav-dropdown-item" onmousedown="goPage('config')">⚙ Configuración</div>
+          <div class="nav-dropdown-item" onmousedown="goPage('admin')">👥 Usuarios</div>
+          <div class="nav-dropdown-item" onmousedown="goPage('superadmin')">🛡 Super Panel</div>
+        </div>
+      </div>
+
     </div>
 
     <!-- User pill -->
@@ -2189,8 +2408,142 @@ body.connect-public-mode #page-connect { display:flex !important; }
     <span style="color:var(--fg3);font-size:10.5px;margin-left:auto">Acceso total al sistema</span>
   </div>
 
+  <!-- ── INICIO — Dashboard principal ── -->
+  <div class="page" id="page-inicio">
+    <div class="hbar">
+      <span class="hbar-title">🏠 Centro de Operaciones NEXLEX</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:48px 24px;text-align:center;gap:16px">
+      <div style="font-size:48px;opacity:.3">🏛</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--fg);letter-spacing:-.2px">Centro de Operaciones</div>
+      <div style="font-size:13px;color:var(--fg2);max-width:420px;line-height:1.7">El Dashboard principal de NEXLEX está en desarrollo. Aquí centralizarás tus métricas, alertas, casos activos y próximas audiencias.</div>
+      <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;justify-content:center">
+        <button class="btn btn-accent" onclick="goPage('connect')">📥 Connect</button>
+        <button class="btn btn-ghost" onclick="goPage('gestion')">👥 Clientes &amp; Casos</button>
+        <button class="btn btn-ghost" onclick="goPage('audiencias')">📅 Audiencias</button>
+        <button class="btn btn-ghost" onclick="goPage('mapa')">🗺 Mapa Procesal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GESTIÓN / MI EXPEDIENTE ── -->
+  <div class="page" id="page-gestion">
+    <div class="workspace-layout">
+
+      <!-- Header -->
+      <div class="workspace-header">
+        <div>
+          <div class="workspace-title" id="gestion-ws-title">👥 Clientes &amp; Casos</div>
+          <div class="workspace-subtitle" id="gestion-ws-sub">CRM Jurídico — Gestión integral de clientes y expedientes</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input type="text" id="gestion-search" placeholder="🔍 Buscar nombre, código, materia..." style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:7px 14px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;width:240px;transition:border-color .15s" onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'" oninput="renderGestionClientes();renderGestionCasos()">
+          <button class="btn btn-accent btn-sm" onclick="openGestionNuevoCliente()">＋ Nuevo cliente</button>
+        </div>
+      </div>
+
+      <!-- Tabs principales -->
+      <div class="workspace-tabs" id="gestion-tabs-main">
+        <div class="workspace-tab active" data-gtab="dashboard" onclick="switchGestionTab('dashboard')">🏠 Dashboard</div>
+        <div class="workspace-tab" data-gtab="clientes" onclick="switchGestionTab('clientes')">👤 Clientes</div>
+        <div class="workspace-tab" data-gtab="casos" onclick="switchGestionTab('casos')">📁 Casos activos</div>
+      </div>
+
+      <!-- ═══ PANEL: DASHBOARD ═══ -->
+      <div class="workspace-panel active" id="gestion-panel-dashboard" style="padding:20px 24px;overflow-y:auto">
+
+        <!-- KPIs superiores -->
+        <div id="gestion-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px"></div>
+
+        <!-- Dos columnas: clientes recientes + casos activos -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+
+          <!-- Clientes recientes -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div style="font-size:11px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em">Clientes recientes</div>
+              <button class="btn btn-ghost btn-sm" style="font-size:10px" onclick="switchGestionTab('clientes')">Ver todos →</button>
+            </div>
+            <div id="dashboard-clientes-recientes"></div>
+          </div>
+
+          <!-- Casos con alerta -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div style="font-size:11px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em">Casos — Requieren atención</div>
+              <button class="btn btn-ghost btn-sm" style="font-size:10px" onclick="switchGestionTab('casos')">Ver todos →</button>
+            </div>
+            <div id="dashboard-casos-alerta"></div>
+          </div>
+        </div>
+
+        <!-- Actividad reciente / cronología global -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px">
+          <div style="font-size:11px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">📋 Actividad reciente</div>
+          <div id="dashboard-actividad"></div>
+        </div>
+
+      </div>
+
+      <!-- ═══ PANEL: CLIENTES ═══ -->
+      <div class="workspace-panel active" id="gestion-panel-clientes">
+
+        <!-- Filtros de clientes -->
+        <div style="display:flex;gap:8px;padding:14px 20px 0;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px">
+          <div style="display:flex;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+            <button id="gf-todos"    class="gestion-filter-btn active" onclick="setGestionFiltro('todos')">Todos</button>
+            <button id="gf-personal" class="gestion-filter-btn"        onclick="setGestionFiltro('personal')">👤 Personal</button>
+            <button id="gf-empresa"  class="gestion-filter-btn"        onclick="setGestionFiltro('empresa')">🏢 Empresa</button>
+            <button id="gf-favorito" class="gestion-filter-btn"        onclick="setGestionFiltro('favorito')">⭐ Favoritos</button>
+            <button id="gf-archivado" class="gestion-filter-btn"       onclick="setGestionFiltro('archivado')">📦 Archivados</button>
+          </div>
+          <span id="gestion-cli-count" style="font-size:11px;color:var(--fg3);margin-left:auto"></span>
+        </div>
+
+        <!-- Lista de clientes -->
+        <div style="padding:16px 20px;overflow-y:auto;flex:1">
+          <div id="gestion-clientes-list" style="display:grid;gap:8px;max-width:960px"></div>
+          <div id="gestion-no-clientes" style="display:none">
+            <div class="coming-soon-panel">
+              <div class="cs-icon">👤</div>
+              <div class="cs-title">Sin clientes registrados</div>
+              <div class="cs-desc">Crea tu primer cliente con "＋ Nuevo cliente" o convierte una consulta de Connect en cliente.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL: CASOS ═══ -->
+      <div class="workspace-panel" id="gestion-panel-casos">
+
+        <!-- Filtros de casos -->
+        <div style="display:flex;gap:8px;padding:14px 20px 12px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border)">
+          <div style="display:flex;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+            <button id="gcf-todos"    class="gestion-filter-btn active" onclick="setGestionCasoFiltro('todos')">Todos</button>
+            <button id="gcf-activo"   class="gestion-filter-btn"        onclick="setGestionCasoFiltro('activo')">🟢 Activos</button>
+            <button id="gcf-suspendido" class="gestion-filter-btn"      onclick="setGestionCasoFiltro('suspendido')">🟡 Suspendidos</button>
+            <button id="gcf-cerrado"  class="gestion-filter-btn"        onclick="setGestionCasoFiltro('cerrado')">⚫ Cerrados</button>
+          </div>
+          <span id="gestion-caso-count" style="font-size:11px;color:var(--fg3);margin-left:auto"></span>
+        </div>
+
+        <div style="padding:16px 20px;overflow-y:auto;flex:1">
+          <div id="gestion-casos-list" style="display:grid;gap:8px;max-width:960px"></div>
+          <div id="gestion-no-casos" style="display:none">
+            <div class="coming-soon-panel">
+              <div class="cs-icon">📁</div>
+              <div class="cs-title">Sin casos registrados</div>
+              <div class="cs-desc">Los casos se crean desde el perfil del cliente.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ── MAPA ── -->
-  <div class="page active" id="page-mapa">
+  <div class="page" id="page-mapa">
     <div class="hbar">
       <span class="hbar-title">📚 Mapa Legal de Procedimientos</span>
       <button class="btn btn-accent btn-sm perm-write" onclick="openModal('modal-add-proc')">＋ Agregar Procedimiento</button>
@@ -3032,6 +3385,375 @@ body.connect-public-mode #page-connect { display:flex !important; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
         crossorigin="anonymous"></script>
 
+/* ══════════════════════════════════════════════════════════════
+   ██╗     ██╗      █████╗ ██╗   ██╗███████╗
+   ██║     ██║     ██╔══██╗██║   ██║██╔════╝
+   ██║     ██║     ███████║██║   ██║█████╗
+   ██║     ██║     ██╔══██║╚██╗ ██╔╝██╔══╝
+   ███████╗███████╗██║  ██║ ╚████╔╝ ███████╗
+   ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝
+   ███╗   ███╗ █████╗ ███████╗███████╗████████╗██████╗  █████╗
+   ████╗ ████║██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔══██╗██╔══██╗
+   ██╔████╔██║███████║█████╗  ███████╗   ██║   ██████╔╝███████║
+   ██║╚██╔╝██║██╔══██║██╔══╝  ╚════██║   ██║   ██╔══██╗██╔══██║
+   ██║ ╚═╝ ██║██║  ██║███████╗███████║   ██║   ██║  ██║██║  ██║
+   ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝
+
+   LLAVE MAESTRA NEXLEX — Arquitectura Modular
+   by Grupo RAF — República Dominicana
+   ══════════════════════════════════════════════════════════════
+   PROPÓSITO:
+   Esta arquitectura es el punto oficial de registro y control
+   de todos los módulos, páginas, permisos, widgets, reportes,
+   procesos y extensiones futuras de NEXLEX.
+
+   REGLA FUNDAMENTAL:
+   Toda nueva funcionalidad DEBE registrarse aquí antes de
+   ser integrada. NUNCA modificar código estable sin necesidad.
+   Extender siempre; nunca reemplazar.
+   ══════════════════════════════════════════════════════════════ */
+<script>
+(function() {
+  'use strict';
+
+  /* ──────────────────────────────────────────────
+     1. VERSIÓN CENTRAL DEL SISTEMA
+  ────────────────────────────────────────────── */
+  window.NEXLEX_VERSION = Object.freeze({
+    version:          '2.0.0',
+    codename:         'Llave Maestra',
+    autor:            'Grupo RAF',
+    pais:             'República Dominicana',
+    fecha:            '2026-07-08',
+    ultimaActualizacion: new Date().toISOString(),
+    rama:             'develop',
+    historial: [
+      { version: '1.0.0', fecha: '2025-01-01', descripcion: 'Versión inicial NEXLEX (Python/Tkinter → Web)' },
+      { version: '1.5.0', fecha: '2025-06-01', descripcion: 'Módulo CONNECT — consultas públicas' },
+      { version: '1.8.0', fecha: '2026-06-01', descripcion: 'Integración Supabase — persistencia en la nube' },
+      { version: '2.0.0', fecha: '2026-07-08', descripcion: 'Llave Maestra — arquitectura modular oficial' }
+    ]
+  });
+
+  /* ──────────────────────────────────────────────
+     2. REGISTRO CENTRAL DE MÓDULOS
+  ────────────────────────────────────────────── */
+  window.NEXLEX_MODULES = {};
+
+  /* ──────────────────────────────────────────────
+     3. REGISTRO CENTRAL DE PÁGINAS
+  ────────────────────────────────────────────── */
+  window.NEXLEX_PAGES = {};
+
+  /* ──────────────────────────────────────────────
+     4. REGISTRO DE PERMISOS
+  ────────────────────────────────────────────── */
+  window.NEXLEX_PERMISSIONS = {};
+
+  /* ──────────────────────────────────────────────
+     5. REGISTRO DE WIDGETS
+  ────────────────────────────────────────────── */
+  window.NEXLEX_WIDGETS = {};
+
+  /* ──────────────────────────────────────────────
+     6. REGISTRO DE REPORTES
+  ────────────────────────────────────────────── */
+  window.NEXLEX_REPORTS = {};
+
+  /* ──────────────────────────────────────────────
+     7. REGISTRO DE PROCESOS
+  ────────────────────────────────────────────── */
+  window.NEXLEX_PROCESSES = {};
+
+  /* ──────────────────────────────────────────────
+     8. REGISTRO DE RUTAS
+  ────────────────────────────────────────────── */
+  window.NEXLEX_ROUTES = {};
+
+  /* ──────────────────────────────────────────────
+     9. REGISTRO DE ACCIONES
+  ────────────────────────────────────────────── */
+  window.NEXLEX_ACTIONS = {};
+
+  /* ──────────────────────────────────────────────
+     10. REGISTRO DE NOTIFICACIONES
+  ────────────────────────────────────────────── */
+  window.NEXLEX_NOTIFICATIONS = {};
+
+  /* ══════════════════════════════════════════════
+     API INTERNA — FUNCIONES OFICIALES DE REGISTRO
+     Toda nueva funcionalidad se integra desde aquí.
+  ══════════════════════════════════════════════ */
+
+  /**
+   * Registra un nuevo módulo en NEXLEX.
+   * @param {Object} config - Configuración del módulo
+   * @param {string} config.id           - Identificador único (ej: 'expedientes')
+   * @param {string} config.nombre       - Nombre visible (ej: 'Expedientes')
+   * @param {string} config.version      - Versión del módulo (ej: '1.0.0')
+   * @param {string} config.descripcion  - Descripción del módulo
+   * @param {Array}  config.roles        - Roles permitidos (ej: ['admin','superadmin'])
+   * @param {Array}  config.dependencias - IDs de módulos requeridos
+   * @param {boolean} config.activo      - Si el módulo está activo
+   */
+  window.registerModule = function(config) {
+    if (!config || !config.id) { console.warn('[NEXLEX] registerModule: se requiere un id.'); return false; }
+    if (NEXLEX_MODULES[config.id]) { console.warn(`[NEXLEX] Módulo '${config.id}' ya está registrado.`); return false; }
+    NEXLEX_MODULES[config.id] = {
+      id:              config.id,
+      nombre:          config.nombre          || config.id,
+      version:         config.version         || '1.0.0',
+      descripcion:     config.descripcion     || '',
+      roles:           config.roles           || ['admin', 'superadmin'],
+      dependencias:    config.dependencias    || [],
+      activo:          config.activo          !== false,
+      estado:          config.estado          || 'activo',
+      fechaCreacion:   config.fechaCreacion   || new Date().toISOString(),
+      ultimaActualizacion: new Date().toISOString(),
+      meta:            config.meta            || {}
+    };
+    console.log(`[NEXLEX] ✓ Módulo registrado: ${config.id}`);
+    return true;
+  };
+
+  /**
+   * Registra una nueva página/sección en NEXLEX.
+   */
+  window.registerPage = function(config) {
+    if (!config || !config.id) { console.warn('[NEXLEX] registerPage: se requiere un id.'); return false; }
+    NEXLEX_PAGES[config.id] = {
+      id:       config.id,
+      titulo:   config.titulo   || config.id,
+      modulo:   config.modulo   || '',
+      roles:    config.roles    || ['admin', 'superadmin'],
+      icono:    config.icono    || '📄',
+      orden:    config.orden    || 99,
+      activo:   config.activo   !== false,
+      render:   config.render   || null,
+      meta:     config.meta     || {}
+    };
+    return true;
+  };
+
+  /**
+   * Registra un permiso en NEXLEX.
+   */
+  window.registerPermission = function(config) {
+    if (!config || !config.id) return false;
+    NEXLEX_PERMISSIONS[config.id] = {
+      id:          config.id,
+      descripcion: config.descripcion || '',
+      roles:       config.roles       || [],
+      modulo:      config.modulo      || ''
+    };
+    return true;
+  };
+
+  /**
+   * Registra un menú o ítem de navegación.
+   */
+  window.registerMenu = function(config) {
+    if (!config || !config.id) return false;
+    if (!NEXLEX_PAGES[config.id]) registerPage(config);
+    return true;
+  };
+
+  /**
+   * Registra un widget de dashboard.
+   */
+  window.registerWidget = function(config) {
+    if (!config || !config.id) return false;
+    NEXLEX_WIDGETS[config.id] = {
+      id:      config.id,
+      titulo:  config.titulo  || config.id,
+      modulo:  config.modulo  || '',
+      roles:   config.roles   || ['admin', 'superadmin'],
+      render:  config.render  || null,
+      activo:  config.activo  !== false
+    };
+    return true;
+  };
+
+  /**
+   * Registra un reporte generado por el sistema.
+   */
+  window.registerReport = function(config) {
+    if (!config || !config.id) return false;
+    NEXLEX_REPORTS[config.id] = {
+      id:      config.id,
+      nombre:  config.nombre  || config.id,
+      modulo:  config.modulo  || '',
+      roles:   config.roles   || ['admin', 'superadmin'],
+      generar: config.generar || null,
+      activo:  config.activo  !== false
+    };
+    return true;
+  };
+
+  /**
+   * Registra un proceso o flujo de trabajo.
+   */
+  window.registerProcess = function(config) {
+    if (!config || !config.id) return false;
+    NEXLEX_PROCESSES[config.id] = {
+      id:      config.id,
+      nombre:  config.nombre  || config.id,
+      pasos:   config.pasos   || [],
+      modulo:  config.modulo  || '',
+      activo:  config.activo  !== false
+    };
+    return true;
+  };
+
+  /**
+   * Registra una ruta interna.
+   */
+  window.registerRoute = function(config) {
+    if (!config || !config.id) return false;
+    NEXLEX_ROUTES[config.id] = {
+      id:       config.id,
+      path:     config.path     || config.id,
+      modulo:   config.modulo   || '',
+      roles:    config.roles    || ['admin', 'superadmin'],
+      handler:  config.handler  || null
+    };
+    return true;
+  };
+
+  /**
+   * Registra una acción reutilizable del sistema.
+   */
+  window.registerAction = function(config) {
+    if (!config || !config.id) return false;
+    NEXLEX_ACTIONS[config.id] = {
+      id:       config.id,
+      nombre:   config.nombre  || config.id,
+      modulo:   config.modulo  || '',
+      roles:    config.roles   || ['admin', 'superadmin'],
+      ejecutar: config.ejecutar || null,
+      activo:   config.activo  !== false
+    };
+    return true;
+  };
+
+  /**
+   * Registra una notificación del sistema.
+   */
+  window.registerNotification = function(config) {
+    if (!config || !config.id) return false;
+    NEXLEX_NOTIFICATIONS[config.id] = {
+      id:        config.id,
+      titulo:    config.titulo   || '',
+      mensaje:   config.mensaje  || '',
+      tipo:      config.tipo     || 'info',
+      modulo:    config.modulo   || '',
+      fecha:     new Date().toISOString(),
+      leida:     false
+    };
+    return true;
+  };
+
+  /* ══════════════════════════════════════════════
+     UTILIDADES DE LA LLAVE MAESTRA
+  ══════════════════════════════════════════════ */
+
+  /** Verifica si un módulo está activo */
+  window.NEXLEX = window.NEXLEX || {};
+  window.NEXLEX.moduloActivo = function(id) {
+    return !!(NEXLEX_MODULES[id] && NEXLEX_MODULES[id].activo);
+  };
+
+  /** Verifica si un rol tiene permiso sobre un módulo */
+  window.NEXLEX.tienePermiso = function(moduloId, rol) {
+    const m = NEXLEX_MODULES[moduloId];
+    if (!m || !m.activo) return false;
+    return m.roles.includes(rol) || m.roles.includes('*');
+  };
+
+  /** Lista todos los módulos registrados */
+  window.NEXLEX.listarModulos = function() {
+    return Object.values(NEXLEX_MODULES);
+  };
+
+  /** Muestra el estado completo del sistema en consola */
+  window.NEXLEX.status = function() {
+    console.group('[NEXLEX] 🔑 Llave Maestra — Estado del Sistema');
+    console.log('Versión:', NEXLEX_VERSION.version, '—', NEXLEX_VERSION.codename);
+    console.log('Módulos registrados:', Object.keys(NEXLEX_MODULES).length, Object.keys(NEXLEX_MODULES));
+    console.log('Páginas registradas:', Object.keys(NEXLEX_PAGES).length);
+    console.log('Widgets:', Object.keys(NEXLEX_WIDGETS).length);
+    console.log('Reportes:', Object.keys(NEXLEX_REPORTS).length);
+    console.log('Procesos:', Object.keys(NEXLEX_PROCESSES).length);
+    console.groupEnd();
+  };
+
+  /* ══════════════════════════════════════════════
+     REGISTRO DE MÓDULOS EXISTENTES
+     (Documenta lo que ya existe en NEXLEX)
+  ══════════════════════════════════════════════ */
+  registerModule({ id:'core',          nombre:'Core',                  version:'2.0.0', descripcion:'Motor principal, login, sesión, roles y navegación.',       roles:['*'],                         activo:true });
+  registerModule({ id:'mapa',          nombre:'Mapa de Procedimientos', version:'1.0.0', descripcion:'Mapa visual de procedimientos legales dominicanos.',         roles:['admin','abogado','superadmin'], activo:true });
+  registerModule({ id:'audiencias',    nombre:'Audiencias',             version:'1.0.0', descripcion:'Calendario y gestión de audiencias judiciales.',             roles:['admin','abogado','superadmin'], activo:true });
+  registerModule({ id:'jurisprudencia',nombre:'Jurisprudencia',         version:'1.0.0', descripcion:'Portal de jurisprudencia con análisis IA simulado.',         roles:['admin','abogado','superadmin'], activo:true });
+  registerModule({ id:'estadisticas',  nombre:'Estadísticas',           version:'1.0.0', descripcion:'Dashboard de métricas y estadísticas del despacho.',         roles:['admin','superadmin'],           activo:true });
+  registerModule({ id:'connect',       nombre:'CONNECT',                version:'2.0.0', descripcion:'Módulo de consultas públicas, bandeja y seguimiento.',       roles:['admin','abogado','superadmin'], activo:true, dependencias:['core'], meta:{ supabase:true } });
+  registerModule({ id:'superadmin',    nombre:'SuperAdmin',             version:'1.0.0', descripcion:'Panel de administración global multi-empresa.',              roles:['superadmin'],                   activo:true });
+
+  /* ══════════════════════════════════════════════
+     MÓDULOS FUTUROS (pre-registrados, inactivos)
+     Se activan cuando se desarrollen.
+  ══════════════════════════════════════════════ */
+  registerModule({ id:'gestion', nombre:'Gestión — CRM Jurídico', version:'1.0.0', descripcion:'Workspace jurídico: clientes, expedientes, cronología, actuaciones, portal del cliente e informes.', roles:['admin','abogado','superadmin'], activo:true, estado:'activo', dependencias:['core','connect'], meta:{ supabase:true, tablas:['clientes','casos'], fase:1 } });
+
+  /* Registrar páginas del módulo Gestión */
+  registerPage({ id:'gestion',            titulo:'Gestión',            modulo:'gestion', roles:['admin','abogado','superadmin'], icono:'👥', orden:3, activo:true });
+  registerWidget({ id:'gestion-kpis',     titulo:'KPIs Gestión',       modulo:'gestion', roles:['admin','abogado','superadmin'], activo:true });
+  registerWidget({ id:'gestion-recientes',titulo:'Clientes Recientes',  modulo:'gestion', roles:['admin','abogado','superadmin'], activo:true });
+  registerRoute({ id:'gestion',           path:'gestion',              modulo:'gestion', roles:['admin','abogado','superadmin'] });
+  registerRoute({ id:'cliente-workspace', path:'gestion/cliente',      modulo:'gestion', roles:['admin','abogado','superadmin'] });
+  registerRoute({ id:'caso-workspace',    path:'gestion/caso',         modulo:'gestion', roles:['admin','abogado','superadmin'] });
+  registerAction({ id:'convertir-consulta', nombre:'Convertir consulta en caso', modulo:'gestion', roles:['admin','abogado','superadmin'], activo:true });
+  registerAction({ id:'generar-token-portal', nombre:'Generar token portal cliente', modulo:'gestion', roles:['admin','abogado','superadmin'], activo:true });
+
+  /* SQL Supabase requerido para el módulo Gestión:
+     CREATE TABLE clientes (
+       id text PRIMARY KEY, nombre text, tipo text DEFAULT 'personal',
+       telefono text, whatsapp text, email text, documento text, notas text,
+       favorito bool DEFAULT false, archivado bool DEFAULT false,
+       token_portal text, origen_connect_id text,
+       empresa_id text, creado_por text,
+       fecha_creacion timestamptz DEFAULT now()
+     );
+     CREATE TABLE casos (
+       id text PRIMARY KEY, cliente_id text REFERENCES clientes(id),
+       materia text, subtipo text, tribunal text, contraparte text,
+       numero_pj text, observaciones text, estado text DEFAULT 'activo',
+       abogado text, origen text DEFAULT 'manual', origen_connect_id text,
+       actuaciones jsonb DEFAULT '[]',
+       fecha_apertura text, fecha_creacion timestamptz DEFAULT now(),
+       ultima_actualizacion timestamptz DEFAULT now()
+     );
+     ALTER TABLE clientes ENABLE ROW LEVEL SECURITY;
+     ALTER TABLE casos     ENABLE ROW LEVEL SECURITY;
+     CREATE POLICY "auth_all_clientes" ON clientes FOR ALL TO authenticated USING (true) WITH CHECK (true);
+     CREATE POLICY "auth_all_casos"    ON casos     FOR ALL TO authenticated USING (true) WITH CHECK (true);
+  */
+  registerModule({ id:'clientes',      nombre:'Clientes',               version:'0.0.0', descripcion:'CRM y gestión de clientes del despacho.',                   roles:['admin','abogado','superadmin'], activo:false, estado:'pendiente' });
+  registerModule({ id:'facturacion',   nombre:'Facturación',            version:'0.0.0', descripcion:'Facturación, honorarios y pagos.',                          roles:['admin','superadmin'],           activo:false, estado:'pendiente' });
+  registerModule({ id:'documentos',    nombre:'Gestión Documental',     version:'0.0.0', descripcion:'Almacenamiento y gestión de documentos legales.',            roles:['admin','abogado','superadmin'], activo:false, estado:'pendiente' });
+  registerModule({ id:'ia_juridica',   nombre:'IA Jurídica',            version:'0.0.0', descripcion:'Análisis legal e inteligencia artificial aplicada.',        roles:['admin','abogado','superadmin'], activo:false, estado:'pendiente' });
+  registerModule({ id:'firma',         nombre:'Firma Electrónica',      version:'0.0.0', descripcion:'Firma electrónica de documentos y contratos.',              roles:['admin','abogado','superadmin'], activo:false, estado:'pendiente' });
+  registerModule({ id:'informes',      nombre:'Informes Automáticos',   version:'0.0.0', descripcion:'Generación automática de informes y reportes.',             roles:['admin','superadmin'],           activo:false, estado:'pendiente' });
+  registerModule({ id:'agenda',        nombre:'Agenda Avanzada',        version:'0.0.0', descripcion:'Agenda avanzada con recordatorios y sincronización.',       roles:['admin','abogado','superadmin'], activo:false, estado:'pendiente' });
+  registerModule({ id:'crm',           nombre:'CRM Legal',              version:'0.0.0', descripcion:'Gestión de relaciones con clientes.',                       roles:['admin','superadmin'],           activo:false, estado:'pendiente' });
+  registerModule({ id:'app_movil',     nombre:'App Móvil',              version:'0.0.0', descripcion:'Extensión móvil de NEXLEX.',                               roles:['*'],                            activo:false, estado:'pendiente' });
+
+  /* Confirmación silenciosa en consola */
+  console.log(`%c🔑 NEXLEX Llave Maestra v${NEXLEX_VERSION.version} inicializada — ${Object.keys(NEXLEX_MODULES).length} módulos registrados`, 'color:#4f7cff;font-weight:bold');
+
+})();
+</script>
+
 <script>
 /* ══════════════════════════════════════════
    NEXLEX — by Grupo RAF
@@ -3276,6 +3998,7 @@ function iniciarSesion(user) {
     toast('⚡ Bienvenido, System Owner. Acceso total activo.', 'ok');
   } else {
     renderMapa(); buildCal(); renderStats(); initJuris();
+    goPage('inicio');
     toast(`Bienvenido, ${user.nombre.split(' ')[0]} 👋`, 'ok');
   }
 }
@@ -3300,12 +4023,14 @@ function applyRoleUI() {
   document.querySelectorAll('.perm-write').forEach(el => el.style.display = can('write')       ? '' : 'none');
   document.querySelectorAll('.hidden-admin').forEach(el => el.style.display = can('manageUsers') ? '' : 'none');
   document.getElementById('nav-admin').classList.toggle('hidden-tab', !can('manageUsers'));
-  // Bandeja visible para abogados, admins y superadmin
   const navInbox = document.getElementById('nav-inbox');
   if (navInbox) navInbox.classList.toggle('hidden-tab', !can('write'));
   const saTab = document.getElementById('nav-superadmin');
   saTab.classList.toggle('hidden-tab', !isSuperAdmin());
   if (isSuperAdmin()) { window._saViewEmpresa = 'e1'; }
+  // Mostrar grupo Admin en nav solo para admin/superadmin
+  const adminGroup = document.getElementById('nav-group-admin');
+  if (adminGroup) adminGroup.classList.toggle('hidden-group', !can('manageUsers') && !isSuperAdmin());
 }
 
 function renderUserPill() {
@@ -3344,11 +4069,45 @@ function buildNav() {
 }
 
 function goPage(id) {
+  // Ocultar todas las páginas
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + id)?.classList.add('active');
+
+  const pageEl = document.getElementById('page-' + id);
+  if (!pageEl) {
+    // Página no existe — mostrar inicio como fallback seguro
+    console.warn('[NEXLEX] goPage: página no encontrada:', id, '— redirigiendo a inicio');
+    document.getElementById('page-inicio')?.classList.add('active');
+    document.getElementById('nav-inicio')?.classList.add('active');
+    return;
+  }
+
+  pageEl.classList.add('active');
   document.querySelector(`.nav-tab[data-page="${id}"]`)?.classList.add('active');
-  document.getElementById('user-menu').style.display = 'none';
+
+  // Marcar trigger de grupo activo en el nav
+  document.querySelectorAll('.nav-group-trigger').forEach(t => t.classList.remove('active'));
+  const groupMap = {
+    mapa:       'practica',
+    audiencias: 'control',
+    stats:      'control',
+    juris:      'conocimiento',
+    gestion:    'gestion',
+    inicio:     '',
+    connect:    '',
+    inbox:      '',
+  };
+  const grp = groupMap[id];
+  if (grp) document.getElementById('nav-trigger-' + grp)?.classList.add('active');
+  if (id === 'inicio') document.getElementById('nav-inicio')?.classList.add('active');
+
+  // Cerrar menú de usuario
+  const um = document.getElementById('user-menu');
+  if (um) um.style.display = 'none';
+
+  // Inicializar cada módulo al entrar
+  if (id === 'mapa')       renderMapa();
+  if (id === 'audiencias') buildCal();
   if (id === 'stats')      renderStats();
   if (id === 'juris')      initJuris();
   if (id === 'admin')      renderAdminPage();
@@ -3356,6 +4115,7 @@ function goPage(id) {
   if (id === 'superadmin') renderSuperAdminPage();
   if (id === 'connect')    initConnect();
   if (id === 'inbox')      renderInboxPage();
+  if (id === 'gestion')    initGestion();
 }
 
 /* ══════════════════════════════════════════
@@ -4436,7 +5196,17 @@ let _connectActiveTab  = 'form';
 ══════════════════════════════════════════ */
 const _SUPA_URL = 'https://cxjltgrlalezoxkbyvdt.supabase.co';
 const _SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4amx0Z3JsYWxlem94a2J5dmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MDkzODAsImV4cCI6MjA5ODI4NTM4MH0.AypSAnCJdb2zAB3itLJXsrPORYkl3jF84hUrBXf-eaQ';
-const _supa = (typeof supabase !== 'undefined') ? supabase.createClient(_SUPA_URL, _SUPA_KEY) : null;
+/* NEXLEX usa su propia sesión — deshabilitamos persistSession y autoRefreshToken
+   para evitar que el SDK intente serializar Headers/Response via BroadcastChannel
+   o localStorage, lo que causa DataCloneError en Safari/iOS/Vercel Edge. */
+const _supa = (typeof supabase !== 'undefined') ? supabase.createClient(_SUPA_URL, _SUPA_KEY, {
+  auth: {
+    persistSession:   false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false,
+  },
+  realtime: { params: { eventsPerSecond: 2 } },
+}) : null;
 
 /* Convierte objeto consulta NEXLEX → fila Supabase */
 function _consultaToRow(c) {
@@ -4506,7 +5276,15 @@ async function _supaGetConsultas() {
     const { data, error } = await _supa.from('consultas').select('*').order('fecha_creacion', { ascending: false });
     if (error) { console.warn('[NEXLEX] Supabase select error:', error.message); return []; }
     return (data || []).map(_rowToConsulta);
-  } catch(e) { console.warn('[NEXLEX] Supabase select exception:', e); return []; }
+  } catch(e) {
+    // DataCloneError ocurre en Safari/iOS al serializar Headers internamente
+    if (e && (e.name === 'DataCloneError' || String(e).includes('DataCloneError') || String(e).includes('clone'))) {
+      console.warn('[NEXLEX] Supabase DataCloneError — usando localStorage como fallback');
+      return [];
+    }
+    console.warn('[NEXLEX] Supabase select exception:', e);
+    return [];
+  }
 }
 
 /* Actualizar campos de una consulta en Supabase */
@@ -4697,15 +5475,6 @@ function saveConsulta(c) {
 }
 
 /* ── Switch sub-tabs ── */
-function switchConnectTab(tab) {
-  _connectActiveTab = tab;
-  document.querySelectorAll('.connect-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('ctab-' + tab)?.classList.add('active');
-  document.getElementById('connect-form-view').style.display = tab === 'form' ? '' : 'none';
-  document.getElementById('connect-list-view').style.display = tab === 'list' ? '' : 'none';
-  if (tab === 'list') renderConnectList();
-}
-
 /* ── Toggle anónimo ── */
 function toggleAnon() {
   _connectAnonMode = !_connectAnonMode;
@@ -4800,89 +5569,6 @@ function genRef() {
 }
 
 /* ── Validar y enviar consulta ── */
-function submitConsulta() {
-  // Validaciones básicas
-  if (!_connectCaseType) {
-    toast('Selecciona el tipo de caso', 'err');
-    document.getElementById('case-type-grid').scrollIntoView({ behavior:'smooth', block:'center' });
-    return;
-  }
-
-  const desc = document.getElementById('cn-desc').value.trim();
-  if (desc.length < 20) {
-    toast('Describe tu caso con más detalle (mín. 20 caracteres)', 'err');
-    document.getElementById('cn-desc').focus();
-    return;
-  }
-
-  // Al menos un contacto activo con dato
-  const tel   = document.getElementById('cn-tel').value.trim();
-  const wa    = document.getElementById('cn-wa').value.trim();
-  const email = document.getElementById('cn-email').value.trim();
-
-  if (!tel && !wa && !email) {
-    toast('Ingresa al menos un medio de contacto', 'err');
-    return;
-  }
-
-  // Construir objeto
-  const consulta = {
-    id:          genRef(),
-    fecha:       new Date().toLocaleDateString('es-DO', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }),
-    anonima:     _connectAnonMode,
-    nombre:      _connectAnonMode ? 'Anónimo' : (document.getElementById('cn-nombre').value.trim() || 'Sin nombre'),
-    provincia:   document.getElementById('cn-provincia').value || 'No especificada',
-    tipo:        _connectCaseType,
-    descripcion: desc,
-    contactos:   {
-      tel:   tel,
-      wa:    wa,
-      email: email,
-    },
-    horario:     document.getElementById('cn-horario').value,
-    archivo:     _connectFile ? _connectFile.name : null,
-    estado:      'consulta_recibida',
-    estadoInterno:'consulta_recibida',
-    abogadoAsignado:'Sin asignar',
-    fechaAsignacion:'',
-    leida:false,
-    noLeida:true,
-    fechaRecepcion:new Date().toISOString(),
-    fechaLectura:'',
-    fechaRespuesta:'',
-  };
-
-  // Simular envío con breve loader
-  const btn = document.getElementById('btn-connect-submit');
-  btn.disabled    = true;
-  btn.textContent = 'Enviando…';
-
-  setTimeout(() => {
-    saveConsulta(consulta);
-    if (typeof saveToInbox === 'function') saveToInbox(consulta);
-    if (typeof enviarNotificacionNuevaConsulta === 'function') enviarNotificacionNuevaConsulta(consulta);
-    updateConnectStats();
-
-    // Mostrar éxito
-    document.getElementById('suc-area').textContent = consulta.tipo;
-    document.getElementById('suc-ref').textContent  = consulta.id;
-    document.getElementById('connect-form-wrap').style.display = 'none';
-    const suc = document.getElementById('connect-success');
-    suc.classList.add('visible');
-
-    btn.disabled    = false;
-    btn.textContent = 'Enviar consulta →';
-
-    toast('✅ Consulta enviada con éxito', 'ok');
-
-    // Agregar al feed de actividad
-    CONNECT_FEED_ITEMS.unshift({ area:consulta.tipo, prov:consulta.provincia, time:'Justo ahora' });
-    if (CONNECT_FEED_ITEMS.length > 5) CONNECT_FEED_ITEMS.pop();
-    renderConnectFeed();
-
-  }, 1400);
-}
-
 /* ── Resetear formulario ── */
 function resetConnectForm() {
   // Campos de texto
@@ -5049,7 +5735,7 @@ function renderInbox() {
     el.innerHTML = filtered.map(raw => {
       const c = normalizeConsulta(raw); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado); const icon = AREA_ICONS[c.tipo] || 'Caso'; const eBadge = `estado-badge-${estadoKey}`; const eLabel = getConnectEstadoLabel(estadoKey);
       const contactLine = [c.contactos?.tel ? `Tel. ${escapeHtml(c.contactos.tel)}` : '', c.contactos?.wa ? `WhatsApp ${escapeHtml(c.contactos.wa)}` : '', c.contactos?.email ? `Email ${escapeHtml(c.contactos.email)}` : ''].filter(Boolean).join(' · ');
-      return `<div class="inbox-card estado-${estadoKey} ${!c.leida ? 'no-leida' : ''}" id="inbox-card-${c.id}"><div class="inbox-top"><div><div class="inbox-title">${icon} ${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)} ${!c.leida ? '<span class="crm-notif-pill">No leída</span>' : ''}</div><div class="inbox-ref">Ref: ${escapeHtml(c.id)} &middot; ${escapeHtml(c.fecha)}</div></div><span class="badge ${eBadge}" style="font-size:10px;padding:3px 10px">${eLabel}</span></div><div class="inbox-meta">${c.anonima ? '<span>Anónima</span>' : `<span>${escapeHtml(c.nombre)}</span>`}<span>${escapeHtml(c.horario||'')}</span>${c.archivo ? `<span>Adjunto ${escapeHtml(c.archivo)}</span>` : ''}</div><div class="crm-date-grid"><span>Recepción: ${formatCRMDate(c.fechaRecepcion)}</span><span>Lectura: ${formatCRMDate(c.fechaLectura)}</span><span>Respuesta: ${formatCRMDate(c.fechaRespuesta)}</span></div><div class="crm-assignment-box"><div class="crm-assignment-item"><div class="crm-assignment-label">Abogado asignado</div><div class="crm-assignment-value">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Fecha asignación</div><div class="crm-assignment-value">${c.fechaAsignacion ? escapeHtml(c.fechaAsignacion) : 'Pendiente'}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Estado actual</div><div class="crm-assignment-value">${eLabel}</div></div></div><div class="inbox-desc">${escapeHtml(c.descripcion)}</div>${contactLine ? `<div class="inbox-contact">${contactLine}</div>` : ''}<div class="inbox-actions"><select class="crm-select" onchange="cambiarEstadoInbox('${c.id}',this.value)">${renderEstadoOptions(estadoKey)}</select><button class="btn btn-accent btn-sm" onclick="asignarmeCaso('${c.id}')">Asignarme</button><select class="crm-select" id="reassign-${c.id}">${getLawyerOptionsHtml(c.abogadoAsignado)}</select><button class="btn btn-ghost btn-sm" onclick="reasignarCaso('${c.id}')">Reasignar</button>${!c.leida ? `<button class="btn btn-ghost btn-sm" onclick="marcarConsultaLeida('${c.id}')">Marcar leída</button>` : ''}${c.contactos?.wa ? `<a href="https://wa.me/${c.contactos.wa.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">WhatsApp</a>` : ''}${c.contactos?.tel ? `<a href="tel:${escapeHtml(c.contactos.tel)}" class="btn btn-ghost btn-sm">Llamar</a>` : ''}${c.contactos?.email ? `<a href="mailto:${escapeHtml(c.contactos.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}<button class="btn btn-danger btn-sm" onclick="eliminarDeInbox('${c.id}')">Eliminar</button></div></div>`;
+      return `<div class="inbox-card estado-${estadoKey} ${!c.leida ? 'no-leida' : ''}" id="inbox-card-${c.id}"><div class="inbox-top"><div><div class="inbox-title">${icon} ${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)} ${!c.leida ? '<span class="crm-notif-pill">No leída</span>' : ''}</div><div class="inbox-ref">Ref: ${escapeHtml(c.id)} &middot; ${escapeHtml(c.fecha)}</div></div><span class="badge ${eBadge}" style="font-size:10px;padding:3px 10px">${eLabel}</span></div><div class="inbox-meta">${c.anonima ? '<span>Anónima</span>' : `<span>${escapeHtml(c.nombre)}</span>`}<span>${escapeHtml(c.horario||'')}</span>${c.archivo ? `<span>Adjunto ${escapeHtml(c.archivo)}</span>` : ''}</div><div class="crm-date-grid"><span>Recepción: ${formatCRMDate(c.fechaRecepcion)}</span><span>Lectura: ${formatCRMDate(c.fechaLectura)}</span><span>Respuesta: ${formatCRMDate(c.fechaRespuesta)}</span></div><div class="crm-assignment-box"><div class="crm-assignment-item"><div class="crm-assignment-label">Abogado asignado</div><div class="crm-assignment-value">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Fecha asignación</div><div class="crm-assignment-value">${c.fechaAsignacion ? escapeHtml(c.fechaAsignacion) : 'Pendiente'}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Estado actual</div><div class="crm-assignment-value">${eLabel}</div></div></div><div class="inbox-desc">${escapeHtml(c.descripcion)}</div>${contactLine ? `<div class="inbox-contact">${contactLine}</div>` : ''}<div class="inbox-actions"><select class="crm-select" onchange="cambiarEstadoInbox('${c.id}',this.value)">${renderEstadoOptions(estadoKey)}</select><button class="btn btn-accent btn-sm" onclick="asignarmeCaso('${c.id}')">Asignarme</button><select class="crm-select" id="reassign-${c.id}">${getLawyerOptionsHtml(c.abogadoAsignado)}</select><button class="btn btn-ghost btn-sm" onclick="reasignarCaso('${c.id}')">Reasignar</button>${!c.leida ? `<button class="btn btn-ghost btn-sm" onclick="marcarConsultaLeida('${c.id}')">Marcar leída</button>` : ''}${estadoKey === 'contratado' && !c.convertidaEnCaso ? `<button class="btn btn-sm" style="background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3);font-weight:700" onclick="convertirConsultaEnCaso('${c.id}')">📁 Convertir en caso</button>` : ''}${c.convertidaEnCaso ? `<span style="font-size:10px;color:var(--green);font-weight:700">✓ Caso ${escapeHtml(c.casoId||'')} creado</span>` : ''}${c.contactos?.wa ? `<a href="https://wa.me/${c.contactos.wa.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">WhatsApp</a>` : ''}${c.contactos?.tel ? `<a href="tel:${escapeHtml(c.contactos.tel)}" class="btn btn-ghost btn-sm">Llamar</a>` : ''}${c.contactos?.email ? `<a href="mailto:${escapeHtml(c.contactos.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}<button class="btn btn-danger btn-sm" onclick="eliminarDeInbox('${c.id}')">Eliminar</button></div></div>`;
     }).join('');
   });
 }
@@ -5252,7 +5938,65 @@ function renderInboxPage() {
   if (!list.length) { if (noEl) noEl.style.display = ''; listEl.innerHTML = ''; return; } if (noEl) noEl.style.display = 'none';
   const stColors = { consulta_recibida:'var(--green)', asignado:'#22d3ee', en_analisis:'var(--brand)', respuesta_emitida:'var(--amber)', contratado:'var(--orange)', cerrado:'var(--fg3)' };
   listEl.innerHTML = list.map(raw => { const c = normalizeConsulta(raw); const estadoKey = normalizeConnectEstado(c.estadoInterno || c.estado); const icon = AREA_ICONS[c.tipo] || '??'; const sc = stColors[estadoKey] || 'var(--fg3)'; const sl = getConnectEstadoLabel(estadoKey); const cLine = [c.contactos?.tel ? `Tel. ${escapeHtml(c.contactos.tel)}` : '', c.contactos?.wa ? `WhatsApp ${escapeHtml(c.contactos.wa)}` : '', c.contactos?.email ? `Email ${escapeHtml(c.contactos.email)}` : ''].filter(Boolean).join(' ? ');
-    return `<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:12px;border-left:4px solid ${sc}"><div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap"><div style="width:44px;height:44px;border-radius:var(--radius);background:rgba(79,124,255,.1);border:1px solid var(--brand-line);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${icon}</div><div style="flex:1;min-width:200px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px"><span style="font-size:13px;font-weight:700;color:var(--fg)">${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)}</span><span style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:${sc}22;color:${sc};border:1px solid ${sc}44">${sl}</span>${c.anonima ? '<span style="font-size:10px;color:var(--fg3)">Anónimo</span>' : ''}</div>${!c.leida ? '<span class="crm-notif-pill">No le?da</span>' : ''}<div class="crm-date-grid"><span>Recepci?n: ${formatCRMDate(c.fechaRecepcion)}</span><span>Lectura: ${formatCRMDate(c.fechaLectura)}</span><span>Respuesta: ${formatCRMDate(c.fechaRespuesta)}</span></div><div class="crm-assignment-box" style="margin:8px 0 10px"><div class="crm-assignment-item"><div class="crm-assignment-label">Abogado asignado</div><div class="crm-assignment-value">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Fecha asignación</div><div class="crm-assignment-value">${c.fechaAsignacion ? escapeHtml(c.fechaAsignacion) : 'Pendiente'}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Estado actual</div><div class="crm-assignment-value">${sl}</div></div></div><div style="font-size:12px;color:var(--fg2);line-height:1.65;margin-bottom:8px">${escapeHtml(c.descripcion)}</div>${cLine ? `<div style="font-size:11px;color:var(--fg3);margin-bottom:8px">${cLine}</div>` : ''}<div style="font-size:10.5px;color:var(--fg3)">${escapeHtml(c.fecha)} &middot; Ref: <strong style="color:var(--brand)">${escapeHtml(c.id)}</strong>${c.archivo ? ` &middot; Adjunto ${escapeHtml(c.archivo)}` : ''}</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;min-width:180px"><select class="crm-select" onchange="cambiarEstadoInbox('${c.id}', this.value)">${renderEstadoOptions(estadoKey)}</select><button class="btn btn-accent btn-sm" onclick="asignarmeCaso('${c.id}')">Asignarme</button><select class="crm-select" id="page-reassign-${c.id}">${getLawyerOptionsHtml(c.abogadoAsignado)}</select><button class="btn btn-ghost btn-sm" onclick="reasignarCaso('${c.id}')">Reasignar</button>${c.contactos?.wa ? `<a href="https://wa.me/${c.contactos.wa.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">WhatsApp</a>` : ''}${c.contactos?.tel ? `<a href="tel:${escapeHtml(c.contactos.tel)}" class="btn btn-ghost btn-sm">Llamar</a>` : ''}${c.contactos?.email ? `<a href="mailto:${escapeHtml(c.contactos.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}<button class="btn btn-danger btn-sm" onclick="eliminarDeInbox('${c.id}');renderInboxPage()">Eliminar</button></div></div></div>`; }).join('');
+    return `<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:12px;border-left:4px solid ${sc}"><div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap"><div style="width:44px;height:44px;border-radius:var(--radius);background:rgba(79,124,255,.1);border:1px solid var(--brand-line);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${icon}</div><div style="flex:1;min-width:200px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px"><span style="font-size:13px;font-weight:700;color:var(--fg)">${escapeHtml(c.tipo)} &middot; ${escapeHtml(c.provincia)}</span><span style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:${sc}22;color:${sc};border:1px solid ${sc}44">${sl}</span>${c.anonima ? '<span style="font-size:10px;color:var(--fg3)">Anónimo</span>' : ''}</div>${!c.leida ? '<span class="crm-notif-pill">No leída</span>' : ''}<div class="crm-date-grid"><span>Recepción: ${formatCRMDate(c.fechaRecepcion)}</span><span>Lectura: ${formatCRMDate(c.fechaLectura)}</span><span>Respuesta: ${formatCRMDate(c.fechaRespuesta)}</span></div><div class="crm-assignment-box" style="margin:8px 0 10px"><div class="crm-assignment-item"><div class="crm-assignment-label">Abogado asignado</div><div class="crm-assignment-value">${escapeHtml(c.abogadoAsignado || 'Sin asignar')}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Fecha asignación</div><div class="crm-assignment-value">${c.fechaAsignacion ? escapeHtml(c.fechaAsignacion) : 'Pendiente'}</div></div><div class="crm-assignment-item"><div class="crm-assignment-label">Estado actual</div><div class="crm-assignment-value">${sl}</div></div></div><div style="font-size:12px;color:var(--fg2);line-height:1.65;margin-bottom:8px">${escapeHtml(c.descripcion)}</div>${cLine ? `<div style="font-size:11px;color:var(--fg3);margin-bottom:8px">${cLine}</div>` : ''}<div style="font-size:10.5px;color:var(--fg3)">${escapeHtml(c.fecha)} &middot; Ref: <strong style="color:var(--brand)">${escapeHtml(c.id)}</strong>${c.archivo ? ` &middot; Adjunto ${escapeHtml(c.archivo)}` : ''}</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;min-width:180px"><select class="crm-select" onchange="cambiarEstadoInbox('${c.id}', this.value)">${renderEstadoOptions(estadoKey)}</select><button class="btn btn-accent btn-sm" onclick="asignarmeCaso('${c.id}')">Asignarme</button><select class="crm-select" id="page-reassign-${c.id}">${getLawyerOptionsHtml(c.abogadoAsignado)}</select><button class="btn btn-ghost btn-sm" onclick="reasignarCaso('${c.id}')">Reasignar</button>${estadoKey === 'contratado' && !c.convertidaEnCaso ? `<button class="btn btn-sm" style="background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3);font-weight:700" onclick="convertirConsultaEnCaso('${c.id}')">📁 Convertir en caso</button>` : ''}${c.convertidaEnCaso ? `<span style="font-size:10px;color:var(--green);font-weight:700">✓ Caso ${escapeHtml(c.casoId||'')} creado</span>` : ''}${c.contactos?.wa ? `<a href="https://wa.me/${c.contactos.wa.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">WhatsApp</a>` : ''}${c.contactos?.tel ? `<a href="tel:${escapeHtml(c.contactos.tel)}" class="btn btn-ghost btn-sm">Llamar</a>` : ''}${c.contactos?.email ? `<a href="mailto:${escapeHtml(c.contactos.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}<button class="btn btn-danger btn-sm" onclick="eliminarDeInbox('${c.id}');renderInboxPage()">Eliminar</button></div></div></div>`; }).join('');
+}
+
+/* ── Modal conversación abogado ↔ cliente ── */
+let _convConsultaId = null;
+function abrirConversacion(id) {
+  _convConsultaId = id;
+  const inbox = getInboxConsultas();
+  const c = inbox.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('conv-titulo').textContent = `${c.tipo} — ${c.provincia}`;
+  document.getElementById('conv-ref').textContent    = `Ref: ${c.id}`;
+  document.getElementById('conv-caso-info').innerHTML =
+    `<strong>${escapeHtml(c.nombre||'Anónimo')}</strong> · ${escapeHtml(c.tipo)} · ${getConnectEstadoLabel(c.estadoInterno||c.estado)}`;
+  document.getElementById('conv-estado-sel').value = normalizeConnectEstado(c.estadoInterno||c.estado);
+  const badge = document.getElementById('conv-estado-badge');
+  if (badge) badge.innerHTML = `<span class="badge estado-badge-${normalizeConnectEstado(c.estadoInterno)}">${getConnectEstadoLabel(c.estadoInterno)}</span>`;
+  renderConvThread(c);
+  openModal('modal-conversacion');
+  setTimeout(() => document.getElementById('conv-input')?.focus(), 100);
+}
+
+function renderConvThread(c) {
+  const thread = document.getElementById('conv-thread');
+  const empty  = document.getElementById('conv-empty');
+  const msgs   = c.conversacion || [];
+  if (!thread) return;
+  if (!msgs.length) { if (empty) empty.style.display = ''; thread.innerHTML = ''; return; }
+  if (empty) empty.style.display = 'none';
+  thread.innerHTML = msgs.map(m => `
+    <div class="conv-msg ${m.rol||'abogado'}">
+      <div class="conv-who">${m.rol==='cliente'?'Cliente':'Abogado'}</div>
+      <div>${escapeHtml(m.texto)}</div>
+      <div class="conv-time">${m.fecha?new Date(m.fecha).toLocaleTimeString('es-DO',{hour:'2-digit',minute:'2-digit'}):''}</div>
+    </div>`).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+
+function enviarMensajeConv() {
+  const input = document.getElementById('conv-input');
+  const texto = input?.value.trim();
+  if (!texto || !_convConsultaId) return;
+  const inbox = getInboxConsultas();
+  const c = inbox.find(x => x.id === _convConsultaId);
+  if (!c) return;
+  if (!c.conversacion) c.conversacion = [];
+  c.conversacion.push({ rol:'abogado', texto, fecha:new Date().toISOString(), usuario:SESSION?.nombre||'Abogado' });
+  try { _storage.setItem(INBOX_KEY, JSON.stringify(inbox)); } catch {}
+  _supaUpdateConsulta(_convConsultaId, {});
+  if (input) input.value = '';
+  renderConvThread(c);
+  toast('Mensaje enviado', 'ok');
+}
+
+function guardarEstadoConv() {
+  const sel = document.getElementById('conv-estado-sel');
+  if (!sel || !_convConsultaId) return;
+  cambiarEstadoInbox(_convConsultaId, sel.value);
+  closeModal('modal-conversacion');
 }
 
 function limpiarInbox() {
@@ -5358,6 +6102,1001 @@ setTimeout(() => { if (!SESSION) showPublicConnectMode(); else applyConnectVisib
 /* ── Keyboard shortcuts for login ── */
 document.getElementById('l-pass').addEventListener('keydown',  e => { if (e.key === 'Enter') doLogin(); });
 document.getElementById('l-email').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+/* ══════════════════════════════════════════
+   NEXLEX GESTIÓN — CRM Jurídico Completo
+   Clientes, Casos, Workspace, Supabase
+══════════════════════════════════════════ */
+const GESTION_CLIENTES_KEY = 'nexlex_gestion_clientes_v1';
+const GESTION_CASOS_KEY    = 'nexlex_gestion_casos_v1';
+
+/* ── Storage local (fallback) ── */
+function getGestionClientes() { try { return JSON.parse(_storage.getItem(GESTION_CLIENTES_KEY)) || []; } catch { return []; } }
+function saveGestionClientes(list) { try { _storage.setItem(GESTION_CLIENTES_KEY, JSON.stringify(list)); } catch {} }
+function getGestionCasos()    { try { return JSON.parse(_storage.getItem(GESTION_CASOS_KEY))    || []; } catch { return []; } }
+function saveGestionCasos(list)    { try { _storage.setItem(GESTION_CASOS_KEY,    JSON.stringify(list)); } catch {} }
+
+/* ── Supabase helpers para Gestión ── */
+async function _supaUpsertCliente(c) {
+  if (!_supa) return;
+  try {
+    const row = {
+      id: c.id, nombre: c.nombre, tipo: c.tipo||'personal',
+      telefono: c.telefono||'', whatsapp: c.whatsapp||'', email: c.email||'',
+      documento: c.documento||'', notas: c.notas||'',
+      empresa_id: c.empresaId||'raf', creado_por: c.creadoPor||'',
+      favorito: c.favorito===true, archivado: c.archivado===true,
+      origen_connect_id: c.origenConnectId||null,
+      token_portal: c.tokenPortal||null,
+      fecha_creacion: c.fechaCreacion||new Date().toISOString(),
+    };
+    const { error } = await _supa.from('clientes').upsert(row);
+    if (error) console.warn('[NEXLEX] Supabase upsert cliente:', error.message);
+  } catch(e) { console.warn('[NEXLEX] Supabase cliente exception:', e); }
+}
+
+async function _supaUpsertCaso(cs) {
+  if (!_supa) return;
+  try {
+    const row = {
+      id: cs.id, cliente_id: cs.clienteId, materia: cs.materia||'',
+      subtipo: cs.subtipo||'', tribunal: cs.tribunal||'', contraparte: cs.contraparte||'',
+      numero_pj: cs.numeroPJ||'', observaciones: cs.observaciones||'',
+      estado: cs.estado||'activo', abogado: cs.abogado||'',
+      origen: cs.origen||'manual', origen_connect_id: cs.origenConnectId||null,
+      actuaciones: JSON.stringify(cs.actuaciones||[]),
+      fecha_apertura: cs.fechaApertura||'',
+      fecha_creacion: cs.fechaCreacion||new Date().toISOString(),
+      ultima_actualizacion: cs.ultimaActualizacion||new Date().toISOString(),
+    };
+    const { error } = await _supa.from('casos').upsert(row);
+    if (error) console.warn('[NEXLEX] Supabase upsert caso:', error.message);
+  } catch(e) { console.warn('[NEXLEX] Supabase caso exception:', e); }
+}
+
+/* ── Generadores de ID únicos ── */
+function genClienteId() {
+  const a = new Date().getFullYear();
+  const existing = getGestionClientes();
+  let n = existing.length + 1;
+  let id;
+  do { id = `CLI-${a}-${String(n).padStart(4,'0')}`; n++; }
+  while (existing.find(c => c.id === id));
+  return id;
+}
+function genCasoId() {
+  const a = new Date().getFullYear();
+  const existing = getGestionCasos();
+  let n = existing.length + 1;
+  let id;
+  do { id = `NCM-${a}-${String(n).padStart(4,'0')}`; n++; }
+  while (existing.find(c => c.id === id));
+  return id;
+}
+function genTokenPortal() {
+  return 'tk_' + Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ── Estado de filtros ── */
+let _gestionFiltro     = 'todos';
+let _gestionCasoFiltro = 'todos';
+
+/* ── Inicializar módulo ── */
+function initGestion() {
+  _gestionFiltro     = 'todos';
+  _gestionCasoFiltro = 'todos';
+  switchGestionTab('dashboard');
+}
+
+/* ── Switch tabs ── */
+function switchGestionTab(tab) {
+  document.querySelectorAll('#gestion-tabs-main .workspace-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`#gestion-tabs-main .workspace-tab[data-gtab="${tab}"]`)?.classList.add('active');
+  const panels = ['dashboard','clientes','casos'];
+  panels.forEach(p => {
+    const el = document.getElementById('gestion-panel-' + p);
+    if (el) el.classList.toggle('active', p === tab);
+  });
+  if (tab === 'dashboard') renderGestionDashboard();
+  if (tab === 'clientes')  renderGestionClientes();
+  if (tab === 'casos')     renderGestionCasos();
+}
+
+/* ── Filtros clientes ── */
+function setGestionFiltro(f) {
+  _gestionFiltro = f;
+  document.querySelectorAll('.gestion-filter-btn[id^="gf-"]').forEach(b => b.classList.remove('active'));
+  document.getElementById('gf-' + f)?.classList.add('active');
+  renderGestionClientes();
+}
+function setGestionCasoFiltro(f) {
+  _gestionCasoFiltro = f;
+  document.querySelectorAll('.gestion-filter-btn[id^="gcf-"]').forEach(b => b.classList.remove('active'));
+  document.getElementById('gcf-' + f)?.classList.add('active');
+  renderGestionCasos();
+}
+
+/* ── Render Dashboard principal ── */
+function renderGestionDashboard() {
+  const clientes = getGestionClientes().filter(c => !c.archivado);
+  const casos    = getGestionCasos();
+  const activos  = casos.filter(c => c.estado === 'activo');
+  const cerrados = casos.filter(c => c.estado === 'cerrado');
+
+  // KPIs
+  const kpiEl = document.getElementById('gestion-kpis');
+  if (kpiEl) {
+    const sinActualizar = activos.filter(c => {
+      const acts = c.actuaciones || [];
+      const dias = acts.length
+        ? Math.floor((Date.now()-new Date(acts[acts.length-1].fecha).getTime())/86400000)
+        : 999;
+      return dias > 7;
+    }).length;
+    const kpis = [
+      { label:'Clientes activos',    val:clientes.length,   color:'var(--brand)',  icon:'👤' },
+      { label:'Casos activos',       val:activos.length,    color:'var(--green)',  icon:'📁' },
+      { label:'Sin actualizar +7d',  val:sinActualizar,     color:sinActualizar>0?'var(--red)':'var(--fg3)', icon:'⚠' },
+      { label:'Casos cerrados',      val:cerrados.length,   color:'var(--fg3)',    icon:'✅' },
+    ];
+    kpiEl.innerHTML = kpis.map(k => `
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px">
+        <div style="font-size:22px;margin-bottom:8px">${k.icon}</div>
+        <div style="font-size:28px;font-weight:700;font-family:'DM Serif Display',serif;color:${k.color};letter-spacing:-.5px;margin-bottom:4px">${k.val}</div>
+        <div style="font-size:11px;color:var(--fg3)">${k.label}</div>
+      </div>`).join('');
+  }
+
+  // Clientes recientes (últimos 5)
+  const recEl = document.getElementById('dashboard-clientes-recientes');
+  if (recEl) {
+    const recientes = [...clientes].sort((a,b) => new Date(b.fechaCreacion)-new Date(a.fechaCreacion)).slice(0,5);
+    recEl.innerHTML = recientes.length
+      ? recientes.map(c => {
+          const cc = casos.filter(x=>x.clienteId===c.id);
+          return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openClienteWorkspace('${c.id}')">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-glow);border:1px solid var(--brand-line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--brand);flex-shrink:0">${(c.nombre||'?')[0].toUpperCase()}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12px;font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.nombre)}</div>
+              <div style="font-size:10px;color:var(--fg3)">${escapeHtml(c.id)} · ${cc.length} caso${cc.length!==1?'s':''}</div>
+            </div>
+            <div style="color:var(--fg3);font-size:14px">›</div>
+          </div>`;
+        }).join('')
+      : '<div style="color:var(--fg3);font-size:12px;text-align:center;padding:20px">Sin clientes registrados</div>';
+  }
+
+  // Casos con alerta (sin actualizar o con audiencia vencida)
+  const alertaEl = document.getElementById('dashboard-casos-alerta');
+  if (alertaEl) {
+    const MI = { Civil:'⚖', Penal:'🔒', Laboral:'💼', Familiar:'👨‍👩‍👧', Comercial:'🏢', Administrativo:'🏛', Constitucional:'📜', Otro:'📁' };
+    const conAlerta = activos.filter(c => {
+      const acts = c.actuaciones||[];
+      const dias = acts.length ? Math.floor((Date.now()-new Date(acts[acts.length-1].fecha).getTime())/86400000) : 999;
+      return dias > 7;
+    }).sort((a,b) => {
+      const dA = (a.actuaciones||[]).length ? Math.floor((Date.now()-new Date(a.actuaciones[a.actuaciones.length-1].fecha).getTime())/86400000) : 999;
+      const dB = (b.actuaciones||[]).length ? Math.floor((Date.now()-new Date(b.actuaciones[b.actuaciones.length-1].fecha).getTime())/86400000) : 999;
+      return dB - dA;
+    }).slice(0,5);
+    alertaEl.innerHTML = conAlerta.length
+      ? conAlerta.map(c => {
+          const cli  = clientes.find(x=>x.id===c.clienteId);
+          const acts = c.actuaciones||[];
+          const dias = acts.length ? Math.floor((Date.now()-new Date(acts[acts.length-1].fecha).getTime())/86400000) : 999;
+          const sem  = dias>14?'🔴':'🟡';
+          return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openCasoWorkspace('${c.id}')">
+            <div style="font-size:18px;flex-shrink:0">${MI[c.materia]||'📁'}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12px;font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.id)} · ${escapeHtml(c.materia||'—')}</div>
+              <div style="font-size:10px;color:var(--fg3)">${cli?escapeHtml(cli.nombre):'—'}</div>
+            </div>
+            <span style="font-size:11px;flex-shrink:0">${sem} <span style="font-size:10px;color:var(--fg3)">${dias}d</span></span>
+          </div>`;
+        }).join('')
+      : '<div style="color:var(--green);font-size:12px;text-align:center;padding:20px">🟢 Todos los casos al día</div>';
+  }
+
+  // Actividad reciente — últimas 8 actuaciones de todos los casos
+  const actividadEl = document.getElementById('dashboard-actividad');
+  if (actividadEl) {
+    const MI_ti = {audiencia_conocida:'⚖',audiencia_aplazada:'📅',audiencia_suspendida:'⚠',fallo_emitido:'🏛',doc_depositado:'📤',doc_recibido:'📥',diligencia:'🔧',nota_interna:'🔒',otro:'📋'};
+    const todasActs = [];
+    casos.forEach(c => {
+      const cli = clientes.find(x=>x.id===c.clienteId);
+      (c.actuaciones||[]).forEach(a => todasActs.push({ ...a, casoId:c.id, clienteNombre:cli?.nombre||'—', materia:c.materia }));
+    });
+    todasActs.sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    const recientes = todasActs.slice(0,8);
+    actividadEl.innerHTML = recientes.length
+      ? recientes.map(a => {
+          const fd = new Date(a.fecha);
+          return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openCasoWorkspace('${a.casoId}')">
+            <div style="font-size:16px;flex-shrink:0">${MI_ti[a.tipo]||'📋'}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12px;color:var(--fg)"><strong>${escapeHtml(TIPOS_ACTUACION.find(t=>t.key===a.tipo)?.label||a.tipo)}</strong> — ${escapeHtml(a.casoId)}</div>
+              <div style="font-size:10px;color:var(--fg3)">${escapeHtml(a.clienteNombre)} · ${fd.toLocaleDateString('es-DO',{day:'2-digit',month:'short',year:'numeric'})}</div>
+            </div>
+          </div>`;
+        }).join('')
+      : '<div style="color:var(--fg3);font-size:12px;text-align:center;padding:20px">Sin actividad registrada aún</div>';
+  }
+}
+
+/* ── Render lista de clientes ── */
+function renderGestionClientes() {
+  const all   = getGestionClientes();
+  const casos = getGestionCasos();
+  const q     = (document.getElementById('gestion-search')?.value || '').toLowerCase();
+  const el    = document.getElementById('gestion-clientes-list');
+  const noEl  = document.getElementById('gestion-no-clientes');
+  const cntEl = document.getElementById('gestion-cli-count');
+  if (!el) return;
+
+  let filt = all.filter(c => {
+    if (q && !c.nombre?.toLowerCase().includes(q) && !c.id?.toLowerCase().includes(q) && !c.email?.toLowerCase().includes(q) && !c.telefono?.includes(q)) return false;
+    if (_gestionFiltro === 'personal')  return c.tipo !== 'empresa' && !c.archivado;
+    if (_gestionFiltro === 'empresa')   return c.tipo === 'empresa' && !c.archivado;
+    if (_gestionFiltro === 'favorito')  return c.favorito && !c.archivado;
+    if (_gestionFiltro === 'archivado') return c.archivado;
+    return !c.archivado;
+  });
+
+  if (cntEl) cntEl.textContent = `${filt.length} cliente${filt.length!==1?'s':''}`;
+
+  if (!filt.length) { el.innerHTML = ''; noEl.style.display = ''; return; }
+  noEl.style.display = 'none';
+
+  el.innerHTML = filt.map(c => {
+    const cc    = casos.filter(x => x.clienteId === c.id);
+    const activos = cc.filter(x => x.estado === 'activo').length;
+    const avatarClass = c.tipo === 'empresa' ? 'empresa' : c.favorito ? 'favorito' : '';
+    const avatarChar  = c.tipo === 'empresa' ? '🏢' : c.favorito ? '⭐' : (c.nombre||'?')[0].toUpperCase();
+    const pillColor   = activos > 0 ? 'var(--brand)' : 'var(--fg3)';
+    const pillBg      = activos > 0 ? 'var(--brand-glow)' : 'transparent';
+    const pillBorder  = activos > 0 ? 'var(--brand-line)' : 'var(--border)';
+    const pillText    = cc.length ? `${activos} activo${activos!==1?'s':''} · ${cc.length} total` : 'Sin casos';
+    const origenBadge = c.origenConnectId ? `<span style="font-size:9px;background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.25);border-radius:4px;padding:1px 5px">Connect</span>` : '';
+
+    return `<div class="gestion-client-card${c.archivado?' archivado':''}" onclick="openClienteWorkspace('${c.id}')">
+      <div class="gestion-client-avatar ${avatarClass}">${avatarChar}</div>
+      <div class="gestion-client-info">
+        <div class="gestion-client-name">
+          ${escapeHtml(c.nombre)}
+          <span class="gestion-client-code">${escapeHtml(c.id)}</span>
+          ${origenBadge}
+        </div>
+        <div class="gestion-client-meta">${[c.email,c.telefono].filter(Boolean).map(escapeHtml).join(' · ') || 'Sin datos de contacto'}</div>
+      </div>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:${pillBg};color:${pillColor};border:1px solid ${pillBorder};white-space:nowrap;flex-shrink:0">${pillText}</span>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        <button onclick="event.stopPropagation();toggleFavoritoCliente('${c.id}')" style="background:none;border:none;cursor:pointer;font-size:16px;padding:2px 4px;color:${c.favorito?'var(--amber)':'var(--fg3)'};transition:color .15s" title="${c.favorito?'Quitar favorito':'Marcar favorito'}">${c.favorito?'⭐':'☆'}</button>
+        <div style="color:var(--fg3);font-size:18px">›</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Render lista de casos ── */
+function renderGestionCasos() {
+  const casos    = getGestionCasos();
+  const clientes = getGestionClientes();
+  const q        = (document.getElementById('gestion-search')?.value || '').toLowerCase();
+  const el       = document.getElementById('gestion-casos-list');
+  const noEl     = document.getElementById('gestion-no-casos');
+  const cntEl    = document.getElementById('gestion-caso-count');
+  if (!el) return;
+
+  const MI = { Civil:'⚖', Penal:'🔒', Laboral:'💼', Familiar:'👨‍👩‍👧', Comercial:'🏢', Administrativo:'🏛', Constitucional:'📜', Otro:'📁' };
+  const EC = { activo:'var(--green)', suspendido:'var(--amber)', archivado:'var(--fg3)', cerrado:'var(--red)' };
+
+  let filt = casos.filter(c => {
+    if (q && !c.id?.toLowerCase().includes(q) && !c.materia?.toLowerCase().includes(q) && !clientes.find(x=>x.id===c.clienteId)?.nombre?.toLowerCase().includes(q)) return false;
+    if (_gestionCasoFiltro !== 'todos' && c.estado !== _gestionCasoFiltro) return false;
+    return true;
+  });
+
+  if (cntEl) cntEl.textContent = `${filt.length} caso${filt.length!==1?'s':''}`;
+  if (!filt.length) { el.innerHTML = ''; noEl.style.display = ''; return; }
+  noEl.style.display = 'none';
+
+  el.innerHTML = filt.map(c => {
+    const cli  = clientes.find(x => x.id === c.clienteId);
+    const icon = MI[c.materia] || '📁';
+    const sc   = EC[c.estado]  || 'var(--fg3)';
+    const acts = c.actuaciones || [];
+    const diasSinMover = acts.length
+      ? Math.floor((Date.now() - new Date(acts[acts.length-1].fecha).getTime()) / 86400000)
+      : (c.fechaCreacion ? Math.floor((Date.now()-new Date(c.fechaCreacion).getTime())/86400000) : 999);
+    const sem = c.estado==='cerrado'||c.estado==='archivado' ? '⚫'
+      : diasSinMover>14 ? '🔴' : diasSinMover>7 ? '🟡' : '🟢';
+    const semLabel = c.estado==='cerrado'?'Cerrado':c.estado==='archivado'?'Archivado'
+      :diasSinMover>14?`${diasSinMover}d sin actualizar`:diasSinMover===0?'Hoy':`Hace ${diasSinMover}d`;
+    const ultimaAct = acts.length ? acts[acts.length-1] : null;
+
+    return `<div class="case-card" onclick="openCasoWorkspace('${c.id}')">
+      <div class="case-card-icon">${icon}</div>
+      <div class="case-card-info">
+        <div class="case-card-name">${escapeHtml(c.id)} · ${escapeHtml(c.materia||'Sin materia')}${c.subtipo?` — ${escapeHtml(c.subtipo)}`:''}</div>
+        <div class="case-card-meta">
+          ${cli?`<strong style="color:var(--fg2)">${escapeHtml(cli.nombre)}</strong> · `:''}
+          ${c.fechaApertura||'—'} · ${acts.length} actuación${acts.length!==1?'es':''}
+          ${ultimaAct?` · Última: ${escapeHtml(TIPOS_ACTUACION.find(t=>t.key===ultimaAct.tipo)?.label||ultimaAct.tipo)}`:''}
+        </div>
+      </div>
+      <span style="font-size:11px;flex-shrink:0">${sem} <span style="color:var(--fg3);font-size:10px">${semLabel}</span></span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid ${sc}33;color:${sc};background:${sc}11;white-space:nowrap;flex-shrink:0">${(c.estado||'activo').toUpperCase()}</span>
+      <div style="color:var(--fg3);font-size:18px;flex-shrink:0">›</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Toggle favorito ── */
+function toggleFavoritoCliente(id) {
+  const clientes = getGestionClientes();
+  const c = clientes.find(x => x.id === id);
+  if (!c) return;
+  c.favorito = !c.favorito;
+  saveGestionClientes(clientes);
+  _supaUpsertCliente(c);
+  renderGestionClientes();
+  toast(c.favorito ? '⭐ Marcado como favorito' : 'Removido de favoritos', 'ok');
+}
+
+/* ── Archivar cliente ── */
+/* ── Workspace del cliente ── */
+function openClienteWorkspace(id) {
+  const clientes = getGestionClientes();
+  const c = clientes.find(x => x.id === id);
+  if (!c) return;
+  const casos = getGestionCasos().filter(x => x.clienteId === id);
+  const MI = { Civil:'⚖', Penal:'🔒', Laboral:'💼', Familiar:'👨‍👩‍👧', Comercial:'🏢', Administrativo:'🏛', Constitucional:'📜', Otro:'📁' };
+  const EC = { activo:'var(--green)', suspendido:'var(--amber)', archivado:'var(--fg3)', cerrado:'var(--red)' };
+  const activos = casos.filter(x=>x.estado==='activo').length;
+
+  const casosHtml = casos.length
+    ? casos.map(cs => {
+        const icon = MI[cs.materia]||'📁'; const sc = EC[cs.estado]||'var(--green)';
+        const acts = cs.actuaciones||[]; const ultima = acts.length?acts[acts.length-1]:null;
+        const dias = acts.length?Math.floor((Date.now()-new Date(acts[acts.length-1].fecha).getTime())/86400000):999;
+        const sem  = cs.estado==='cerrado'?'⚫':dias>14?'🔴':dias>7?'🟡':'🟢';
+        return `<div class="case-card" style="margin-bottom:8px" onclick="document.getElementById('modal-cliente-ws').remove();openCasoWorkspace('${cs.id}')">
+          <div class="case-card-icon">${icon}</div>
+          <div class="case-card-info">
+            <div class="case-card-name">${escapeHtml(cs.id)} · ${escapeHtml(cs.materia||'—')}${cs.subtipo?` — ${escapeHtml(cs.subtipo)}`:''}</div>
+            <div class="case-card-meta">${ultima?`Última act.: ${escapeHtml(TIPOS_ACTUACION.find(t=>t.key===ultima.tipo)?.label||ultima.tipo)}`:'Sin actuaciones'} · ${cs.fechaApertura||'—'}</div>
+          </div>
+          <span style="font-size:10px">${sem}</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;border:1px solid ${sc}33;color:${sc};background:${sc}11">${(cs.estado||'activo').toUpperCase()}</span>
+          <div style="color:var(--fg3);font-size:16px">›</div>
+        </div>`;
+      }).join('')
+    : `<div style="text-align:center;padding:24px;color:var(--fg3);font-size:12px"><div style="font-size:28px;margin-bottom:8px">📁</div>Sin casos. Crea el primero con "＋ Nuevo caso".</div>`;
+
+  const portalUrl = c.tokenPortal ? `${location.origin}${location.pathname}?token=${c.tokenPortal}` : null;
+
+  document.getElementById('modal-cliente-ws')?.remove();
+  const html = `
+    <div id="modal-cliente-ws" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto">
+      <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--radius-xl);width:100%;max-width:700px;max-height:92vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.5);display:flex;flex-direction:column">
+
+        <!-- Header del workspace -->
+        <div style="padding:22px 28px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-shrink:0">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--brand-glow);border:2px solid var(--brand-line);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--brand);flex-shrink:0">${c.tipo==='empresa'?'🏢':(c.nombre||'?')[0].toUpperCase()}</div>
+          <div style="flex:1">
+            <div style="font-size:17px;font-weight:700;color:var(--fg);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              ${escapeHtml(c.nombre)}
+              ${c.favorito?'<span style="font-size:14px">⭐</span>':''}
+              <span style="font-size:10px;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:2px 7px;color:var(--fg3);font-weight:700;letter-spacing:.04em">${escapeHtml(c.id)}</span>
+              ${c.tipo==='empresa'?'<span style="font-size:9px;background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.25);border-radius:4px;padding:2px 6px">Empresa</span>':''}
+              ${c.origenConnectId?'<span style="font-size:9px;background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.25);border-radius:4px;padding:2px 6px">Connect</span>':''}
+            </div>
+            <div style="font-size:11px;color:var(--fg3);margin-top:4px">${activos} caso${activos!==1?'s':''} activo${activos!==1?'s':''} · ${casos.length} total · Creado: ${c.fechaCreacion?new Date(c.fechaCreacion).toLocaleDateString('es-DO'):'—'}</div>
+          </div>
+          <button onclick="document.getElementById('modal-cliente-ws').remove()" style="background:none;border:none;color:var(--fg2);cursor:pointer;font-size:22px;line-height:1;padding:4px;flex-shrink:0">×</button>
+        </div>
+
+        <!-- Datos de contacto -->
+        <div style="padding:14px 28px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex-shrink:0">
+          <div><div style="font-size:9px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Teléfono</div><div style="font-size:12px">${c.telefono?`<a href="tel:${escapeHtml(c.telefono)}" style="color:var(--brand);text-decoration:none">${escapeHtml(c.telefono)}</a>`:'<span style="color:var(--fg3)">—</span>'}</div></div>
+          <div><div style="font-size:9px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">WhatsApp</div><div style="font-size:12px">${c.whatsapp?`<a href="https://wa.me/${c.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:var(--green);text-decoration:none">${escapeHtml(c.whatsapp)}</a>`:'<span style="color:var(--fg3)">—</span>'}</div></div>
+          <div><div style="font-size:9px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Correo</div><div style="font-size:12px">${c.email?`<a href="mailto:${escapeHtml(c.email)}" style="color:var(--brand);text-decoration:none">${escapeHtml(c.email)}</a>`:'<span style="color:var(--fg3)">—</span>'}</div></div>
+          ${c.documento?`<div><div style="font-size:9px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Cédula / Pasaporte</div><div style="font-size:12px;color:var(--fg)">${escapeHtml(c.documento)}</div></div>`:''}
+          ${c.notas?`<div style="grid-column:1/-1"><div style="font-size:9px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Notas internas</div><div style="font-size:12px;color:var(--fg2);line-height:1.6">${escapeHtml(c.notas)}</div></div>`:''}
+        </div>
+
+        <!-- Portal del cliente -->
+        <div style="padding:12px 28px;border-bottom:1px solid var(--border);background:rgba(79,124,255,.03);flex-shrink:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--fg2);margin-bottom:2px">🌐 Portal del Cliente</div>
+              ${portalUrl
+                ? `<div style="font-size:10px;color:var(--fg3);font-family:monospace">${portalUrl}</div>`
+                : `<div style="font-size:11px;color:var(--fg3)">Genera un enlace único para que el cliente haga seguimiento de sus casos.</div>`
+              }
+            </div>
+            <div style="display:flex;gap:6px">
+              ${portalUrl
+                ? `<button class="btn btn-ghost btn-sm" onclick="navigator.clipboard&&navigator.clipboard.writeText('${portalUrl}').then(()=>toast('Enlace copiado','ok'))">📋 Copiar</button><button class="btn btn-danger btn-sm" onclick="revocarTokenPortal('${c.id}')">Revocar</button>`
+                : `<button class="btn btn-accent btn-sm" onclick="generarTokenPortal('${c.id}')">🔑 Generar enlace</button>`
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Casos del cliente -->
+        <div style="padding:16px 28px 8px;flex:1;overflow-y:auto">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:11px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em">Expedientes (${casos.length})</div>
+            <button class="btn btn-accent btn-sm" onclick="document.getElementById('modal-cliente-ws').remove();openNuevoCaso('${c.id}')">＋ Nuevo caso</button>
+          </div>
+          ${casosHtml}
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:14px 28px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0">
+          ${c.whatsapp?`<a href="https://wa.me/${c.whatsapp.replace(/\D/g,'')}" target="_blank" class="btn btn-green btn-sm">💬 WhatsApp</a>`:''}
+          ${c.telefono?`<a href="tel:${c.telefono}" class="btn btn-ghost btn-sm">📞 Llamar</a>`:''}
+          <button class="btn btn-ghost btn-sm" onclick="editarCliente('${c.id}')">✏ Editar</button>
+          <button class="btn btn-ghost btn-sm" onclick="archivarCliente('${c.id}')">${c.archivado?'📤 Restaurar':'📦 Archivar'}</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('modal-cliente-ws').remove()">Cerrar</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+/* ── Portal: generar y revocar token ── */
+function generarTokenPortal(clienteId) {
+  const clientes = getGestionClientes();
+  const c = clientes.find(x => x.id === clienteId);
+  if (!c) return;
+  c.tokenPortal = genTokenPortal();
+  saveGestionClientes(clientes);
+  _supaUpsertCliente(c);
+  document.getElementById('modal-cliente-ws')?.remove();
+  openClienteWorkspace(clienteId);
+  toast('🔑 Enlace del portal generado', 'ok');
+}
+function revocarTokenPortal(clienteId) {
+  if (!confirm('¿Revocar el enlace? El cliente perderá acceso inmediatamente.')) return;
+  const clientes = getGestionClientes();
+  const c = clientes.find(x => x.id === clienteId);
+  if (!c) return;
+  c.tokenPortal = null;
+  saveGestionClientes(clientes);
+  _supaUpsertCliente(c);
+  document.getElementById('modal-cliente-ws')?.remove();
+  openClienteWorkspace(clienteId);
+  toast('Enlace revocado', 'ok');
+}
+
+/* ── Nuevo cliente ── */
+function openGestionNuevoCliente() {
+  document.getElementById('modal-gc')?.remove();
+  const html = `
+    <div id="modal-gc" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto">
+      <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:500px;box-shadow:0 32px 80px rgba(0,0,0,.5)">
+        <div style="font-size:16px;font-weight:700;margin-bottom:20px">👤 Nuevo Cliente</div>
+        <div style="display:grid;gap:12px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Nombre completo *</div>
+              <input id="gc-nombre" type="text" placeholder="Juan García Martínez" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box">
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Tipo</div>
+              <select id="gc-tipo" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12px;font-family:inherit;outline:none">
+                <option value="personal">👤 Personal</option>
+                <option value="empresa">🏢 Empresa</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Teléfono</div><input id="gc-tel" type="text" placeholder="809-XXX-XXXX" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">WhatsApp</div><input id="gc-wa" type="text" placeholder="829-XXX-XXXX" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+          </div>
+          <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Correo</div><input id="gc-email" type="email" placeholder="cliente@email.com" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+          <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Cédula / Pasaporte</div><input id="gc-doc" type="text" placeholder="001-XXXXXXX-X" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+          <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Notas internas</div><textarea id="gc-notas" rows="2" placeholder="Observaciones privadas sobre el cliente..." style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;resize:vertical;box-sizing:border-box"></textarea></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:22px;justify-content:flex-end">
+          <button class="btn btn-ghost" onclick="document.getElementById('modal-gc').remove()">Cancelar</button>
+          <button class="btn btn-accent" onclick="saveGestionNuevoCliente()">Guardar cliente</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(() => document.getElementById('gc-nombre')?.focus(), 50);
+}
+
+function saveGestionNuevoCliente() {
+  const nombre = document.getElementById('gc-nombre')?.value.trim();
+  if (!nombre) { toast('El nombre es obligatorio', 'err'); return; }
+  const nuevo = {
+    id:            genClienteId(),
+    nombre,
+    tipo:          document.getElementById('gc-tipo')?.value      || 'personal',
+    telefono:      document.getElementById('gc-tel')?.value.trim()  || '',
+    whatsapp:      document.getElementById('gc-wa')?.value.trim()   || '',
+    email:         document.getElementById('gc-email')?.value.trim()|| '',
+    documento:     document.getElementById('gc-doc')?.value.trim()  || '',
+    notas:         document.getElementById('gc-notas')?.value.trim()|| '',
+    favorito:      false,
+    archivado:     false,
+    tokenPortal:   null,
+    empresaId:     SESSION?.empresaId || 'raf',
+    creadoPor:     SESSION?.email     || '',
+    fechaCreacion: new Date().toISOString(),
+  };
+  const clientes = getGestionClientes();
+  clientes.unshift(nuevo);
+  saveGestionClientes(clientes);
+  _supaUpsertCliente(nuevo);
+  document.getElementById('modal-gc')?.remove();
+  renderGestionClientes();
+  toast(`Cliente "${nombre}" creado · ${nuevo.id}`, 'ok');
+}
+
+/* ── Editar cliente ── */
+function editarCliente(id) {
+  const c = getGestionClientes().find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('modal-cliente-ws')?.remove();
+  document.getElementById('modal-editar-cli')?.remove();
+  const html = `
+    <div id="modal-editar-cli" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px">
+      <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:480px;box-shadow:0 32px 80px rgba(0,0,0,.5)">
+        <div style="font-size:16px;font-weight:700;margin-bottom:20px">✏ Editar — ${escapeHtml(c.nombre)} <span style="font-size:11px;color:var(--fg3);font-weight:400">${escapeHtml(c.id)}</span></div>
+        <div style="display:grid;gap:12px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Nombre *</div><input id="ec-nombre" type="text" value="${escapeHtml(c.nombre)}" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Tipo</div><select id="ec-tipo" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12px;font-family:inherit;outline:none"><option value="personal" ${c.tipo!=='empresa'?'selected':''}>👤 Personal</option><option value="empresa" ${c.tipo==='empresa'?'selected':''}>🏢 Empresa</option></select></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Teléfono</div><input id="ec-tel" type="text" value="${escapeHtml(c.telefono||'')}" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">WhatsApp</div><input id="ec-wa" type="text" value="${escapeHtml(c.whatsapp||'')}" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+          </div>
+          <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Correo</div><input id="ec-email" type="email" value="${escapeHtml(c.email||'')}" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+          <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Notas internas</div><textarea id="ec-notas" rows="2" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:13px;font-family:inherit;outline:none;resize:vertical;box-sizing:border-box">${escapeHtml(c.notas||'')}</textarea></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:22px;justify-content:flex-end">
+          <button class="btn btn-ghost" onclick="document.getElementById('modal-editar-cli').remove();openClienteWorkspace('${id}')">Cancelar</button>
+          <button class="btn btn-accent" onclick="saveEditarCliente('${id}')">Guardar cambios</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(() => document.getElementById('ec-nombre')?.focus(), 50);
+}
+
+function saveEditarCliente(id) {
+  const nombre = document.getElementById('ec-nombre')?.value.trim();
+  if (!nombre) { toast('El nombre es obligatorio', 'err'); return; }
+  const clientes = getGestionClientes();
+  const c = clientes.find(x => x.id === id);
+  if (!c) return;
+  c.nombre   = nombre;
+  c.tipo     = document.getElementById('ec-tipo')?.value    || 'personal';
+  c.telefono = document.getElementById('ec-tel')?.value.trim()   || '';
+  c.whatsapp = document.getElementById('ec-wa')?.value.trim()    || '';
+  c.email    = document.getElementById('ec-email')?.value.trim() || '';
+  c.notas    = document.getElementById('ec-notas')?.value.trim() || '';
+  saveGestionClientes(clientes);
+  _supaUpsertCliente(c);
+  document.getElementById('modal-editar-cli')?.remove();
+  renderGestionClientes();
+  openClienteWorkspace(id);
+  toast(`Cliente "${nombre}" actualizado`, 'ok');
+}
+
+/* ── Archivar cliente ── */
+function archivarCliente(id) {
+  const clientes = getGestionClientes();
+  const c = clientes.find(x => x.id === id);
+  if (!c) return;
+  const accion = c.archivado ? 'restaurar' : 'archivar';
+  if (!confirm(`¿${accion.charAt(0).toUpperCase()+accion.slice(1)} cliente "${c.nombre}"?`)) return;
+  c.archivado = !c.archivado;
+  saveGestionClientes(clientes);
+  _supaUpsertCliente(c);
+  document.getElementById('modal-cliente-ws')?.remove();
+  renderGestionClientes();
+  toast(`Cliente ${c.archivado?'archivado':'restaurado'}`, 'ok');
+}
+
+/* ── Nuevo caso ── */
+function openNuevoCaso(clienteId) {
+  const cli = getGestionClientes().find(x => x.id === clienteId);
+  const MATERIAS = ['Civil','Penal','Laboral','Familiar','Comercial','Administrativo','Constitucional','Otro'];
+  document.getElementById('modal-nuevo-caso')?.remove();
+  const html = `
+    <div id="modal-nuevo-caso" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto">
+      <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:540px;box-shadow:0 32px 80px rgba(0,0,0,.5)">
+        <div style="font-size:16px;font-weight:700;margin-bottom:4px">📁 Nuevo Expediente</div>
+        <div style="font-size:12px;color:var(--fg3);margin-bottom:20px">Cliente: <strong style="color:var(--fg2)">${cli?escapeHtml(cli.nombre):'—'}</strong> · <span style="color:var(--brand)">${clienteId}</span></div>
+        <div style="display:grid;gap:12px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Materia *</div><select id="nc-materia" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12px;font-family:inherit;outline:none">${MATERIAS.map(m=>`<option value="${m}">${m}</option>`).join('')}</select></div>
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Subtipo</div><input id="nc-subtipo" type="text" placeholder="Ej: Divorcio, Cobro..." style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+          </div>
+          <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Tribunal</div><input id="nc-tribunal" type="text" placeholder="Ej: Tribunal Civil de Santiago, 1ra Sala" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Contraparte</div><input id="nc-contraparte" type="text" placeholder="Opcional" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+            <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">No. Poder Judicial</div><input id="nc-numpj" type="text" placeholder="Opcional" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;box-sizing:border-box"></div>
+          </div>
+          <div><div style="font-size:11px;color:var(--fg3);margin-bottom:5px">Observaciones iniciales</div><textarea id="nc-obs" rows="2" placeholder="Notas privadas al abrir el caso..." style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;resize:vertical;box-sizing:border-box"></textarea></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:22px;justify-content:flex-end">
+          <button class="btn btn-ghost" onclick="document.getElementById('modal-nuevo-caso').remove()">Cancelar</button>
+          <button class="btn btn-accent" onclick="saveNuevoCaso('${clienteId}')">Crear expediente</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(() => document.getElementById('nc-subtipo')?.focus(), 50);
+}
+
+function saveNuevoCaso(clienteId) {
+  const materia = document.getElementById('nc-materia')?.value;
+  if (!materia) { toast('Selecciona la materia', 'err'); return; }
+  const nuevo = {
+    id:            genCasoId(),
+    clienteId,
+    materia,
+    subtipo:       document.getElementById('nc-subtipo')?.value.trim()     || '',
+    tribunal:      document.getElementById('nc-tribunal')?.value.trim()    || '',
+    contraparte:   document.getElementById('nc-contraparte')?.value.trim() || '',
+    numeroPJ:      document.getElementById('nc-numpj')?.value.trim()       || '',
+    observaciones: document.getElementById('nc-obs')?.value.trim()         || '',
+    estado:        'activo',
+    abogado:       SESSION?.nombre || '',
+    origen:        'manual',
+    origenConnectId: null,
+    actuaciones:   [],
+    fechaApertura: new Date().toLocaleDateString('es-DO', { day:'2-digit', month:'2-digit', year:'numeric' }),
+    fechaCreacion: new Date().toISOString(),
+    ultimaActualizacion: new Date().toISOString(),
+  };
+  const casos = getGestionCasos();
+  casos.unshift(nuevo);
+  saveGestionCasos(casos);
+  _supaUpsertCaso(nuevo);
+  document.getElementById('modal-nuevo-caso')?.remove();
+  renderGestionClientes();
+  renderGestionCasos();
+  toast(`Expediente ${nuevo.id} creado · ${materia}`, 'ok');
+  setTimeout(() => openCasoWorkspace(nuevo.id), 200);
+}
+
+/* ── Convertir consulta Connect → Cliente + Caso ── */
+function convertirConsultaEnCaso(consultaId) {
+  const inbox = getInboxConsultas();
+  const consulta = inbox.find(x => x.id === consultaId);
+  if (!consulta) { toast('Consulta no encontrada', 'err'); return; }
+  const clientesExistentes = getGestionClientes();
+  if (clientesExistentes.find(c => c.origenConnectId === consultaId)) {
+    toast('Esta consulta ya fue convertida', 'err'); return;
+  }
+  const nuevoCliente = {
+    id:             genClienteId(),
+    nombre:         consulta.nombre && consulta.nombre !== 'Anónimo' ? consulta.nombre : 'Cliente sin nombre',
+    tipo:           'personal',
+    telefono:       consulta.contactos?.tel   || '',
+    whatsapp:       consulta.contactos?.wa    || '',
+    email:          consulta.contactos?.email || '',
+    documento:      '',
+    notas:          `Originado desde NEXLEX Connect · Ref. ${consultaId}`,
+    favorito:       false,
+    archivado:      false,
+    tokenPortal:    null,
+    origenConnectId:consultaId,
+    empresaId:      SESSION?.empresaId || 'raf',
+    creadoPor:      SESSION?.email     || '',
+    fechaCreacion:  new Date().toISOString(),
+  };
+  clientesExistentes.unshift(nuevoCliente);
+  saveGestionClientes(clientesExistentes);
+  _supaUpsertCliente(nuevoCliente);
+
+  const nuevoCaso = {
+    id:            genCasoId(),
+    clienteId:     nuevoCliente.id,
+    materia:       consulta.tipo   || 'Otro',
+    subtipo:       '',
+    tribunal:      '',
+    contraparte:   '',
+    numeroPJ:      '',
+    observaciones: consulta.descripcion || '',
+    estado:        'activo',
+    abogado:       consulta.abogadoAsignado || SESSION?.nombre || '',
+    origen:        'connect',
+    origenConnectId: consultaId,
+    actuaciones:   [{
+      tipo:        'otro',
+      descripcion: `Caso originado desde NEXLEX Connect. Ref. ${consultaId}. Provincia: ${consulta.provincia||'—'}.`,
+      resultado:   '', proximoPaso:'', visible:true,
+      fecha:       new Date().toISOString(),
+      usuario:     SESSION?.nombre?.split(' ')[0]||'Sistema',
+    }],
+    fechaApertura:       new Date().toLocaleDateString('es-DO',{day:'2-digit',month:'2-digit',year:'numeric'}),
+    fechaCreacion:       new Date().toISOString(),
+    ultimaActualizacion: new Date().toISOString(),
+  };
+  const casos = getGestionCasos();
+  casos.unshift(nuevoCaso);
+  saveGestionCasos(casos);
+  _supaUpsertCaso(nuevoCaso);
+
+  // Marcar consulta como convertida
+  const inboxList = getInboxConsultas();
+  const item = inboxList.find(x => x.id === consultaId);
+  if (item) { item.convertidaEnCaso = true; item.casoId = nuevoCaso.id; try { _storage.setItem(INBOX_KEY, JSON.stringify(inboxList)); } catch {} }
+
+  toast(`✅ Cliente ${nuevoCliente.id} y Expediente ${nuevoCaso.id} creados desde Connect`, 'ok');
+  renderGestionClientes(); renderGestionCasos();
+  goPage('gestion');
+  setTimeout(() => openCasoWorkspace(nuevoCaso.id), 300);
+}
+
+/* ── Workspace del caso con cronología completa ── */
+function openCasoWorkspace(id) {
+  const cs  = getGestionCasos().find(x => x.id === id);
+  if (!cs) return;
+  const cli = getGestionClientes().find(x => x.id === cs.clienteId);
+  const MI  = { Civil:'⚖', Penal:'🔒', Laboral:'💼', Familiar:'👨‍👩‍👧', Comercial:'🏢', Administrativo:'🏛', Constitucional:'📜', Otro:'📁' };
+  const EC  = { activo:'var(--green)', suspendido:'var(--amber)', archivado:'var(--fg3)', cerrado:'var(--red)' };
+  const sc  = EC[cs.estado] || 'var(--green)';
+  const icon = MI[cs.materia] || '📁';
+  const acts = cs.actuaciones || [];
+  const diasSinMover = acts.length
+    ? Math.floor((Date.now()-new Date(acts[acts.length-1].fecha).getTime())/86400000) : 999;
+  const sem = cs.estado==='cerrado'?{c:'var(--fg3)',l:'Cerrado',i:'⚫'}
+    :diasSinMover>14?{c:'var(--red)',l:`${diasSinMover}d sin actualizar`,i:'🔴'}
+    :diasSinMover>7 ?{c:'var(--amber)',l:`Hace ${diasSinMover}d`,i:'🟡'}
+    :{c:'var(--green)',l:diasSinMover===0?'Actualizado hoy':`Hace ${diasSinMover}d`,i:'🟢'};
+
+  const _renderCronologia = (actsArr) => !actsArr.length
+    ? `<div style="text-align:center;padding:32px;color:var(--fg3);font-size:12px"><div style="font-size:28px;margin-bottom:8px">📋</div>Sin actuaciones. Registra la primera usando el formulario.</div>`
+    : [...actsArr].reverse().map(a => {
+        const ti = {audiencia_conocida:'⚖',audiencia_aplazada:'📅',audiencia_suspendida:'⚠',fallo_emitido:'🏛',doc_depositado:'📤',doc_recibido:'📥',diligencia:'🔧',nota_interna:'🔒',otro:'📋'};
+        const fechaAct = new Date(a.fecha);
+        const fechaStr = fechaAct.toLocaleDateString('es-DO',{day:'2-digit',month:'short',year:'numeric'});
+        const horaStr  = fechaAct.toLocaleTimeString('es-DO',{hour:'2-digit',minute:'2-digit'});
+        return `<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:32px">
+            <div style="font-size:18px;line-height:1">${ti[a.tipo]||'📋'}</div>
+            <div style="width:1px;background:var(--border);flex:1;margin-top:6px;min-height:16px"></div>
+          </div>
+          <div style="flex:1;padding-bottom:4px">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+              <span style="font-size:12px;font-weight:700;color:var(--fg)">${escapeHtml(TIPOS_ACTUACION.find(t=>t.key===a.tipo)?.label||a.tipo)}</span>
+              ${!a.visible?'<span style="font-size:9px;background:var(--card-hover);color:var(--fg3);padding:1px 6px;border-radius:10px;border:1px solid var(--border)">Solo interno</span>':''}
+            </div>
+            ${a.descripcion?`<div style="font-size:12px;color:var(--fg2);line-height:1.55;margin-bottom:4px">${escapeHtml(a.descripcion)}</div>`:''}
+            ${a.resultado?`<div style="font-size:11px;color:var(--fg3)">Resultado: ${escapeHtml(a.resultado)}</div>`:''}
+            ${a.proximoPaso?`<div style="font-size:11px;color:var(--brand)">→ Próximo: ${escapeHtml(a.proximoPaso)}</div>`:''}
+            <div style="font-size:10px;color:var(--fg3);margin-top:5px">${fechaStr} · ${horaStr} · ${escapeHtml(a.usuario||'')}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+  document.getElementById('modal-caso-ws')?.remove();
+  const html = `
+    <div id="modal-caso-ws" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto">
+      <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--radius-xl);width:100%;max-width:740px;max-height:94vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.5);display:flex;flex-direction:column">
+
+        <!-- Header -->
+        <div style="padding:20px 28px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-shrink:0;background:var(--card)">
+          <div style="font-size:28px;flex-shrink:0">${icon}</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+              <span style="font-size:15px;font-weight:700;color:var(--fg)">${escapeHtml(cs.id)}</span>
+              <span style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid ${sc}33;color:${sc};background:${sc}11">${(cs.estado||'activo').toUpperCase()}</span>
+              <span style="font-size:11px">${sem.i} <span style="color:${sem.c};font-size:10px">${sem.l}</span></span>
+            </div>
+            <div style="font-size:11px;color:var(--fg3)">
+              ${escapeHtml(cs.materia||'')}${cs.subtipo?` — ${escapeHtml(cs.subtipo)}`:''} ·
+              Cliente: <strong style="color:var(--fg2)">${cli?escapeHtml(cli.nombre):'—'}</strong>
+              ${cs.tribunal?` · ${escapeHtml(cs.tribunal)}`:''}
+            </div>
+          </div>
+          <button onclick="document.getElementById('modal-caso-ws').remove()" style="background:none;border:none;color:var(--fg2);cursor:pointer;font-size:22px;flex-shrink:0">×</button>
+        </div>
+
+        <!-- Formulario rápido -->
+        <div style="padding:14px 28px;background:rgba(79,124,255,.04);border-bottom:1px solid var(--border);flex-shrink:0">
+          <div style="font-size:11px;font-weight:700;color:var(--fg2);margin-bottom:10px">⚡ Registrar actuación <span style="font-weight:400;color:var(--fg3);font-size:10px">— menos de 30 segundos</span></div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px" id="tipo-act-btns-${cs.id}">
+            ${TIPOS_ACTUACION.map(t=>`<button class="tipo-act-btn" data-tipo="${t.key}" onmousedown="selectTipoAct(this,'${cs.id}')" style="background:var(--card-hover);border:1px solid var(--border);border-radius:var(--radius);padding:5px 11px;font-size:11px;font-weight:600;color:var(--fg2);cursor:pointer;font-family:inherit;transition:all .12s;user-select:none">${t.icon} ${t.label}</button>`).join('')}
+          </div>
+          <textarea id="act-desc-${cs.id}" rows="2" placeholder="Descripción de la actuación..." style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:7px"></textarea>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <input id="act-resultado-${cs.id}"  placeholder="Resultado (opcional)..."   style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:7px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none">
+            <input id="act-proximo-${cs.id}"    placeholder="Próximo paso (opcional)..." style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:7px 11px;color:var(--fg);font-size:12px;font-family:inherit;outline:none">
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;color:var(--fg2)">
+              <input type="checkbox" id="act-visible-${cs.id}" checked style="accent-color:var(--brand)">
+              Visible para el cliente
+            </label>
+            <button class="btn btn-accent btn-sm" onmousedown="guardarActuacion('${cs.id}')">💾 Guardar actuación</button>
+          </div>
+        </div>
+
+        <!-- Estado y datos del caso -->
+        <div style="padding:10px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0">
+          <span style="font-size:11px;color:var(--fg3)">Estado:</span>
+          <select onchange="cambiarEstadoCaso('${cs.id}',this.value)" style="background:var(--card);border:1px solid var(--border-hi);border-radius:var(--radius);padding:4px 10px;color:var(--fg);font-size:11px;font-family:inherit;outline:none">
+            ${['activo','suspendido','archivado','cerrado'].map(e=>`<option value="${e}"${cs.estado===e?' selected':''}>${e.charAt(0).toUpperCase()+e.slice(1)}</option>`).join('')}
+          </select>
+          <span style="font-size:11px;color:var(--fg3)">Abogado: <strong style="color:var(--fg2)">${escapeHtml(cs.abogado||SESSION?.nombre||'—')}</strong></span>
+          ${cs.numeroPJ?`<span style="font-size:11px;color:var(--fg3)">PJ: <strong style="color:var(--fg2)">${escapeHtml(cs.numeroPJ)}</strong></span>`:''}
+          <span style="font-size:11px;color:var(--fg3);margin-left:auto">Apertura: ${escapeHtml(cs.fechaApertura||'—')}</span>
+        </div>
+
+        <!-- Cronología -->
+        <div style="padding:16px 28px 12px;flex:1;overflow-y:auto;min-height:200px">
+          <div style="font-size:11px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">📋 Cronología (${acts.length} actuaciones)</div>
+          <div id="cronologia-${cs.id}">${_renderCronologia(acts)}</div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:12px 28px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0">
+          <button class="btn btn-ghost btn-sm" onclick="generarInformeCaso('${cs.id}')">📑 Informe</button>
+          ${cli?`<button class="btn btn-ghost btn-sm" onclick="document.getElementById('modal-caso-ws').remove();openClienteWorkspace('${cli.id}')">👤 Ver cliente</button>`:''}
+          <button class="btn btn-ghost" onclick="document.getElementById('modal-caso-ws').remove()">Cerrar</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+/* ── Tipos de actuación ── */
+const TIPOS_ACTUACION = [
+  { key:'audiencia_conocida',   label:'Se conoció',     icon:'⚖',  notifica:true  },
+  { key:'audiencia_aplazada',   label:'Se aplazó',      icon:'📅',  notifica:true  },
+  { key:'audiencia_suspendida', label:'Se suspendió',   icon:'⚠',  notifica:true  },
+  { key:'fallo_emitido',        label:'Se falló',       icon:'🏛',  notifica:true  },
+  { key:'doc_depositado',       label:'Deposité doc.',  icon:'📤',  notifica:false },
+  { key:'doc_recibido',         label:'Recibí doc.',    icon:'📥',  notifica:false },
+  { key:'diligencia',           label:'Diligencia',     icon:'🔧',  notifica:false },
+  { key:'nota_interna',         label:'Nota interna',   icon:'🔒',  notifica:false },
+  { key:'otro',                 label:'Otra actuación', icon:'📋',  notifica:false },
+];
+
+let _tipoActSeleccionado = {};
+function selectTipoAct(btn, casoId) {
+  const parent = document.getElementById('tipo-act-btns-' + casoId);
+  if (!parent) return;
+  parent.querySelectorAll('.tipo-act-btn').forEach(b => {
+    b.style.background='var(--card-hover)'; b.style.borderColor='var(--border)'; b.style.color='var(--fg2)';
+  });
+  btn.style.background='var(--brand)'; btn.style.borderColor='var(--brand)'; btn.style.color='#fff';
+  _tipoActSeleccionado[casoId] = btn.dataset.tipo;
+}
+
+function guardarActuacion(casoId) {
+  const tipo = _tipoActSeleccionado[casoId];
+  if (!tipo) { toast('Selecciona el tipo de actuación', 'err'); return; }
+  const desc     = document.getElementById('act-desc-'      + casoId)?.value.trim();
+  const resultado= document.getElementById('act-resultado-' + casoId)?.value.trim();
+  const proximo  = document.getElementById('act-proximo-'   + casoId)?.value.trim();
+  const visible  = document.getElementById('act-visible-'   + casoId)?.checked !== false;
+
+  const actuacion = {
+    tipo, descripcion: desc || TIPOS_ACTUACION.find(t=>t.key===tipo)?.label || tipo,
+    resultado, proximoPaso: proximo, visible,
+    fecha:   new Date().toISOString(),
+    usuario: SESSION?.nombre?.split(' ')[0] || 'Abogado',
+    notificacionPreparada: TIPOS_ACTUACION.find(t=>t.key===tipo)?.notifica && visible,
+  };
+
+  const casos = getGestionCasos();
+  const cs    = casos.find(x => x.id === casoId);
+  if (!cs) return;
+  if (!cs.actuaciones) cs.actuaciones = [];
+  cs.actuaciones.push(actuacion);
+  cs.ultimaActualizacion = new Date().toISOString();
+  if (tipo === 'fallo_emitido' && cs.estado === 'activo') cs.estado = 'cerrado';
+  saveGestionCasos(casos);
+  _supaUpsertCaso(cs);
+
+  // Re-render cronología sin cerrar modal
+  const MI_ti = {audiencia_conocida:'⚖',audiencia_aplazada:'📅',audiencia_suspendida:'⚠',fallo_emitido:'🏛',doc_depositado:'📤',doc_recibido:'📥',diligencia:'🔧',nota_interna:'🔒',otro:'📋'};
+  const cronEl = document.getElementById('cronologia-' + casoId);
+  if (cronEl) {
+    cronEl.innerHTML = [...cs.actuaciones].reverse().map(a => {
+      const fd = new Date(a.fecha);
+      return `<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:32px">
+          <div style="font-size:18px;line-height:1">${MI_ti[a.tipo]||'📋'}</div>
+          <div style="width:1px;background:var(--border);flex:1;margin-top:6px;min-height:16px"></div>
+        </div>
+        <div style="flex:1;padding-bottom:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--fg);margin-bottom:4px">${escapeHtml(TIPOS_ACTUACION.find(t=>t.key===a.tipo)?.label||a.tipo)}</div>
+          ${a.descripcion?`<div style="font-size:12px;color:var(--fg2);line-height:1.55;margin-bottom:4px">${escapeHtml(a.descripcion)}</div>`:''}
+          ${a.resultado?`<div style="font-size:11px;color:var(--fg3)">Resultado: ${escapeHtml(a.resultado)}</div>`:''}
+          ${a.proximoPaso?`<div style="font-size:11px;color:var(--brand)">→ ${escapeHtml(a.proximoPaso)}</div>`:''}
+          <div style="font-size:10px;color:var(--fg3);margin-top:4px">${fd.toLocaleDateString('es-DO',{day:'2-digit',month:'short',year:'numeric'})} · ${fd.toLocaleTimeString('es-DO',{hour:'2-digit',minute:'2-digit'})} · ${escapeHtml(a.usuario||'')}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  // Reset form
+  ['act-desc-','act-resultado-','act-proximo-'].forEach(p=>{const e=document.getElementById(p+casoId);if(e)e.value='';});
+  const parent = document.getElementById('tipo-act-btns-' + casoId);
+  if (parent) parent.querySelectorAll('.tipo-act-btn').forEach(b=>{b.style.background='var(--card-hover)';b.style.borderColor='var(--border)';b.style.color='var(--fg2)';});
+  delete _tipoActSeleccionado[casoId];
+  renderGestionCasos();
+  toast(`✓ ${TIPOS_ACTUACION.find(t=>t.key===tipo)?.label} registrado`, 'ok');
+}
+
+function cambiarEstadoCaso(casoId, nuevoEstado) {
+  const casos = getGestionCasos();
+  const cs = casos.find(x => x.id === casoId);
+  if (!cs) return;
+  cs.estado = nuevoEstado;
+  cs.ultimaActualizacion = new Date().toISOString();
+  saveGestionCasos(casos);
+  _supaUpsertCaso(cs);
+  renderGestionCasos();
+  toast(`Estado: ${nuevoEstado}`, 'ok');
+}
+
+function generarInformeCaso(casoId) {
+  const cs  = getGestionCasos().find(x => x.id === casoId);
+  if (!cs) return;
+  const cli = getGestionClientes().find(x => x.id === cs.clienteId);
+  const acts = cs.actuaciones || [];
+  const cronologiaTexto = acts.map(a =>
+    `  ${new Date(a.fecha).toLocaleDateString('es-DO',{day:'2-digit',month:'short',year:'numeric'})} · ${TIPOS_ACTUACION.find(t=>t.key===a.tipo)?.label||a.tipo}${a.descripcion?' — '+a.descripcion:''}${a.resultado?'\n    Resultado: '+a.resultado:''}${a.proximoPaso?'\n    Próximo paso: '+a.proximoPaso:''}`
+  ).join('\n');
+  const texto = `════════════════════════════════════════════════
+NEXLEX — INFORME DE EXPEDIENTE LEGAL
+Grupo RAF · República Dominicana
+Generado: ${new Date().toLocaleDateString('es-DO',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+════════════════════════════════════════════════
+DATOS DEL CASO
+  Referencia:          ${cs.id}
+  Ref. Poder Judicial: ${cs.numeroPJ||'Pendiente'}
+  Estado:              ${(cs.estado||'activo').toUpperCase()}
+  Materia:             ${cs.materia||'—'}${cs.subtipo?' — '+cs.subtipo:''}
+  Tribunal:            ${cs.tribunal||'—'}
+  Contraparte:         ${cs.contraparte||'—'}
+  Abogado:             ${cs.abogado||'—'}
+  Fecha de apertura:   ${cs.fechaApertura||'—'}
+CLIENTE
+  ID:        ${cli?.id||'—'}
+  Nombre:    ${cli?.nombre||'—'}
+  Teléfono:  ${cli?.telefono||'—'}
+  WhatsApp:  ${cli?.whatsapp||'—'}
+  Correo:    ${cli?.email||'—'}
+CRONOLOGÍA (${acts.length} actuaciones)
+${cronologiaTexto||'  Sin actuaciones registradas.'}
+OBSERVACIONES
+  ${cs.observaciones||'Sin observaciones.'}
+════════════════════════════════════════════════
+NEXLEX Case Management · Confidencial · Grupo RAF
+════════════════════════════════════════════════`;
+  document.getElementById('modal-informe')?.remove();
+  const html = `
+    <div id="modal-informe" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px">
+      <div style="background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--radius-xl);padding:28px;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.5)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="font-size:15px;font-weight:700">📑 Informe — ${escapeHtml(cs.id)}</div>
+          <button onclick="document.getElementById('modal-informe').remove()" style="background:none;border:none;color:var(--fg2);cursor:pointer;font-size:22px">×</button>
+        </div>
+        <pre id="informe-pre" style="font-size:11.5px;white-space:pre-wrap;line-height:1.9;color:var(--fg);font-family:inherit;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;max-height:400px;overflow-y:auto">${escapeHtml(texto)}</pre>
+        <div style="display:flex;gap:8px;margin-top:14px;justify-content:flex-end">
+          <button class="btn btn-green btn-sm" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('informe-pre').textContent).then(()=>toast('Copiado','ok'))">📋 Copiar</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('modal-informe').remove()">Cerrar</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
 </script>
 </body>
 </html>
