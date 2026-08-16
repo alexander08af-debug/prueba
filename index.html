@@ -2192,6 +2192,76 @@ body.connect-public-mode #page-connect { display:flex !important; }
   padding: 12px 14px;
   font-size: 12px;
 }
+/* ══════════════════════════════════════════
+   NEXLEX ONBOARDING — Estilos
+══════════════════════════════════════════ */
+.ob-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center;
+  animation: ob-fade-in .25s ease;
+}
+.ob-overlay.ob-step-mode { align-items: flex-start; justify-content: flex-start; pointer-events: none; }
+@keyframes ob-fade-in { from { opacity:0 } to { opacity:1 } }
+
+.ob-welcome {
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-xl);
+  padding: 44px 48px;
+  max-width: 460px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 32px 80px rgba(0,0,0,.5);
+  pointer-events: all;
+  animation: ob-pop .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes ob-pop { from { transform:scale(.9); opacity:0 } to { transform:scale(1); opacity:1 } }
+
+.ob-welcome-emoji { font-size: 44px; margin-bottom: 16px; }
+.ob-welcome-title { font-family:'DM Serif Display',serif; font-size:22px; color:var(--fg); margin-bottom:10px; letter-spacing:-.2px; }
+.ob-welcome-sub   { font-size:13px; color:var(--fg2); line-height:1.7; margin-bottom:28px; }
+
+.ob-tooltip {
+  position: fixed;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  max-width: 320px;
+  width: 90%;
+  box-shadow: 0 16px 48px rgba(0,0,0,.5);
+  pointer-events: all;
+  z-index: 10001;
+  animation: ob-slide-in .22s ease;
+}
+@keyframes ob-slide-in { from { transform:translateY(8px); opacity:0 } to { transform:translateY(0); opacity:1 } }
+
+.ob-tooltip-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.ob-tooltip-icon   { font-size:22px; flex-shrink:0; }
+.ob-tooltip-title  { font-size:13px; font-weight:700; color:var(--fg); }
+.ob-tooltip-body   { font-size:12px; color:var(--fg2); line-height:1.65; margin-bottom:16px; }
+.ob-progress       { font-size:10px; color:var(--fg3); margin-bottom:12px; font-weight:600; letter-spacing:.04em; }
+.ob-progress-bar   { height:3px; background:var(--border); border-radius:2px; margin-bottom:14px; overflow:hidden; }
+.ob-progress-fill  { height:100%; background:var(--brand); border-radius:2px; transition:width .3s ease; }
+.ob-tooltip-actions { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+
+.ob-highlight {
+  position: fixed;
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 4px var(--brand), 0 0 0 8px rgba(79,124,255,.25);
+  pointer-events: none;
+  z-index: 10000;
+  transition: all .3s ease;
+  animation: ob-pulse 2s infinite;
+}
+@keyframes ob-pulse {
+  0%,100% { box-shadow: 0 0 0 3px var(--brand), 0 0 0 7px rgba(79,124,255,.2); }
+  50%      { box-shadow: 0 0 0 4px var(--brand), 0 0 0 12px rgba(79,124,255,.1); }
+}
+
+.ob-skip { font-size:10px; color:var(--fg3); cursor:pointer; text-decoration:underline; }
+.ob-skip:hover { color:var(--fg2); }
 </style>
 </head>
 <body>
@@ -2304,11 +2374,11 @@ body.connect-public-mode #page-connect { display:flex !important; }
 
       <!-- 👥 Gestión -->
       <div class="nav-group" id="nav-group-gestion">
-        <div class="nav-group-trigger" id="nav-trigger-gestion">
+        <div class="nav-group-trigger" id="nav-trigger-gestion" onmousedown="goPage('gestion')" onclick="goPage('gestion')" style="cursor:pointer">
           👥 Gestión <span class="nav-arrow">▼</span>
         </div>
         <div class="nav-dropdown">
-          <div class="nav-dropdown-item" onmousedown="goPage('gestion')">👤 Clientes &amp; Casos</div>
+          <div class="nav-dropdown-item" onmousedown="goPage('gestion')" onclick="goPage('gestion')">👤 Clientes &amp; Casos</div>
           <div class="nav-dropdown-sep"></div>
           <div class="nav-dropdown-label">Próximamente</div>
           <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">📁 Documentos</div>
@@ -2318,12 +2388,12 @@ body.connect-public-mode #page-connect { display:flex !important; }
 
       <!-- ⚖ Práctica Jurídica -->
       <div class="nav-group">
-        <div class="nav-group-trigger" id="nav-trigger-practica">
+        <div class="nav-group-trigger" id="nav-trigger-practica" onmousedown="goPage('mapa')" onclick="goPage('mapa')" style="cursor:pointer">
           ⚖ Práctica <span class="nav-arrow">▼</span>
         </div>
         <div class="nav-dropdown">
           <div class="nav-dropdown-label">Herramientas</div>
-          <div class="nav-dropdown-item" onmousedown="goPage('mapa')">🗺 Mapa Procesal</div>
+          <div class="nav-dropdown-item" onmousedown="goPage('mapa')" onclick="goPage('mapa')">🗺 Mapa Procesal</div>
           <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">📋 Modelos &amp; Plantillas</div>
           <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">📝 Editor Legal</div>
         </div>
@@ -2331,12 +2401,12 @@ body.connect-public-mode #page-connect { display:flex !important; }
 
       <!-- 📊 Control -->
       <div class="nav-group">
-        <div class="nav-group-trigger" id="nav-trigger-control">
+        <div class="nav-group-trigger" id="nav-trigger-control" onmousedown="goPage('audiencias')" onclick="goPage('audiencias')" style="cursor:pointer">
           📊 Control <span class="nav-arrow">▼</span>
         </div>
         <div class="nav-dropdown">
-          <div class="nav-dropdown-item" onmousedown="goPage('audiencias')">📅 Audiencias</div>
-          <div class="nav-dropdown-item" onmousedown="goPage('stats')">📊 Estadísticas</div>
+          <div class="nav-dropdown-item" onmousedown="goPage('audiencias')" onclick="goPage('audiencias')">📅 Audiencias</div>
+          <div class="nav-dropdown-item" onmousedown="goPage('stats')" onclick="goPage('stats')">📊 Estadísticas</div>
           <div class="nav-dropdown-sep"></div>
           <div class="nav-dropdown-label">Próximamente</div>
           <div class="nav-dropdown-item coming-soon" style="opacity:.4;cursor:default">⏰ Plazos &amp; Alertas</div>
@@ -2345,11 +2415,11 @@ body.connect-public-mode #page-connect { display:flex !important; }
 
       <!-- 📚 Conocimiento -->
       <div class="nav-group">
-        <div class="nav-group-trigger" id="nav-trigger-conocimiento">
+        <div class="nav-group-trigger" id="nav-trigger-conocimiento" onmousedown="goPage('juris')" onclick="goPage('juris')" style="cursor:pointer">
           📚 Conocimiento <span class="nav-arrow">▼</span>
         </div>
         <div class="nav-dropdown">
-          <div class="nav-dropdown-item" onmousedown="goPage('juris')">
+          <div class="nav-dropdown-item" onmousedown="goPage('juris')" onclick="goPage('juris')">
             ⚖ Jurisprudencia <span class="nbadge" id="badge-jalert" style="display:none;margin-left:4px">0</span>
           </div>
           <div class="nav-dropdown-sep"></div>
@@ -3705,6 +3775,14 @@ body.connect-public-mode #page-connect { display:flex !important; }
   ══════════════════════════════════════════════ */
   registerModule({ id:'gestion', nombre:'Gestión — CRM Jurídico', version:'1.0.0', descripcion:'Workspace jurídico: clientes, expedientes, cronología, actuaciones, portal del cliente e informes.', roles:['admin','abogado','superadmin'], activo:true, estado:'activo', dependencias:['core','connect'], meta:{ supabase:true, tablas:['clientes','casos'], fase:1 } });
 
+  registerModule({ id:'onboarding', nombre:'Onboarding Interactivo', version:'1.0.0', descripcion:'Recorrido guiado para nuevos usuarios en su primer inicio de sesión. No se repite para usuarios existentes.', roles:['admin','abogado','paralegal'], activo:true, estado:'activo', dependencias:['core'], meta:{
+    storageKey: 'nexlex_onboarding_v1_',
+    pasos: ['inicio','connect','gestion','practica','control','conocimiento'],
+    usuariosExcluidos: ['u0','u99'],
+    disparador: 'iniciarSesion',
+    completadoCuando: 'usuario pulsa Comenzar a trabajar o cierra el onboarding',
+  }});
+
   /* Registrar páginas del módulo Gestión */
   registerPage({ id:'gestion',            titulo:'Gestión',            modulo:'gestion', roles:['admin','abogado','superadmin'], icono:'👥', orden:3, activo:true });
   registerWidget({ id:'gestion-kpis',     titulo:'KPIs Gestión',       modulo:'gestion', roles:['admin','abogado','superadmin'], activo:true });
@@ -4001,6 +4079,9 @@ function iniciarSesion(user) {
     goPage('inicio');
     toast(`Bienvenido, ${user.nombre.split(' ')[0]} 👋`, 'ok');
   }
+
+  // 6. Onboarding — solo si el usuario es nuevo (no excluido y no completado)
+  checkOnboarding(user);
 }
 
 function doLogout() {
@@ -7095,6 +7176,244 @@ NEXLEX Case Management · Confidencial · Grupo RAF
       </div>
     </div>`;
   document.body.insertAdjacentHTML('beforeend', html);
+}
+
+/* ══════════════════════════════════════════
+   NEXLEX ONBOARDING — Sistema de bienvenida
+   Módulo registrado en Llave Maestra v1.0
+   Solo se ejecuta en el primer login de
+   usuarios nuevos. Nunca para existentes.
+══════════════════════════════════════════ */
+
+const ONBOARDING_KEY_PREFIX = 'nexlex_onboarding_v1_';
+// IDs de usuarios que NUNCA deben ver el onboarding (existentes al momento de implementar)
+const ONBOARDING_EXCLUDED_IDS = ['u0', 'u99'];
+
+const ONBOARDING_PASOS = [
+  {
+    id:     'inicio',
+    titulo: '🏠 Inicio',
+    body:   'Este es tu punto de partida. Desde aquí puedes acceder rápidamente a todas las áreas de NEXLEX y ver un resumen de tu actividad reciente.',
+    target: 'nav-inicio',
+  },
+  {
+    id:     'connect',
+    titulo: '📥 Connect',
+    body:   'Aquí llegan las consultas de potenciales clientes. Puedes revisar cada consulta, asignarla, gestionarla y convertirla en un cliente activo.',
+    target: 'nav-connect',
+  },
+  {
+    id:     'gestion',
+    titulo: '👥 Gestión',
+    body:   'Tu espacio principal de trabajo. Aquí administras clientes, expedientes y el ciclo completo de cada caso legal.',
+    target: 'nav-trigger-gestion',
+  },
+  {
+    id:     'practica',
+    titulo: '⚖ Práctica Jurídica',
+    body:   'Contiene las herramientas para organizar tu práctica: el Mapa de Procedimientos, modelos y plantillas legales.',
+    target: 'nav-trigger-practica',
+  },
+  {
+    id:     'control',
+    titulo: '📊 Control',
+    body:   'Consulta y controla tus audiencias programadas y revisa las estadísticas de tu actividad en la plataforma.',
+    target: 'nav-trigger-control',
+  },
+  {
+    id:     'conocimiento',
+    titulo: '📚 Conocimiento',
+    body:   'Accede a la base de jurisprudencia dominicana, analiza sentencias con IA y mantén tus notas y alertas jurídicas.',
+    target: 'nav-trigger-conocimiento',
+  },
+];
+
+/* ── Storage helpers ── */
+function _obKey(userId) { return ONBOARDING_KEY_PREFIX + userId; }
+function _obCompleted(userId) {
+  try { return JSON.parse(_storage.getItem(_obKey(userId)) || '{}').completed === true; }
+  catch { return false; }
+}
+function _obSetCompleted(userId) {
+  try { _storage.setItem(_obKey(userId), JSON.stringify({ completed:true, fecha:new Date().toISOString() })); }
+  catch {}
+}
+function _obReset(userId) {
+  try { _storage.removeItem(_obKey(userId)); }
+  catch {}
+}
+
+/* ── Estado del onboarding ── */
+let _obPasoActual = 0;
+let _obHighlight  = null;
+let _obOverlay    = null;
+let _obTooltip    = null;
+
+/* ── Verificar si debe mostrar onboarding ── */
+function checkOnboarding(user) {
+  if (!user) return;
+  if (ONBOARDING_EXCLUDED_IDS.includes(user.id)) return; // usuarios existentes: nunca
+  if (_obCompleted(user.id)) return;                      // ya completó: nunca
+  // Es usuario nuevo — mostrar bienvenida con pequeño delay para que la UI cargue
+  setTimeout(() => showOnboardingWelcome(user), 600);
+}
+
+/* ── Pantalla de bienvenida ── */
+function showOnboardingWelcome(user) {
+  const nombre = user.nombre?.split(' ')[0] || 'Bienvenido';
+  const html = `
+    <div id="ob-overlay" class="ob-overlay">
+      <div class="ob-welcome">
+        <div class="ob-welcome-emoji">👋</div>
+        <div class="ob-welcome-title">¡Bienvenido/a, ${escapeHtml(nombre)}!</div>
+        <div class="ob-welcome-sub">
+          Te damos la bienvenida a <strong style="color:var(--brand)">NEXLEX</strong>.<br>
+          Vamos a mostrarte rápidamente cómo funciona tu espacio de trabajo.
+        </div>
+        <button class="btn btn-accent" style="width:100%;padding:13px;font-size:14px" onclick="startOnboardingTour()">
+          Comenzar recorrido →
+        </button>
+        <div style="margin-top:14px">
+          <span class="ob-skip" onclick="skipOnboarding()">Omitir por ahora</span>
+        </div>
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  _obOverlay = document.getElementById('ob-overlay');
+}
+
+/* ── Iniciar recorrido ── */
+function startOnboardingTour() {
+  _obPasoActual = 0;
+  // Cambiar overlay a modo step (no centrado)
+  if (_obOverlay) { _obOverlay.innerHTML = ''; _obOverlay.classList.add('ob-step-mode'); }
+  showOnboardingStep(_obPasoActual);
+}
+
+/* ── Mostrar paso ── */
+function showOnboardingStep(idx) {
+  // Limpiar tooltip y highlight anteriores
+  document.getElementById('ob-tooltip')?.remove();
+  document.getElementById('ob-highlight')?.remove();
+
+  const paso    = ONBOARDING_PASOS[idx];
+  const total   = ONBOARDING_PASOS.length;
+  const pct     = Math.round(((idx) / total) * 100);
+  const esUltimo= idx === total - 1;
+  const esPrimero = idx === 0;
+
+  // Highlight del elemento target
+  const targetEl = document.getElementById(paso.target);
+  if (targetEl) {
+    const rect = targetEl.getBoundingClientRect();
+    const hl = document.createElement('div');
+    hl.id = 'ob-highlight';
+    hl.className = 'ob-highlight';
+    hl.style.cssText = `top:${rect.top - 4}px;left:${rect.left - 4}px;width:${rect.width + 8}px;height:${rect.height + 8}px`;
+    document.body.appendChild(hl);
+  }
+
+  // Tooltip — posicionarlo debajo o arriba del elemento
+  const tooltip = document.createElement('div');
+  tooltip.id = 'ob-tooltip';
+  tooltip.className = 'ob-tooltip';
+  tooltip.innerHTML = `
+    <div class="ob-progress">Paso ${idx + 1} de ${total}</div>
+    <div class="ob-progress-bar"><div class="ob-progress-fill" style="width:${pct}%"></div></div>
+    <div class="ob-tooltip-header">
+      <div class="ob-tooltip-title">${paso.titulo}</div>
+    </div>
+    <div class="ob-tooltip-body">${paso.body}</div>
+    <div class="ob-tooltip-actions">
+      <span class="ob-skip" onclick="skipOnboarding()">Omitir recorrido</span>
+      <div style="display:flex;gap:8px">
+        ${!esPrimero ? `<button class="btn btn-ghost btn-sm" onclick="onboardingBack()">← Atrás</button>` : ''}
+        <button class="btn btn-accent btn-sm" onclick="${esUltimo ? 'finishOnboarding()' : 'onboardingNext()'}">
+          ${esUltimo ? 'Último →' : 'Siguiente →'}
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(tooltip);
+  _obTooltip = tooltip;
+
+  // Posicionar tooltip cerca del elemento target
+  if (targetEl) {
+    const rect    = targetEl.getBoundingClientRect();
+    const tipH    = 200; // altura estimada
+    const tipW    = 320;
+    let top  = rect.bottom + 12;
+    let left = rect.left;
+    // Si se sale por abajo
+    if (top + tipH > window.innerHeight) top = rect.top - tipH - 12;
+    // Si se sale por la derecha
+    if (left + tipW > window.innerWidth) left = window.innerWidth - tipW - 16;
+    if (left < 8) left = 8;
+    tooltip.style.cssText = `top:${Math.max(8,top)}px;left:${left}px`;
+  } else {
+    // Centrado si no hay elemento
+    tooltip.style.cssText = 'top:50%;left:50%;transform:translate(-50%,-50%)';
+  }
+}
+
+/* ── Navegación del recorrido ── */
+function onboardingNext() {
+  if (_obPasoActual < ONBOARDING_PASOS.length - 1) {
+    _obPasoActual++;
+    showOnboardingStep(_obPasoActual);
+  }
+}
+function onboardingBack() {
+  if (_obPasoActual > 0) {
+    _obPasoActual--;
+    showOnboardingStep(_obPasoActual);
+  }
+}
+
+/* ── Pantalla final ── */
+function finishOnboarding() {
+  document.getElementById('ob-tooltip')?.remove();
+  document.getElementById('ob-highlight')?.remove();
+  const nombre = SESSION?.nombre?.split(' ')[0] || '';
+  if (_obOverlay) {
+    _obOverlay.classList.remove('ob-step-mode');
+    _obOverlay.style.alignItems = 'center';
+    _obOverlay.style.justifyContent = 'center';
+    _obOverlay.innerHTML = `
+      <div class="ob-welcome">
+        <div class="ob-welcome-emoji">🎉</div>
+        <div class="ob-welcome-title">¡Listo, ${escapeHtml(nombre)}!</div>
+        <div class="ob-welcome-sub">
+          Ya conoces lo esencial de <strong style="color:var(--brand)">NEXLEX</strong>.<br>
+          Ahora puedes comenzar a trabajar.
+        </div>
+        <button class="btn btn-accent" style="width:100%;padding:13px;font-size:14px" onclick="closeOnboarding()">
+          Comenzar a trabajar →
+        </button>
+      </div>`;
+  }
+  _obSetCompleted(SESSION?.id);
+}
+
+/* ── Cerrar/omitir onboarding ── */
+function closeOnboarding() {
+  document.getElementById('ob-overlay')?.remove();
+  document.getElementById('ob-tooltip')?.remove();
+  document.getElementById('ob-highlight')?.remove();
+  _obOverlay  = null;
+  _obTooltip  = null;
+  _obHighlight= null;
+  _obSetCompleted(SESSION?.id);
+}
+function skipOnboarding() {
+  closeOnboarding();
+}
+
+/* ── Ver recorrido nuevamente (acción manual) ── */
+function verOnboardingNuevamente() {
+  if (!SESSION) return;
+  _obReset(SESSION.id);
+  _obPasoActual = 0;
+  checkOnboarding(SESSION);
 }
 
 </script>
